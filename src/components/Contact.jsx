@@ -29,15 +29,15 @@ const Contact = () => {
   };
 
   return (
-    <section className="bg-[#071C37] py-8 w-full"> {/* Cambié py-16 a py-8 */}
-      <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl font-semibold text-white mb-12">¡Contáctanos!</h2>
+    <section className="bg-azulOscuro py-8 w-full">
+      <div className="max-w-7xl mx-auto text-center px-4">
+        <h2 className="text-3xl font-semibold text-blancoTexto mb-12">¡Contáctanos!</h2>
 
         {submitted && (
-          <p className="text-green-500 mb-4">¡Gracias! Tu mensaje ha sido enviado con éxito.</p>
+          <p className="text-verdeBoton mb-4">¡Gracias! Tu mensaje ha sido enviado con éxito.</p>
         )}
 
-        <form onSubmit={handleSubmit} className="mt-8 max-w-lg mx-auto bg-[#071C37] p-8 rounded-lg shadow-lg w-full">
+        <form onSubmit={handleSubmit} className="mt-8 max-w-lg mx-auto bg-azulOscuro p-8 rounded-xl shadow-lg w-full">
           <div className="space-y-4">
             <input
               type="text"
@@ -45,7 +45,7 @@ const Contact = () => {
               value={formData.name}
               onChange={handleChange}
               placeholder="Nombre"
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-white bg-[#071C37] placeholder:text-gray-400"
+              className="w-full px-4 py-3 border border-grisClaro rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-blancoTexto bg-azulOscuro placeholder:text-grisClaro"
             />
             <input
               type="email"
@@ -53,18 +53,18 @@ const Contact = () => {
               value={formData.email}
               onChange={handleChange}
               placeholder="Correo electrónico"
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-white bg-[#071C37] placeholder:text-gray-400"
+              className="w-full px-4 py-3 border border-grisClaro rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-blancoTexto bg-azulOscuro placeholder:text-grisClaro"
             />
             <textarea
               name="subject"
               value={formData.subject}
               onChange={handleChange}
               placeholder="Asunto"
-              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 h-32 resize-none text-white bg-[#071C37] placeholder:text-gray-400"
+              className="w-full px-4 py-3 border border-grisClaro rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 h-32 resize-none text-blancoTexto bg-azulOscuro placeholder:text-grisClaro"
             ></textarea>
             <button
               type="submit"
-              className="w-full py-3 bg-[#00E6D2] text-white rounded-md hover:bg-teal-600 transition duration-300"
+              className="w-full py-3 bg-verdeBoton text-blancoTexto rounded-full font-medium hover:bg-teal-600 transition duration-300"
             >
               Enviar
             </button>

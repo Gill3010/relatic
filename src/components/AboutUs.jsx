@@ -10,8 +10,10 @@ const AboutUs = () => {
             <span className="text-verdeBoton">Sobre</span> Nosotros
           </h2>
           <p className="text-lg text-grisClaro mb-6 leading-relaxed">
-            Somos un equipo de dos desarrolladores apasionados por la innovación en el desarrollo web. Nos especializamos en crear soluciones personalizadas que se adaptan a las necesidades de nuestros clientes, utilizando tecnologías modernas y prácticas de vanguardia.
-          </p>
+  Nuestro compromiso es transformar ideas en realidades digitales que generan impacto. Con un enfoque en tecnología avanzada, trabajamos para crear soluciones que aporten valor y excedan las expectativas de nuestros clientes.
+</p>
+
+
           <button className="bg-verdeBoton text-blancoTexto px-6 py-2 rounded-full font-medium hover:bg-teal-600 transition duration-300">
             ¡Conócenos!
           </button>

@@ -5,6 +5,7 @@ import Skills from './components/Skills';
 import Services from './components/Services';
 import TeamMember from './components/TeamMember';
 import Contact from './components/Contact';
+import Clients from  './components/Clients';
 import Footer from './components/Footer';
 
 const App = () => {
@@ -40,9 +41,16 @@ const App = () => {
 
       <section id="contacto" className="py-16 bg-azulOscuro text-blancoTexto">
         <div className="max-w-7xl mx-auto text-center">
+          <Clients />
+        </div>
+      </section>
+
+      <section id="contacto" className="py-16 bg-azulOscuro text-blancoTexto">
+        <div className="max-w-7xl mx-auto text-center">
           <Contact />
         </div>
       </section>
+
 
       <Footer />
     </div>
