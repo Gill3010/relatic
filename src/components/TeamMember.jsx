@@ -43,7 +43,7 @@ const TeamSection = () => {
           role="Full Stack Developer"
           description="Soy un desarrollador enfocado en crear soluciones web y móviles escalables y de alto rendimiento. Con experiencia en React, Node.js, PHP, Angular, TypeScript, Java, HTML, y consumo de APIs, desarrollo aplicaciones que optimizan la experiencia del usuario y mejoran la eficiencia. También tengo un sólido manejo de herramientas de administración como cPanel, lo que me permite gestionar implementaciones de manera efectiva. Mi interés en la innovación y la educación me impulsa a explorar tecnologías como Vite y Tailwind CSS para crear herramientas que transformen el aprendizaje y el acceso a la información."
           image={IsraelImage}  // Imagen de Israel
-          cvLink="/assets/CurriculumVitaeActualizado.pdf"  // Asegúrate de que este archivo esté en la carpeta pública
+          cvLink="/assets/CV2.pdf"  // Asegúrate de que este archivo esté en la carpeta pública
           isBottom={true}  // Indicando que esta imagen debe estar abajo
         />
       </div>
