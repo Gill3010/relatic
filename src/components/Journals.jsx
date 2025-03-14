@@ -2,7 +2,7 @@ const Journals = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-semibold text-center text-[#275Bc8] mb-6">Servicios y Soluciones del Portal de Revistas</h2>
+        <h2 className="text-3xl font-semibold text-center text-[#68358c] mb-6">Servicios y Soluciones del Portal de Revistas</h2>
         <h3 className="text-xl font-semibold text-[#275Bc8] mb-4">¿Qué ofrecemos?</h3>
         <p className="text-[#275Bc8]">
           En nuestro portal de revistas académicas y científicas, ofrecemos una plataforma integral que facilita la 
@@ -22,7 +22,7 @@ const Journals = () => {
             href="https://revistasrelatic.org" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="bg-[#275Bc8] text-white px-6 py-2 rounded-lg hover:bg-[#1E4A94] transition duration-300"
+            className="bg-[#68358c] text-white px-6 py-2 rounded-lg hover:bg-[#1E4A94] transition duration-300"
           >
             Visita nuestro portal
           </a>

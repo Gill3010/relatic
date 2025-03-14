@@ -2,7 +2,7 @@ const AboutUs = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-semibold text-center text-[#275Bc8] mb-6">Sobre Nosotros</h2>
+        <h2 className="text-3xl font-semibold text-center text-[#68358c] mb-6">Sobre Nosotros</h2>
         <p className="text-[#275Bc8] text-lg">
           RELATIC PANAMA se constituye como una comunidad académica y científica de alta calidad humana e investigativa, con un enfoque regional en Latinoamérica y el Caribe. Nos dedicamos a fomentar la colaboración, el intercambio de conocimiento y el avance de la ciencia, con un fuerte compromiso con la excelencia y la innovación.
         </p>
@@ -32,7 +32,7 @@ const AboutUs = () => {
             href="https://portaldecartelescientificos.org/#servicios" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="bg-[#275Bc8] text-white px-6 py-2 rounded-lg hover:bg-[#1B3D82] transition duration-300"
+            className="bg-[#68358c] text-white px-6 py-2 rounded-lg hover:bg-[#1B3D82] transition duration-300"
           >
             Conoce nuestros servicios
           </a>
