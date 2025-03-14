@@ -1,33 +1,44 @@
-import teamImage from '../assets/Nosotros.webp';
-
 const AboutUs = () => {
   return (
-    <section className="bg-azulOscuro text-blancoTexto py-8 relative"> {/* Cambié py-16 a py-8 */}
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:items-start lg:text-left text-center">
-        {/* Contenido de texto */}
-        <div className="lg:w-1/2 px-6 lg:px-0 mb-10 lg:mb-0">
-          <h2 className="text-3xl font-semibold mb-4">
-            <span className="text-verdeBoton">Sobre</span> Nosotros
-          </h2>
-          <p className="text-lg text-grisClaro mb-6 leading-relaxed">
-  Nuestro compromiso es transformar ideas en realidades digitales que generan impacto. Con un enfoque en tecnología avanzada, trabajamos para crear soluciones que aporten valor y excedan las expectativas de nuestros clientes.
-</p>
+    <div className="container mx-auto px-4 py-8">
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-semibold text-center text-[#275Bc8] mb-6">Sobre Nosotros</h2>
+        <p className="text-[#275Bc8] text-lg">
+          RELATIC PANAMA se constituye como una comunidad académica y científica de alta calidad humana e investigativa, con un enfoque regional en Latinoamérica y el Caribe. Nos dedicamos a fomentar la colaboración, el intercambio de conocimiento y el avance de la ciencia, con un fuerte compromiso con la excelencia y la innovación.
+        </p>
 
+        <h3 className="text-xl font-semibold text-[#275Bc8] mt-6">Objetivos</h3>
+        <ul className="list-disc pl-6 text-[#275Bc8]">
+          <li>Aportar espacios de reflexión e intercambio académico sobre la publicación científica.</li>
+          <li>Fomentar la consolidación de los procesos editoriales en el campo científico.</li>
+          <li>Fortalecer el intercambio de conocimiento y las relaciones entre académicos, investigadores y editores científicos de la región latinoamericana.</li>
+        </ul>
 
-          <button className="bg-verdeBoton text-blancoTexto px-6 py-2 rounded-full font-medium hover:bg-teal-600 transition duration-300">
-            ¡Conócenos!
-          </button>
-        </div>
+        <h3 className="text-xl font-semibold text-[#275Bc8] mt-6">Misión</h3>
+        <p className="text-[#275Bc8] text-lg">
+          Tenemos como misión promover la participación activa de estudiantes, docentes y administrativos en el desarrollo académico de Latinoamérica y el Caribe. A través de la colaboración regional, buscamos interconectar instituciones académicas y centros de investigación para difundir la ciencia generada en la región, formar recursos humanos y avanzar en el conocimiento científico cualitativo.
+        </p>
+        <p className="text-[#275Bc8] text-lg mt-4">
+          Nuestra filosofía se sustenta en las misiones de las universidades asociadas y en la generación de conocimiento científico de calidad. Fomentamos el uso de herramientas investigativas que promuevan una comunicación efectiva entre investigadores, y la reflexión crítica y constructiva sobre las problemáticas que enfrentan en sus respectivos campos de estudio.
+        </p>
 
-        {/* Imagen decorativa */}
-        <div className="lg:w-1/2 flex justify-center lg:justify-end">
-          <img src={teamImage} alt="Equipo de desarrollo" className="w-full max-w-md object-contain" />
+        <h3 className="text-xl font-semibold text-[#275Bc8] mt-6">Visión</h3>
+        <p className="text-[#275Bc8] text-lg">
+          La visión de RELATIC PANAMA es impulsar la producción de conocimiento científico cualitativo, fortalecer los lazos entre investigadores y universidades latinoamericanas y caribeñas, y promover la internacionalización de la investigación académica. A través de nuestra red, buscamos difundir el pensamiento cualitativo y fomentar un espacio de colaboración global en el ámbito científico.
+        </p>
+
+        <div className="mt-6 text-center">
+          <a 
+            href="https://portaldecartelescientificos.org/#servicios" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="bg-[#275Bc8] text-white px-6 py-2 rounded-lg hover:bg-[#1B3D82] transition duration-300"
+          >
+            Conoce nuestros servicios
+          </a>
         </div>
       </div>
-
-      {/* Onda decorativa en la parte inferior - eliminar si no es necesaria */}
-      {/* <div className="absolute bottom-0 left-0 right-0 h-20 bg-azulOscuro" style={{ clipPath: 'polygon(0 90%, 100% 0, 100% 100%, 0 100%)' }}></div> */}
-    </section>
+    </div>
   );
 };
 
