@@ -29,7 +29,7 @@ const Navbar = () => {
 
         {/* Botón de Menú para Móvil */}
         <div className="md:hidden">
-        <button onClick={toggleMenu} className="p-2 focus:outline-none text-2xl text-[#00E5FF]">&#9776;</button>
+        <button onClick={toggleMenu} className="p-2 focus:outline-none text-2xl text-[#FFF]">&#9776;</button>
         </div>
       </div>
 

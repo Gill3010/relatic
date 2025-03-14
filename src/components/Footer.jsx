@@ -10,7 +10,7 @@ const Footer = () => {
             href="https://www.linkedin.com/in/tu-linkedin"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 bg-verdeBoton rounded-full hover:bg-[#00E5FF] transition duration-300"
+            className="p-3 bg-verdeBoton rounded-full hover:bg-[#68358c] transition duration-300"
           >
             <FaLinkedin size={20} className="text-white" />
           </a>
@@ -18,7 +18,7 @@ const Footer = () => {
             href="https://github.com/tu-github"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-3 bg-verdeBoton rounded-full hover:bg-[#00E5FF] transition duration-300"
+            className="p-3 bg-verdeBoton rounded-full hover:bg-[#68358c] transition duration-300"
           >
             <FaGithub size={20} className="text-white" />
           </a>
@@ -26,7 +26,7 @@ const Footer = () => {
   href="mailto:tu-email@ejemplo.com"
   target="_blank"
   rel="noopener noreferrer"
-  className="p-3 bg-verdeBoton rounded-full hover:bg-[#00E5FF] transition duration-300"
+  className="p-3 bg-verdeBoton rounded-full hover:bg-[#68358c] transition duration-300"
 >
   <FaRegEnvelope size={20} className="text-white" />
 </a>
