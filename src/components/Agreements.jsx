@@ -40,11 +40,11 @@ const Agreements = () => {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden mb-10 bg-white p-4 rounded-lg shadow-lg">
+    <div className="relative w-full overflow-hidden mb-10 bg-white p-4 rounded-lg shadow-lg border-4 border-[#68358c]">
       {/* Título */}
       <h2 className="text-center text-2xl font-semibold text-[#68358c] mb-4">
-  Instituciones en convenio
-</h2>
+        Instituciones en convenio
+      </h2>
 
       <div
         className="flex transition-all duration-500 ease-in-out"
@@ -82,9 +82,7 @@ const Agreements = () => {
         {images.map((_, index) => (
           <span
             key={index}
-            className={`h-2 w-2 rounded-full ${
-              index === currentIndex ? 'bg-[#275Bc8]' : 'bg-gray-500'
-            }`}
+            className={`h-2 w-2 rounded-full ${index === currentIndex ? 'bg-[#275Bc8]' : 'bg-gray-500'}`}
           />
         ))}
       </div>
