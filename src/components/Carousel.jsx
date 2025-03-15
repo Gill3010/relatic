@@ -1,69 +1,83 @@
 import React, { useState, useEffect } from 'react';
 
 const Carousel = () => {
-  // Definir el estado para controlar el índice de la imagen activa
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
 
-  // Lista de las 4 imágenes del carousel (actualizadas con imágenes locales)
   const images = [
-    '/assets/imagen1.webp',
-    '/assets/imagen2.jpg',
-    '/assets/imagen3.webp',
-    '/assets/imagen4.webp',
+    { src: '/assets/imagen1.webp', link: 'https://ejemplo.com/1' },
+    { src: '/assets/imagen2.jpg', link: 'https://ejemplo.com/2' },
+    { src: '/assets/imagen3.webp', link: 'https://ejemplo.com/3' },
+    { src: '/assets/imagen4.webp', link: 'https://ejemplo.com/4' },
   ];
 
-  // Cambiar a la siguiente imagen automáticamente cada 3 segundos
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setIsFading(true);
+      setTimeout(() => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+        setIsFading(false);
+      }, 500);
     }, 3000);
-    return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonte
+    return () => clearInterval(interval);
   }, []);
 
-  // Funciones para el control manual del carousel
   const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setIsFading(true);
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setIsFading(false);
+    }, 500);
   };
 
   const prevImage = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
+    setIsFading(true);
+    setTimeout(() => {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+      setIsFading(false);
+    }, 500);
   };
 
   return (
     <div className="relative w-full mx-auto overflow-hidden">
-      {/* Imagen actual */}
-      <div className="w-full h-auto sm:h-80 lg:h-96">
+      <div className="w-full h-auto sm:h-80 lg:h-96 relative">
         <img
-          src={images[currentIndex]}
+          src={images[currentIndex].src}
           alt={`Imagen ${currentIndex + 1}`}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-opacity duration-500 ${
+            isFading ? 'opacity-0' : 'opacity-100'
+          }`}
         />
+        <a
+          href={images[currentIndex].link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute bottom-5 left-4 sm:left-10 transform -translate-x-0 bg-gradient-to-r from-[#68358c] to-[#2d2e77] text-white py-2 px-6 rounded-full shadow-md hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#68358c] transition duration-300"
+        >
+          Ver más
+        </a>
       </div>
 
-      {/* Botones de control manual */}
       <button
-        onClick={prevImage}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-[#68358c] hover:bg-[#2d2e77] w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300"
-      >
-        &lt;
-      </button>
-      <button
-        onClick={nextImage}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-[#68358c] hover:bg-[#2d2e77] w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300"
-      >
-        &gt;
-      </button>
+  onClick={prevImage}
+  className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#68358c] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
+>
+  &lt;
+</button>
+<button
+  onClick={nextImage}
+  className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#68358c] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
+>
+  &gt;
+</button>
 
-      {/* Indicadores de posición */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
         {images.map((_, index) => (
           <div
             key={index}
             onClick={() => setCurrentIndex(index)}
             className={`w-6 h-6 rounded-full cursor-pointer transition duration-300 ${
-              index === currentIndex ? 'bg-white' : 'bg-[#2d2e77]'
+              index === currentIndex ? 'bg-white' : 'bg-gradient-to-r from-[#68358c] to-[#2d2e77]'
             }`}
           ></div>
         ))}

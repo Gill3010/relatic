@@ -1,50 +1,64 @@
 const AboutUs = () => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-semibold text-center text-[#68358c] mb-6">Sobre Nosotros</h2>
-        <p className="text-[#275Bc8] text-lg">
+      <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-[#68358c] transform transition-transform duration-300 hover:scale-105"> {/* Añadí el borde y el efecto de zoom al contenedor */}
+        <h2 className="text-3xl font-semibold text-center text-[#5b1a8f] mb-6">Sobre Nosotros</h2>
+        <p className="text-[#1e3a8a] text-lg">
           RELATIC PANAMA se constituye como una comunidad académica y científica de alta calidad humana e investigativa, con un enfoque regional en Latinoamérica y el Caribe. Nos dedicamos a fomentar la colaboración, el intercambio de conocimiento y el avance de la ciencia, con un fuerte compromiso con la excelencia y la innovación.
         </p>
 
-        <h3 className="text-xl font-semibold text-[#275Bc8] mt-6">
-  <strong className="text-[#1e3a8a]">Objetivos</strong>
-</h3>
+        {/* Misión, Visión y Objetivos en fila (cards) */}
+        <div className="mt-6 flex flex-wrap justify-center gap-16">
+          {/* Misión */}
+          <div className="flex flex-col items-center bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 rounded-lg shadow-md max-w-xs w-full sm:w-auto transform transition-transform duration-300 hover:scale-105">
+            <div className="relative w-48 h-48 mb-4">
+              <img 
+                src="/assets/Mision.jpg" 
+                alt="Misión" 
+                className="w-full h-full object-cover mb-4 rounded-full shadow-md transform transition-transform duration-300 hover:scale-110"
+              />
+            </div>
+            <h3 className="text-xl font-semibold text-white">
+              <strong className="text-[#fff]">Misión</strong>
+            </h3>
+            <p className="text-white text-lg text-center">
+              Nuestra misión es promover la participación activa de estudiantes, docentes y administrativos en el desarrollo académico, y fomentar la colaboración entre instituciones y centros de investigación. Buscamos difundir la ciencia generada en la región y formar recursos humanos para avanzar en el conocimiento científico.
+            </p>
+          </div>
 
-        <ul className="list-disc pl-6 text-[#275Bc8]">
-          <li>Aportar espacios de reflexión e intercambio académico sobre la publicación científica.</li>
-          <li>Fomentar la consolidación de los procesos editoriales en el campo científico.</li>
-          <li>Fortalecer el intercambio de conocimiento y las relaciones entre académicos, investigadores y editores científicos de la región latinoamericana.</li>
-        </ul>
+          {/* Objetivos */}
+          <div className="flex flex-col items-center bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 rounded-lg shadow-md max-w-xs w-full sm:w-auto transform transition-transform duration-300 hover:scale-105">
+            <div className="relative w-48 h-48 mb-4">
+              <img 
+                src="/assets/Objetivos.jpg" 
+                alt="Objetivos" 
+                className="w-full h-full object-cover mb-4 rounded-full shadow-md transform transition-transform duration-300 hover:scale-110"
+              />
+            </div>
+            <h3 className="text-xl font-semibold text-white">
+              <strong className="text-[#fff]">Objetivos</strong>
+            </h3>
+            <p className="text-white text-lg text-center">
+              Queremos ofrecer un espacio de reflexión e intercambio académico sobre la publicación científica. Fomentamos la consolidación de los procesos editoriales y fortalecemos el intercambio de conocimiento entre académicos, investigadores y editores científicos para impulsar la ciencia en la región.
+            </p>
+          </div>
 
-        <h3 className="text-xl font-semibold text-[#275Bc8] mt-6">
-  <strong className="text-[#1e3a8a]">Misión</strong>
-</h3>
-
-        <p className="text-[#275Bc8] text-lg">
-          Tenemos como misión promover la participación activa de estudiantes, docentes y administrativos en el desarrollo académico de Latinoamérica y el Caribe. A través de la colaboración regional, buscamos interconectar instituciones académicas y centros de investigación para difundir la ciencia generada en la región, formar recursos humanos y avanzar en el conocimiento científico cualitativo.
-        </p>
-        <p className="text-[#275Bc8] text-lg mt-4">
-          Nuestra filosofía se sustenta en las misiones de las universidades asociadas y en la generación de conocimiento científico de calidad. Fomentamos el uso de herramientas investigativas que promuevan una comunicación efectiva entre investigadores, y la reflexión crítica y constructiva sobre las problemáticas que enfrentan en sus respectivos campos de estudio.
-        </p>
-
-        <h3 className="text-xl font-semibold text-[#275Bc8] mt-6">
-  <strong className="text-[#1e3a8a]">Visión</strong>
-</h3>
-
-        <p className="text-[#275Bc8] text-lg">
-          La visión de RELATIC PANAMA es impulsar la producción de conocimiento científico cualitativo, fortalecer los lazos entre investigadores y universidades latinoamericanas y caribeñas, y promover la internacionalización de la investigación académica. A través de nuestra red, buscamos difundir el pensamiento cualitativo y fomentar un espacio de colaboración global en el ámbito científico.
-        </p>
-
-        <div className="mt-6 text-center">
-          <a 
-            href="https://portaldecartelescientificos.org/#servicios" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="bg-[#68358c] text-white px-6 py-2 rounded-lg hover:bg-[#1B3D82] transition duration-300"
-          >
-            Conoce nuestros servicios
-          </a>
+          {/* Visión */}
+          <div className="flex flex-col items-center bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 rounded-lg shadow-md max-w-xs w-full sm:w-auto transform transition-transform duration-300 hover:scale-105">
+            <div className="relative w-48 h-48 mb-4">
+              <img 
+                src="/assets/Vision.jpg" 
+                alt="Visión" 
+                className="w-full h-full object-cover mb-4 rounded-full shadow-md transform transition-transform duration-300 hover:scale-110"
+              />
+            </div>
+            <h3 className="text-xl font-semibold text-white">
+              <strong className="text-[#fff]">Visión</strong>
+            </h3>
+            <p className="text-white text-lg text-center">
+              Buscamos impulsar la producción de conocimiento científico cualitativo y fortalecer los lazos entre investigadores y universidades latinoamericanas. Promovemos la internacionalización de la investigación académica, fomentando espacios de colaboración global para generar nuevo conocimiento y avanzar en la ciencia.
+            </p>
+          </div>
         </div>
       </div>
     </div>
