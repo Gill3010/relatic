@@ -13,21 +13,15 @@ const LearningPlatform = () => {
 
         <h2 className="text-3xl font-semibold text-center text-white mb-6">Plataforma Integral de Aprendizaje Continuo</h2>
         <h3 className="text-xl font-semibold text-white mb-4">
-          <strong className="text-white">¿Qué ofrecemos?</strong>
+          <strong className="text-white">¿Cómo transformamos el aprendizaje continuo con soluciones personalizadas, interactivas y accesibles para todos los niveles de conocimiento?</strong>
         </h3>
 
         <p className="text-white">
-          Nuestra plataforma integral de aprendizaje continuo está diseñada para apoyar a estudiantes, profesionales y 
-          académicos en su desarrollo y actualización constante. Ofrecemos una amplia gama de cursos, recursos educativos y 
-          herramientas de colaboración que facilitan el aprendizaje en diversas áreas del conocimiento. Con un enfoque en la 
-          calidad educativa, nuestro portal está pensado para ser accesible y flexible, permitiendo a los usuarios aprender a 
-          su propio ritmo y desde cualquier lugar.
-        </p>
-        <p className="text-white mt-4">
-          Además, contamos con sistemas de seguimiento del progreso de los estudiantes, evaluación continua, y una comunidad 
-          activa que fomenta el aprendizaje colaborativo y la interacción entre miembros de diversas disciplinas. Nuestra 
-          plataforma es ideal para quienes buscan una solución de aprendizaje adaptada a sus necesidades y objetivos educativos.
-        </p>
+  Transformamos el aprendizaje continuo ofreciendo una plataforma flexible y accesible que apoya a estudiantes, profesionales y académicos en su desarrollo constante. Proporcionamos una amplia variedad de cursos, recursos educativos interactivos y herramientas de colaboración para facilitar el aprendizaje en múltiples áreas del conocimiento. Con un enfoque en la calidad educativa, nuestra plataforma permite a los usuarios aprender a su propio ritmo, desde cualquier lugar y en cualquier momento, adaptándose a sus necesidades y metas personales.
+</p>
+<p className="text-white mt-4">
+  Además, ofrecemos sistemas avanzados de seguimiento del progreso, evaluación continua y la oportunidad de integrarse en una comunidad activa que promueve el aprendizaje colaborativo. Esta plataforma está diseñada para quienes buscan una solución educativa que se ajuste a sus intereses, con una experiencia de aprendizaje personalizada y accesible.
+</p>
         
         <div className="mt-6 text-center">
           <a 

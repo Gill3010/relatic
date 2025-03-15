@@ -11,23 +11,17 @@ const ScientificPostersPortal = () => {
           />
         </div>
 
-        <h2 className="text-3xl font-semibold text-center text-white mb-6">Servicios y Soluciones del Portal de Carteles Científicos</h2>
+        <h2 className="text-3xl font-semibold text-center text-white mb-6">Portal de Carteles</h2>
         <h3 className="text-xl font-semibold text-white mb-4">
-          <strong className="text-white">¿Qué ofrecemos?</strong>
+          <strong className="text-white">¿Qué ofrecemos como soluciones innovadoras, personalizadas y eficientes?</strong>
         </h3>
 
         <p className="text-white">
-          En nuestro Portal de Carteles Científicos, proporcionamos una plataforma innovadora que permite a los investigadores, 
-          académicos y profesionales presentar sus proyectos de investigación de forma visual y atractiva mediante carteles 
-          científicos. Este portal facilita el acceso y la difusión de investigaciones de manera eficiente, permitiendo 
-          interactuar con audiencias globales.
-        </p>
-        <p className="text-white mt-4">
-          Nuestro portal está diseñado para proporcionar una experiencia amigable para la carga, visualización y descarga de carteles 
-          científicos, ayudando a que los investigadores presenten sus hallazgos de manera impactante y profesional. Además, 
-          ofrecemos opciones de colaboración entre investigadores, retroalimentación en tiempo real y una plataforma de búsqueda 
-          avanzada para acceder rápidamente a contenido relevante en diversas áreas de la ciencia.
-        </p>
+  En nuestro Portal de Carteles Científicos, brindamos una plataforma avanzada que permite a los investigadores y académicos presentar sus proyectos de manera visualmente atractiva y profesional. Facilitamos la difusión de investigaciones científicas de forma global, garantizando que los contenidos lleguen a una audiencia amplia e internacional.
+</p>
+<p className="text-white mt-4">
+  Ofrecemos soluciones diseñadas para facilitar la carga, visualización y descarga de carteles científicos, optimizando la experiencia tanto para investigadores como para su audiencia. Además, proporcionamos herramientas de colaboración entre investigadores, retroalimentación en tiempo real y una poderosa plataforma de búsqueda para acceder rápidamente a contenido relevante en distintas áreas de la ciencia, todo ello en un entorno amigable e intuitivo.
+</p>
         
         <div className="mt-6 text-center">
           <a 

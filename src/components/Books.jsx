@@ -11,22 +11,17 @@ const Books = () => {
           />
         </div>
 
-        <h2 className="text-3xl font-semibold text-center text-white mb-6">Servicios y Soluciones del Portal de Libros</h2>
+        <h2 className="text-3xl font-semibold text-center text-white mb-6">Portal de Libros</h2>
         <h3 className="text-xl font-semibold text-white mb-4">
-          <strong className="text-white">¿Qué ofrecemos?</strong>
+          <strong className="text-white">¿Cómo facilitamos el acceso, la difusión y la gestión de libros académicos y científicos con soluciones avanzadas y adaptadas a las necesidades del sector?</strong>
         </h3>
 
         <p className="text-white">
-          En nuestro portal de libros académicos y científicos, proporcionamos una plataforma innovadora para la 
-          publicación y distribución de libros de alta calidad en diversas áreas del conocimiento. Ofrecemos una variedad de 
-          servicios que incluyen soporte para autores, editores y lectores, así como herramientas avanzadas de colaboración 
-          y visibilidad internacional para que el conocimiento se difunda a nivel global.
-        </p>
-        <p className="text-white mt-4">
-          Nuestro portal facilita la gestión de libros, optimización de procesos editoriales y ofrece un sistema eficiente 
-          de archivo y acceso a libros pasados. Con un diseño amigable e intuitivo, nuestra plataforma es ideal para quienes 
-          buscan una forma accesible y profesional para publicar y compartir libros académicos y científicos.
-        </p>
+  En nuestro portal de libros académicos y científicos, ofrecemos una plataforma avanzada que facilita la publicación y distribución de libros de alta calidad en diversas áreas del conocimiento. Brindamos una variedad de servicios diseñados para autores, editores y lectores, incluyendo herramientas de colaboración, visibilidad internacional y soporte personalizado, asegurando que el conocimiento llegue a una audiencia global.
+</p>
+<p className="text-white mt-4">
+  Nuestro portal optimiza la gestión editorial, agiliza los procesos de publicación y ofrece un sistema eficiente de archivo para mantener el acceso continuo a libros pasados. Con un diseño intuitivo y fácil de usar, nuestra plataforma está pensada para quienes buscan una solución accesible, profesional y efectiva para publicar y compartir libros académicos y científicos.
+</p>
         
         <div className="mt-6 text-center">
           <a 
