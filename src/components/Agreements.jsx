@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from 'react';
 
 const Agreements = () => {
-  // Lista de 10 imágenes para el carrusel
+  // Lista de 10 imágenes para las instituciones
   const images = [
-    '/assets/Aiu.jpeg',
-    '/assets/Centrolatinoamericano.jpeg',
-    '/assets/Crupo.jpeg',
-    '/assets/Investigadores.jpeg',
-    '/assets/Redipai.jpeg',
-    '/assets/Relatic.jpeg',
-    '/assets/Santander.jpeg',
-    '/assets/Udellpa.jpeg',
-    '/assets//Uea.jpeg',
-    '/assets/Unihossana.jpeg',
+    { src: '/assets/Aiu.jpeg', alt: 'AIU' },
+    { src: '/assets/Centrolatinoamericano.jpeg', alt: 'Centrolatinoamericano' },
+    { src: '/assets/Crupo.jpeg', alt: 'CRUPO' },
+    { src: '/assets/Investigadores.jpeg', alt: 'Investigadores' },
+    { src: '/assets/Redipai.jpeg', alt: 'REDIPAI' },
+    { src: '/assets/Relatic.jpeg', alt: 'RELATIC' },
+    { src: '/assets/Santander.jpeg', alt: 'Santander' },
+    { src: '/assets/Udellpa.jpeg', alt: 'UDELLPA' },
+    { src: '/assets/Uea.jpeg', alt: 'UEA' },
+    { src: '/assets/Unihossana.jpeg', alt: 'Unihossana' },
   ];
 
+  // Duplicar las imágenes para crear un efecto de carrusel infinito
+  const infiniteImages = [...images, ...images];
+
   const [currentIndex, setCurrentIndex] = useState(0);
-  const imagesPerSlide = 5; // Mostrar 5 imágenes a la vez
+  const imagesPerSlide = 5; // Mostrar 5 imágenes por carrusel
 
   // Función para mover al siguiente grupo de imágenes (5 en 5)
   const nextImage = () => {
-    setCurrentIndex((prevIndex) =>
-      (prevIndex + imagesPerSlide) % images.length
-    );
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % infiniteImages.length);
   };
 
   // Función para mover al grupo anterior de imágenes
   const prevImage = () => {
     setCurrentIndex(
-      (prevIndex) =>
-        (prevIndex - imagesPerSlide + images.length) % images.length
+      (prevIndex) => (prevIndex - 1 + infiniteImages.length) % infiniteImages.length
     );
   };
 
@@ -40,25 +40,31 @@ const Agreements = () => {
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden mb-10 bg-white p-4 rounded-lg shadow-lg border-4 border-[#68358c]">
+    <div className="relative w-full bg-white p-4 rounded-lg shadow-lg border-4 border-[#68358c] mb-6 overflow-hidden"> 
       {/* Título */}
       <h2 className="text-center text-2xl font-semibold text-[#68358c] mb-4">
         Instituciones en convenio
       </h2>
 
+      {/* Carrusel de imágenes */}
       <div
-        className="flex transition-all duration-500 ease-in-out"
+        className="flex transition-transform duration-500 ease-in-out"
         style={{
           transform: `translateX(-${(currentIndex % images.length) * (100 / imagesPerSlide)}%)`,
         }}
       >
-        {images.map((image, index) => (
-          <div key={index} className="flex-shrink-0 w-full sm:w-1/5">
-            <img
-              src={image}
-              alt={`Agreement ${index + 1}`}
-              className="w-auto h-32 mx-auto object-cover rounded-lg"
-            />
+        {infiniteImages.map((image, index) => (
+          <div key={index} className="flex-shrink-0 w-full sm:w-1/5 mx-2">
+            <div className="relative bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="w-full h-32 object-contain"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#68358c] to-[#2d2e77] p-2">
+                <p className="text-white text-center font-semibold">{image.alt}</p>
+              </div>
+            </div>
           </div>
         ))}
       </div>
