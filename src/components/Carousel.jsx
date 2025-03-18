@@ -5,7 +5,7 @@ const Carousel = () => {
   const [isFading, setIsFading] = useState(false);
 
   const images = [
-    { src: '/assets/imagen1.webp', link: 'https://ejemplo.com/1' },
+    { src: '/assets/Banner.jpeg', link: 'https://relaticpanama.org/actividades' },
     { src: '/assets/imagen2.jpg', link: 'https://ejemplo.com/2' },
     { src: '/assets/imagen3.webp', link: 'https://ejemplo.com/3' },
     { src: '/assets/imagen4.webp', link: 'https://ejemplo.com/4' },
@@ -50,9 +50,9 @@ const Carousel = () => {
         />
         <a
           href={images[currentIndex].link}
-          target="_blank"
+          target="" 
           rel="noopener noreferrer"
-          className="absolute bottom-5 left-4 sm:left-10 transform -translate-x-0 bg-gradient-to-r from-[#68358c] to-[#2d2e77] text-white py-2 px-6 rounded-full shadow-md hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#68358c] transition duration-300"
+          className="absolute bottom-5 left-4 sm:left-10 transform -translate-x-0 bg-gradient-to-r from-[#68358c] to-[#2d2e77] text-white py-2 px-6 rounded-full shadow-md hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] transition duration-300"
         >
           Ver más
         </a>
@@ -60,13 +60,13 @@ const Carousel = () => {
 
       <button
   onClick={prevImage}
-  className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#68358c] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
+  className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
 >
   &lt;
 </button>
 <button
   onClick={nextImage}
-  className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#68358c] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
+  className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
 >
   &gt;
 </button>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa';
+import { FaLinkedin, FaTwitter, FaInstagram, FaFacebook } from 'react-icons/fa';  // Agregar los iconos necesarios
 import logo from '../assets/logo2.png';
 
 const Navbar = () => {
@@ -20,12 +20,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#68358c] to-[#2d2e77] text-white py-4 shadow-lg sticky top-0 z-50">
-
+    <nav className="bg-gradient-to-r from-[#68358c] to-[#2d2e77] text-white py-4 shadow-lg sticky top-0 z-50 border-b-4 border-white">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo y Nombre de la Marca */}
         <div className="flex items-center space-x-3 w-full">
-        <img src={logo} alt="Logo" className="w-72 h-auto object-contain" />
+          <a href="https://www.relaticpanama.org/" rel="noopener noreferrer">
+            <img src={logo} alt="Logo" className="w-72 h-auto object-contain" />
+          </a>
           <span className="text-4xl font-bold text-white tracking-wide hover:text-[#FFC107] transition-colors duration-300"></span>
         </div>
 
@@ -43,21 +44,21 @@ const Navbar = () => {
               Servicios
             </button>
             {isSubMenuOpen && (
-  <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-64 rounded-lg shadow-lg">
-    <a href="/scientificPostersPortal" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Portal de carteles
-    </a>
-    <a href="/journals" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Portal de revistas
-    </a>
-    <a href="/books" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Portal de libros
-    </a>
-    <a href="/learningPlatform" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Plataforma de aprendizaje
-    </a>
-  </div>
-)}
+              <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-max min-w-max rounded-lg shadow-lg">
+                <a href="https://www.revistasrelatic.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  Portal de revistas
+                </a>
+                <a href="https://portaldecartelescientificos.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  Portal de carteles
+                </a>
+                <a href="https://relaticpanama.org/books/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  Portal de libros
+                </a>
+                <a href="https://portaldecartelescientificos.org/Cursos" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  Plataforma de aprendizaje
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Menú de Actividades con Submenú */}
@@ -69,15 +70,15 @@ const Navbar = () => {
               Actividades
             </button>
             {isActivitiesSubMenuOpen && (
-  <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-64 rounded-lg shadow-lg">
-    <a href="/actividades" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Actividades próximas
-    </a>
-    <a href="/actividades/anteriores" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Actividades anteriores
-    </a>
-  </div>
-)}
+              <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-max min-w-max rounded-lg shadow-lg">
+                <a href="/actividades" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  Actividades próximas
+                </a>
+                <a href="/actividades/anteriores" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  Actividades anteriores
+                </a>
+              </div>
+            )}
           </div>
 
           <a href="/contactus" className="hover:text-[#865ea3] transition-colors duration-300">Contacto</a>
@@ -98,29 +99,29 @@ const Navbar = () => {
             
             {/* Menú de Servicios en Móvil */}
             <div className="relative">
-  <button
-    onClick={toggleSubMenu}
-    className="hover:text-[#865ea3] transition-colors duration-300 focus:outline-none"
-  >
-    Servicios
-  </button>
-  {isSubMenuOpen && (
-  <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-64 rounded-lg shadow-lg z-50">
-    <a href="/scientificPostersPortal" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Portal de carteles
-    </a>
-    <a href="/journals" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Portal de revistas
-    </a>
-    <a href="/books" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Portal de libros
-    </a>
-    <a href="/learningPlatform" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Plataforma de aprendizaje
-    </a>
-  </div>
-)}
-</div>
+              <button
+                onClick={toggleSubMenu}
+                className="hover:text-[#865ea3] transition-colors duration-300 focus:outline-none"
+              >
+                Servicios
+              </button>
+              {isSubMenuOpen && (
+                <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-max min-w-max rounded-lg shadow-lg z-50">
+                  <a href="https://www.revistasrelatic.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                    Portal de revistas
+                  </a>
+                  <a href="https://portaldecartelescientificos.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                    Portal de carteles
+                  </a>
+                  <a href="https://relaticpanama.org/books/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                    Portal de libros
+                  </a>
+                  <a href="https://portaldecartelescientificos.org/Cursos" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                    Plataforma de aprendizaje
+                  </a>
+                </div>
+              )}
+            </div>
 
             {/* Menú de Actividades en Móvil */}
             <div className="relative">
@@ -131,29 +132,32 @@ const Navbar = () => {
                 Actividades
               </button>
               {isActivitiesSubMenuOpen && (
-  <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-64 rounded-lg shadow-lg z-50">
-    <a href="/actividades" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Actividades próximas
-    </a>
-    <a href="/actividades/anteriores" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
-      Actividades anteriores
-    </a>
-  </div>
-)}
+                <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-max min-w-max rounded-lg shadow-lg z-50">
+                  <a href="/actividades" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                    Actividades próximas
+                  </a>
+                  <a href="/actividades/anteriores" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                    Actividades anteriores
+                  </a>
+                </div>
+              )}
             </div>
 
             <a href="/contactus" className="hover:text-[#865ea3] transition-colors duration-300" onClick={toggleMenu}>Contacto</a>
 
             {/* Iconos de Redes Sociales en Móvil */}
             <div className="flex space-x-4 pt-4">
-              <a href="https://www.linkedin.com/in/tu-linkedin" target="_blank" rel="noopener noreferrer" className="p-2 bg-[#68358c] rounded-full hover:bg-[#865ea3] transition duration-300">
+              <a href=" https://www.linkedin.com/in/relatic-panam%C3%A1-a80b93356/" target="_blank" rel="noopener noreferrer" className="p-2 bg-[#68358c] rounded-full hover:bg-[#865ea3] transition duration-300">
                 <FaLinkedin size={20} color="white" />
               </a>
-              <a href="https://github.com/tu-github" target="_blank" rel="noopener noreferrer" className="p-2 bg-[#68358c] rounded-full hover:bg-[#865ea3] transition duration-300">
-                <FaGithub size={20} color="white" />
+              <a href="https://www.instagram.com/relatic.panama/" target="_blank" rel="noopener noreferrer" className="p-2 bg-[#68358c] rounded-full hover:bg-[#865ea3] transition duration-300">
+                <FaInstagram size={20} color="white" />
               </a>
-              <a href="https://twitter.com/tu-twitter" target="_blank" rel="noopener noreferrer" className="p-2 bg-[#68358c] rounded-full hover:bg-[#865ea3] transition duration-300">
+              <a href="https://x.com/RelaticPanama" target="_blank" rel="noopener noreferrer" className="p-2 bg-[#68358c] rounded-full hover:bg-[#865ea3] transition duration-300">
                 <FaTwitter size={20} color="white" />
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61573905375213" target="_blank" rel="noopener noreferrer" className="p-2 bg-[#68358c] rounded-full hover:bg-[#865ea3] transition duration-300">
+                <FaFacebook size={20} color="white" />
               </a>
             </div>
           </div>

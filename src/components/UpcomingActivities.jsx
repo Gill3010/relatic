@@ -1,25 +1,74 @@
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-const UpcomingActivies = () => {
-  const actividades = [
-    { id: 1, nombre: 'Conferencia Internacional de Investigación', fecha: '2025-04-15', descripcion: 'Explorando avances en la investigación científica a nivel mundial.' },
-    { id: 2, nombre: 'Seminario sobre Innovación Educativa', fecha: '2025-05-20', descripcion: 'Tendencias y mejores prácticas en el ámbito educativo.' },
-    { id: 3, nombre: 'Taller de Desarrollo Tecnológico', fecha: '2025-06-10', descripcion: 'Conoce las últimas tecnologías para el desarrollo de aplicaciones web.' },
-  ];
+export default function UpcomingActivities() {
+  const images = [
+    { src: "/assets/AP1.jpeg", title: "Bienvenida Oficial", description: "Inicio del evento con discurso de apertura." },
+    { src: "/assets/AP2.jpeg", title: "Exposición Central", description: "Presentación de innovaciones en el campo." },
+    { src: "/assets/AP3.jpeg", title: "Debate Abierto", description: "Intercambio de ideas entre panelistas y público." },
+    { src: "/assets/AP4.jpeg", title: "Foro de Expertos", description: "Discusión profunda sobre temas de actualidad." },
+    { src: "/assets/AP5.jpeg", title: "Sesión Interactiva", description: "Demostración práctica de técnicas y herramientas." },
+    { src: "/assets/AP6.jpeg", title: "Conexión Profesional", description: "Oportunidad para establecer contactos clave." },
+    { src: "/assets/AP7.jpeg", title: "Cierre Solemne", description: "Resumen de logros y palabras de despedida." },
+];
 
-  return (
-    <div className="bg-white py-8 px-6 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-[#275Bc8] mb-6 text-center">Actividades Próximas</h2>
-      <div className="space-y-6">
-        {actividades.map((actividad) => (
-          <div key={actividad.id} className="p-6 border border-[#E0E0E0] rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <h3 className="text-2xl font-semibold text-[#275Bc8]">{actividad.nombre}</h3>
-            <p className="text-sm text-[#757575]">{actividad.fecha}</p>
-            <p className="mt-2 text-base text-[#333]">{actividad.descripcion}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        arrows: false,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                },
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                },
+            },
+            {
+                breakpoint: 640,
+                settings: {
+                    slidesToShow: 1,
+                },
+            },
+        ],
+    };
 
-export default UpcomingActivies;
+    return (
+        <div className="p-6 bg-gray-100 min-h-screen">
+            {/* Banner con Imagen desde public/assets */}
+            <div className="rounded-xl mb-6 overflow-hidden">
+                <img src="/assets/Banner.jpeg" alt="Banner del evento" className="w-full" />
+            </div>
+
+            {/* Carrusel */}
+            <Slider {...settings}>
+                {images.map((item, index) => (
+                    <div key={index} className="bg-white rounded-xl shadow-lg overflow-hidden mx-2">
+                        <div className="w-full h-56 flex justify-center items-center bg-gray-200">
+                            <img
+                                src={item.src}
+                                alt={item.title}
+                                className="max-w-full max-h-full object-contain"
+                            />
+                        </div>
+                        <div className="p-4 bg-gradient-to-t from-[#68358c] to-[#2d2e77] text-white">
+                            <h3 className="text-lg font-semibold">{item.title}</h3>
+                            <p className="text-sm">{item.description}</p>
+                        </div>
+                    </div>
+                ))}
+            </Slider>
+        </div>
+    );
+}

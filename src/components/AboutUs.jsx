@@ -3,7 +3,7 @@ const AboutUs = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="bg-white p-6 rounded-lg shadow-lg border-4 border-[#68358c] transform transition-transform duration-300 hover:scale-105"> {/* Añadí el borde y el efecto de zoom al contenedor */}
         <h2 className="text-3xl font-semibold text-center text-[#5b1a8f] mb-6">Sobre Nosotros</h2>
-        <p className="text-[#1e3a8a] text-lg">
+        <p className="text-[#68358c] text-lg">
           RELATIC PANAMA se constituye como una comunidad académica y científica de alta calidad humana e investigativa, con un enfoque regional en Latinoamérica y el Caribe. Nos dedicamos a fomentar la colaboración, el intercambio de conocimiento y el avance de la ciencia, con un fuerte compromiso con la excelencia y la innovación.
         </p>
 

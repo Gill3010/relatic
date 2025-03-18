@@ -63,12 +63,12 @@ const ContactUs = () => {
       level: 3
     },
     {
-      name: "Dra. Sandra Bedoya",
+      name: "Ing. Cristal Tavárez",
       email: "mercadeoyventas@relaticpanama.org",
-      phone: "+57 316-8316-782",
+      phone: "+1(829)-386-5447",
       orcid: "#",
-      image: "/assets/Dra.Sandra.jpeg",
-      occupation: "Alianza estratégica universitaria",
+      image: "/assets/Ing.Cristal.jpeg",
+      occupation: "Desarrollo mercadeo y ventas",
       area: "Alianzas",
       level: 3
     },

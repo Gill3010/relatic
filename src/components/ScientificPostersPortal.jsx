@@ -30,17 +30,17 @@ const ScientificPostersPortal = () => {
 
         {/* Degradado en la parte inferior */}
         <div className="bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 mt-6 rounded-lg shadow-lg">
-          <div className="mt-6 text-center">
-            <a 
-              href="https://portaldecartelescientificos.org/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="bg-[#2d2e77] text-white px-6 py-2 rounded-lg transition-all duration-300 hover:bg-[#a486ba] hover:translate-y-2"
-            >
-              Visita nuestro portal de carteles
-            </a>
-          </div>
-        </div>
+  <div className="mt-6 text-center">
+    <a 
+      href="https://portaldecartelescientificos.org/" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="bg-[#2d2e77] text-white px-6 py-2 rounded-lg transition-all duration-300 hover:bg-[#a486ba] hover:translate-y-2 text-sm sm:text-base md:text-lg"
+    >
+      Visita nuestro portal de carteles
+    </a>
+  </div>
+</div>
       </div>
     </div>
   );
