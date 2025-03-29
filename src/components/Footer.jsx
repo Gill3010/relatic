@@ -29,10 +29,16 @@ const Footer = () => {
               <FaFacebook size={20} className="text-white" />
             </a>
           </div>
-          {/* Centrado del logo */}
-          <div className="flex justify-center mt-4">
-            <img src="/logo2.png" alt="Relatic Panamá Logo" className="w-52 h-auto mb-2 object-contain" />
-          </div>
+         {/* Centrado del logo */}
+<div className="flex justify-center mt-4">
+  <a href="https://www.relaticpanama.org/" target="" rel="noopener noreferrer">
+    <img 
+      src="/logo2.png" 
+      alt="Relatic Panamá Logo" 
+      className="w-52 h-auto mb-2 object-contain" 
+    />
+  </a>
+</div>
         </div>
 
         {/* Sección de contacto */}

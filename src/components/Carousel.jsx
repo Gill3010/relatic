@@ -5,10 +5,10 @@ const Carousel = () => {
   const [isFading, setIsFading] = useState(false);
 
   const images = [
-    { src: '/assets/Banner.jpeg', link: 'https://relaticpanama.org/actividades' },
-    { src: '/assets/imagen2.jpg', link: 'https://ejemplo.com/2' },
-    { src: '/assets/imagen3.webp', link: 'https://ejemplo.com/3' },
-    { src: '/assets/imagen4.webp', link: 'https://ejemplo.com/4' },
+    { src: '/assets/bannerevento.jpeg', link: 'https://relaticpanama.org/actividades' },
+    { src: '/assets/1.png', link: 'https://ejemplo.com/2' },
+    { src: '/assets/3.png', link: 'https://ejemplo.com/3' },
+    { src: '/assets/6.png', link: 'https://ejemplo.com/4' },
   ];
 
   useEffect(() => {
@@ -40,11 +40,11 @@ const Carousel = () => {
 
   return (
     <div className="relative w-full mx-auto overflow-hidden">
-      <div className="w-full h-auto sm:h-80 lg:h-96 relative">
+      <div className="w-full h-auto max-h-[500px] relative">
         <img
           src={images[currentIndex].src}
           alt={`Imagen ${currentIndex + 1}`}
-          className={`w-full h-full object-cover transition-opacity duration-500 ${
+          className={`w-full h-full object-contain transition-opacity duration-500 ${
             isFading ? 'opacity-0' : 'opacity-100'
           }`}
         />
@@ -59,17 +59,17 @@ const Carousel = () => {
       </div>
 
       <button
-  onClick={prevImage}
-  className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
->
-  &lt;
-</button>
-<button
-  onClick={nextImage}
-  className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
->
-  &gt;
-</button>
+        onClick={prevImage}
+        className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
+      >
+        &lt;
+      </button>
+      <button
+        onClick={nextImage}
+        className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
+      >
+        &gt;
+      </button>
 
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-3">
         {images.map((_, index) => (

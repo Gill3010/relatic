@@ -48,7 +48,7 @@ export default function UpcomingActivities() {
         <div className="p-6 bg-gray-100 min-h-screen">
             {/* Banner con Imagen desde public/assets */}
             <div className="rounded-xl mb-6 overflow-hidden">
-                <img src="/assets/Banner.jpeg" alt="Banner del evento" className="w-full" />
+                <img src="/assets/bannerevento.jpeg" alt="Banner del evento" className="w-full" />
             </div>
 
             {/* Carrusel */}

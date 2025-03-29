@@ -45,7 +45,7 @@ const Navbar = () => {
             </button>
             {isSubMenuOpen && (
               <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-max min-w-max rounded-lg shadow-lg">
-                <a href="https://www.revistasrelatic.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                <a href="https://relaticpanama.org/_journals/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
                   Portal de revistas
                 </a>
                 <a href="https://portaldecartelescientificos.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
@@ -71,7 +71,7 @@ const Navbar = () => {
             </button>
             {isActivitiesSubMenuOpen && (
               <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-max min-w-max rounded-lg shadow-lg">
-                <a href="/actividades" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                <a href="/actividades/proximas" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
                   Actividades próximas
                 </a>
                 <a href="/actividades/anteriores" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
@@ -107,7 +107,7 @@ const Navbar = () => {
               </button>
               {isSubMenuOpen && (
                 <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-max min-w-max rounded-lg shadow-lg z-50">
-                  <a href="https://www.revistasrelatic.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  <a href="https://relaticpanama.org/_journals/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
                     Portal de revistas
                   </a>
                   <a href="https://portaldecartelescientificos.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
@@ -133,7 +133,7 @@ const Navbar = () => {
               </button>
               {isActivitiesSubMenuOpen && (
                 <div className="absolute left-0 mt-2 bg-[#68358c] text-white py-2 w-max min-w-max rounded-lg shadow-lg z-50">
-                  <a href="/actividades" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  <a href="/actividades/proximas" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
                     Actividades próximas
                   </a>
                   <a href="/actividades/anteriores" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
