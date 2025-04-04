@@ -37,7 +37,7 @@ const Books = () => {
         <div className="bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 mt-6 rounded-lg shadow-lg border-[3px] border-solid border-white">
           <div className="text-center">
             <a 
-              href="https://relaticpanama.org/books/" 
+              href="https://relaticpanama.org/_posters/" 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-[#2d2e77] text-white px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#a486ba] hover:translate-y-2 text-xs sm:text-sm md:text-base lg:text-lg"
