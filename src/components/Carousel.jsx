@@ -5,10 +5,10 @@ const Carousel = () => {
   const [isFading, setIsFading] = useState(false);
 
   const images = [
-    { src: '/assets/bannerevento.jpeg', link: 'https://relaticpanama.org/actividades' },
-    { src: '/assets/1.png', link: 'https://ejemplo.com/2' },
-    { src: '/assets/3.png', link: 'https://ejemplo.com/3' },
-    { src: '/assets/6.png', link: 'https://ejemplo.com/4' },
+    { src: '/assets/Bienvenida.jpg', link: 'https://relaticpanama.org/actividades' },
+    { src: '/assets/Img.jpeg', link: 'https://ejemplo.com/2' },
+    { src: '/assets/Img2.jpg', link: 'https://ejemplo.com/3' },
+    { src: '/assets/Img3.jpg', link: 'https://ejemplo.com/4' },
   ];
 
   useEffect(() => {

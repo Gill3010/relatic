@@ -51,7 +51,7 @@ const Navbar = () => {
                 <a href="https://portaldecartelescientificos.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
                   Portal de carteles
                 </a>
-                <a href="https://relaticpanama.org/books/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                <a href="https://relaticpanama.org/_posters/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
                   Portal de libros
                 </a>
                 <a href="https://portaldecartelescientificos.org/Cursos" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
@@ -113,7 +113,7 @@ const Navbar = () => {
                   <a href="https://portaldecartelescientificos.org/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
                     Portal de carteles
                   </a>
-                  <a href="https://relaticpanama.org/books/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
+                  <a href="https://relaticpanama.org/_posters/" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
                     Portal de libros
                   </a>
                   <a href="https://portaldecartelescientificos.org/Cursos" className="block px-4 py-2 hover:text-[#865ea3] transition-colors duration-300">
