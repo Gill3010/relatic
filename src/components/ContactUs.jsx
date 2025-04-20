@@ -87,7 +87,7 @@ const ContactUs = () => {
   return (
     <div className="bg-white py-12">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center text-[#68358c] mb-8">
+        <h2 className="text-3xl font-bold text-center text-[#2d2e77] mb-8">
           Organigrama Relatic Panamá
         </h2>
 
@@ -97,7 +97,7 @@ const ContactUs = () => {
             {/* Primer nivel: Francisco Farnum */}
             <div className="mb-6">
               <div className="space-y-6 mt-4">
-                <div className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
+              <div className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
                   <img
                     src={contacts[0].image}
                     alt={contacts[0].name}
@@ -150,7 +150,7 @@ const ContactUs = () => {
                 .map((contact, idx) => (
                   <div
                     key={idx}
-                    className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
+                    className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
                   >
                     <img
                       src={contact.image}
@@ -204,7 +204,7 @@ const ContactUs = () => {
                 .map((contact, idx) => (
                   <div
                     key={idx}
-                    className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
+                     className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
                   >
                     <img
                       src={contact.image}

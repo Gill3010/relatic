@@ -10,14 +10,14 @@ import Carousel from './components/Carousel';
 import UpcomingActivities from './components/UpcomingActivities';
 import PreviousActivities from './components/PreviousActivities';
 import ContactUs from './components/ContactUs';
-import Agreements from './components/Agreements'; // Importamos el componente Agreements
+import Agreements from './components/Agreements'; 
 
 const App = () => {
   return (
     <Router>
       <div>
         <Navbar />
-        <Carousel /> {/* Aquí agregas el componente Carousel */}
+        <Carousel /> 
 
         <Routes>
           <Route path="/inicio" element={
@@ -36,10 +36,10 @@ const App = () => {
           <Route path="/learningplatform" element={<LearningPlatform />} />
           <Route path="/actividades/proximas" element={<UpcomingActivities />} />
           <Route path="/actividades/anteriores" element={<PreviousActivities />} />
-          <Route path="/contactus" element={<ContactUs />} /> {/* Ruta para ContactUs */}
+          <Route path="/contactus" element={<ContactUs />} /> 
         </Routes>
 
-        {/* Agregamos el componente Agreements antes del footer */}
+        
         <Agreements /> 
 
         <Footer />

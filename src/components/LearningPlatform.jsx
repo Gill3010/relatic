@@ -1,12 +1,12 @@
 const LearningPlatform = () => {
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="group bg-white p-6 rounded-lg shadow-lg border-4 border-[#68358c] transform transition-transform duration-300 hover:scale-105 hover:bg-gradient-to-r hover:from-[#68358c] hover:to-[#2d2e77]">
+      <div className="group bg-white p-6 rounded-lg shadow-lg border-4 border-[#FFD700] transform transition-transform duration-300 hover:scale-105 hover:bg-gradient-to-r hover:from-[#1a1b59] hover:via-[#1a3aa0] hover:to-[#1a8fe3]">
         
         {/* Banner con imagen */}
         <a href="https://portaldecartelescientificos.org/Cursos" target="_blank" rel="noopener noreferrer">
-          <div className="relative mb-6 overflow-hidden rounded-lg border-[3px] border-white">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#68358c] to-[#2d2e77]"></div>
+          <div className="relative mb-6 overflow-hidden rounded-lg border-[3px] border-[#FFD700]">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3]"></div>
             <img 
               src="/assets/4.png" 
               alt="Plataforma de Aprendizaje"
@@ -16,17 +16,17 @@ const LearningPlatform = () => {
         </a>
 
         {/* Títulos con cambio de color al pasar el cursor sobre el div */}
-        <h2 className="text-2xl sm:text-3xl font-semibold text-center text-[#68358c] mb-6 group-hover:text-white">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-center text-[#2d2e77] mb-6 group-hover:text-white">
           Plataforma Integral de Aprendizaje Continuo
         </h2>
-        <h3 className="text-lg sm:text-xl font-semibold text-[#68358c] mb-4 group-hover:text-white">
-          <strong className="text-[#68358c] group-hover:text-white">
+        <h3 className="text-lg sm:text-xl font-semibold text-[#2d2e77] mb-4 group-hover:text-white">
+          <strong className="text-[#2d2e77] group-hover:text-white">
             ¿Cómo transformamos el aprendizaje continuo con soluciones personalizadas, interactivas y accesibles para todos los niveles de conocimiento?
           </strong>
         </h3>
 
         {/* Texto con fondo blanco */}
-        <div className="text-[#68358c] group-hover:text-white text-sm sm:text-base">
+        <div className="text-[#2d2e77] group-hover:text-white text-sm sm:text-base">
           <p>
             Transformamos el aprendizaje continuo ofreciendo una plataforma flexible y accesible que apoya a estudiantes, profesionales y académicos en su desarrollo constante. Proporcionamos una amplia variedad de cursos, recursos educativos interactivos y herramientas de colaboración para facilitar el aprendizaje en múltiples áreas del conocimiento.
           </p>
@@ -36,13 +36,13 @@ const LearningPlatform = () => {
         </div>
 
         {/* Degradado en la parte inferior con borde blanco */}
-        <div className="bg-gradient-to-r from-[#68358c] to-[#2d2e77] p-6 mt-6 rounded-lg shadow-lg border-[3px] border-white">
+        <div className="bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] p-6 mt-6 rounded-lg shadow-lg border-[3px] border-[#FFD700]">
           <div className="mt-6 text-center">
             <a 
               href="https://portaldecartelescientificos.org/Cursos" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="bg-[#2d2e77] text-white px-4 sm:px-6 py-2 rounded-lg transition-all duration-300 hover:bg-[#a486ba] hover:translate-y-2 text-xs sm:text-sm md:text-base lg:text-lg"
+              className="bg-[#FFD700] text-[#1a1b59] px-4 sm:px-6 py-2 rounded-lg transition-all duration-300 hover:bg-[#1a1b59] hover:text-white hover:translate-y-2 text-xs sm:text-sm md:text-base lg:text-lg"
             >
               Descubre nuestros servicios
             </a>

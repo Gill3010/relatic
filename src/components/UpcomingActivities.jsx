@@ -46,6 +46,7 @@ export default function UpcomingActivities() {
 
     return (
         <div className="p-6 bg-gray-100 min-h-screen">
+            <h2 className="text-3xl font-bold text-center text-[#2d2e77] mb-6">Actividades próximas</h2>
             {/* Banner con Imagen desde public/assets */}
             <div className="rounded-xl mb-6 overflow-hidden">
                 <img src="/assets/bannerevento.jpeg" alt="Banner del evento" className="w-full" />
@@ -62,7 +63,7 @@ export default function UpcomingActivities() {
                                 className="max-w-full max-h-full object-contain"
                             />
                         </div>
-                        <div className="p-4 bg-gradient-to-t from-[#68358c] to-[#2d2e77] text-white">
+                        <div className="p-4 bg-gradient-to-t from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-white">
                             <h3 className="text-lg font-semibold">{item.title}</h3>
                             <p className="text-sm">{item.description}</p>
                         </div>

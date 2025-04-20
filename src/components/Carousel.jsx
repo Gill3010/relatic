@@ -52,7 +52,7 @@ const Carousel = () => {
           href={images[currentIndex].link}
           target="" 
           rel="noopener noreferrer"
-          className="absolute bottom-5 left-4 sm:left-10 transform -translate-x-0 bg-gradient-to-r from-[#68358c] to-[#2d2e77] text-white py-2 px-6 rounded-full shadow-md hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] transition duration-300"
+          className="absolute bottom-5 left-4 sm:left-10 transform -translate-x-0 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-[#FFF] py-2 px-6 rounded-full shadow-md hover:bg-gradient-to-r hover:from-[#1a1b59] hover:to-[#1a1b59] transition duration-300"
         >
           Ver más
         </a>
@@ -60,13 +60,13 @@ const Carousel = () => {
 
       <button
         onClick={prevImage}
-        className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
+        className="absolute left-4 sm:left-6 top-1/2 transform -translate-y-1/2 text-[#FFF] bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] hover:bg-gradient-to-r hover:from-[#1a1b59] hover:to-[#1a1b59] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
       >
         &lt;
       </button>
       <button
         onClick={nextImage}
-        className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-r from-[#68358c] to-[#2d2e77] hover:bg-gradient-to-r hover:from-[#2d2e77] hover:to-[#2d2e77] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
+        className="absolute right-4 sm:right-6 top-1/2 transform -translate-y-1/2 text-[#FFF] bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] hover:bg-gradient-to-r hover:from-[#1a1b59] hover:to-[#1a1b59] w-20 h-20 rounded-full shadow-xl hover:scale-110 transition duration-300"
       >
         &gt;
       </button>
@@ -77,7 +77,7 @@ const Carousel = () => {
             key={index}
             onClick={() => setCurrentIndex(index)}
             className={`w-6 h-6 rounded-full cursor-pointer transition duration-300 ${
-              index === currentIndex ? 'bg-white' : 'bg-gradient-to-r from-[#68358c] to-[#2d2e77]'
+              index === currentIndex ? 'bg-[#FFFF]' : 'bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3]'
             }`}
           ></div>
         ))}
