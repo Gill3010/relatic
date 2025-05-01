@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaLinkedin, FaInstagram, FaFacebook, FaYoutube, FaWhatsapp } from 'react-icons/fa';  
+import { SiX } from 'react-icons/si';
 import logo from '../assets/logo2.png';
-import { X as XIcon } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +21,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-[#FFFF] py-4 shadow-lg sticky top-0 z-50 border-b-4 border-[#FFD700]">
+    <nav className="bg-[#1a1b59] text-[#FFFF] py-4 shadow-lg sticky top-0 z-50 border-b-4 border-[#FFD700]">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo y Nombre de la Marca */}
         <div className="flex items-center space-x-3 w-full">
@@ -42,10 +42,10 @@ const Navbar = () => {
               Servicios
             </button>
             {isSubMenuOpen && (
-              <div className="absolute left-0 mt-2 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-[#FFFF] py-2 w-max min-w-max rounded-lg shadow-lg">
+              <div className="absolute left-0 mt-2 bg-[#1a1b59] text-[#FFFF] py-2 w-max min-w-max rounded-lg shadow-lg">
                 <a href="https://relaticpanama.org/_journals/" className="block px-4 py-2 hover:text-[#ffc107] transition-colors duration-300">Portal de revistas</a>
-                <a href="https://portaldecartelescientificos.org/" className="block px-4 py-2 hover:text-[#ffc107] transition-colors duration-300">Portal de carteles</a>
-                <a href="https://relaticpanama.org/_posters/" className="block px-4 py-2 hover:text-[#ffc107] transition-colors duration-300">Portal de libros</a>
+                <a href="https://relaticpanama.org/_posters/" className="block px-4 py-2 hover:text-[#ffc107] transition-colors duration-300">Portal de carteles</a>
+                <a href="https://relaticpanama.org/_books/" className="block px-4 py-2 hover:text-[#ffc107] transition-colors duration-300">Portal de libros</a>
                 <a href="https://portaldecartelescientificos.org/Cursos" className="block px-4 py-2 hover:text-[#ffc107] transition-colors duration-300">Plataforma de aprendizaje</a>
               </div>
             )}
@@ -57,7 +57,7 @@ const Navbar = () => {
               Actividades
             </button>
             {isActivitiesSubMenuOpen && (
-              <div className="absolute left-0 mt-2 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-[#FFF] py-2 w-max min-w-max rounded-lg shadow-lg">
+              <div className="absolute left-0 mt-2 bg-[#1a1b59] text-[#FFF] py-2 w-max min-w-max rounded-lg shadow-lg">
                 <a href="/actividades/proximas" className="block px-4 py-2 hover:text-[#ffc107] transition-colors duration-300">Actividades próximas</a>
                 <a href="/actividades/anteriores" className="block px-4 py-2 hover:text-[#ffc107] transition-colors duration-300">Actividades anteriores</a>
               </div>
@@ -75,7 +75,7 @@ const Navbar = () => {
 
       {/* Menú desplegable móvil */}
       {isOpen && (
-        <div className="md:hidden bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-[#FFFF] mt-4">
+        <div className="md:hidden bg-[#1a1b59] text-[#FFFF] mt-4">
           <div className="flex flex-col items-center space-y-4 py-4">
             <a href="/inicio" className="hover:text-[#ffd700] transition-colors duration-300" onClick={toggleMenu}>Inicio</a>
             <a href="/nosotros" className="hover:text-[#ffd700] transition-colors duration-300" onClick={toggleMenu}>Nosotros</a>
@@ -83,10 +83,10 @@ const Navbar = () => {
             <div className="relative">
               <button onClick={toggleSubMenu} className="hover:text-[#ffd700] transition-colors duration-300 focus:outline-none">Servicios</button>
               {isSubMenuOpen && (
-                <div  className="absolute left-0 mt-2 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-white py-2 w-max min-w-max rounded-lg shadow-lg z-50">
+                <div className="absolute left-0 mt-2 bg-[#1a1b59] text-white py-2 w-max min-w-max rounded-lg shadow-lg z-50">
                   <a href="https://relaticpanama.org/_journals/" className="block px-4 py-2 hover:text-[#ffd700] transition-colors duration-300">Portal de revistas</a>
-                  <a href="https://portaldecartelescientificos.org/" className="block px-4 py-2 hover:text-[#ffd700] transition-colors duration-300">Portal de carteles</a>
-                  <a href="https://relaticpanama.org/_posters/" className="block px-4 py-2 hover:text-[#ffd700] transition-colors duration-300">Portal de libros</a>
+                  <a href="https://relaticpanama.org/_posters/" className="block px-4 py-2 hover:text-[#ffd700] transition-colors duration-300">Portal de carteles</a>
+                  <a href="https://relaticpanama.org/_books/" className="block px-4 py-2 hover:text-[#ffd700] transition-colors duration-300">Portal de libros</a>
                   <a href="https://portaldecartelescientificos.org/Cursos" className="block px-4 py-2 hover:text-[#ffd700] transition-colors duration-300">Plataforma de aprendizaje</a>
                 </div>
               )}
@@ -95,7 +95,7 @@ const Navbar = () => {
             <div className="relative">
               <button onClick={toggleActivitiesSubMenu} className="hover:text-[#ffd700] transition-colors duration-300 focus:outline-none">Actividades</button>
               {isActivitiesSubMenuOpen && (
-                <div className="absolute left-0 mt-2 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-white py-2 w-max min-w-max rounded-lg shadow-lg z-50">
+                <div className="absolute left-0 mt-2 bg-[#1a1b59] text-white py-2 w-max min-w-max rounded-lg shadow-lg z-50">
                   <a href="/actividades/proximas" className="block px-4 py-2 hover:text-[#ffd700] transition-colors duration-300">Actividades próximas</a>
                   <a href="/actividades/anteriores" className="block px-4 py-2 hover:text-[#ffd700] transition-colors duration-300">Actividades anteriores</a>
                 </div>
@@ -136,7 +136,7 @@ const Navbar = () => {
                 title="X (Twitter)"
                 className="p-2 bg-black rounded-full hover:opacity-80 transition duration-300"
               >
-                <XIcon size={20} color="#FFFFFF" />
+                <SiX size={18} color="#FFFFFF" />
               </a>
 
               {/* Facebook */}

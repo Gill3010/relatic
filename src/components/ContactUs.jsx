@@ -14,7 +14,7 @@ const ContactUs = () => {
     },
     {
       name: "Lcda. Tania Kennedy",
-      email: "administracionypagos@relaticpanama.org",
+      email: "administracion@relaticpanama.org",
       phone: "+507 6645-7685",
       orcid: "https://orcid.org/0009-0009-8858-0954",
       image: "/assets/Dra.Tania.jpeg",
@@ -24,7 +24,7 @@ const ContactUs = () => {
     },
     {
       name: "Mgtr. Mónica Contreras",
-      email: "gerenteacademico@relaticpanama.org",
+      email: "academico@relaticpanama.org",
       phone: "+507 6773-4854",
       orcid: "https://orcid.org/0000-0003-0972-6951",
       image: "/assets/Dra.Monica.jpeg",
@@ -36,7 +36,7 @@ const ContactUs = () => {
       name: "Dev. Israel Samuels",
       email: "desarrolloyoperaciones@relaticpanama.org",
       phone: "+507 6549-8362",
-      orcid: "https://orcid.org/0009-0005-7307-8233",
+      orcid: "https://orcid.org/0009-0007-1212-718X",
       image: "/assets/Yo.jpeg",
       occupation: "Desarrollo y Operaciones",
       area: "Tecnología",
@@ -74,7 +74,7 @@ const ContactUs = () => {
     },
     {
       name: "Ing. José Murillo",
-      email: "asistentedetecnologia@relaticpanama.org",
+      email: "tecnologia@relaticpanama.org",
       phone: "+507 6320-6113",
       orcid: "https://orcid.org/0009-0001-8994-3835",
       image: "/assets/Ing.Jose.jpeg",
@@ -84,170 +84,97 @@ const ContactUs = () => {
     },
   ];
 
+  // Renderizar una tarjeta de contacto
+  const ContactCard = ({ contact }) => (
+    <div className="flex flex-col items-center space-y-4 bg-[#1a1b59] p-4 md:p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105 w-full max-w-xs">
+      <img
+        src={contact.image}
+        alt={contact.name}
+        className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
+      />
+      <div className="flex flex-col items-center text-center">
+        <h3 className="text-lg md:text-xl font-semibold text-[#ffd700]">{contact.name}</h3>
+        <p className="text-white text-xs md:text-sm">{contact.occupation}</p>
+
+        <div className="flex flex-col items-center space-y-2 mt-2">
+          <a
+            href={`mailto:${contact.email}`}
+            className="flex items-center space-x-2 text-white hover:underline text-xs md:text-sm w-full truncate"
+          >
+            <span style={{ color: '#ffd700' }}>
+              <Mail size={14} />
+            </span>
+            <span className="truncate max-w-[160px] md:max-w-[200px]">{contact.email}</span>
+          </a>
+
+          <a
+            href={`tel:${contact.phone}`}
+            className="flex items-center space-x-2 text-white hover:underline text-xs md:text-sm w-full truncate"
+          >
+            <span style={{ color: '#ffd700' }}>
+              <Phone size={14} />
+            </span>
+            <span className="truncate">{contact.phone}</span>
+          </a>
+
+          {contact.orcid !== "#" ? (
+            <a
+              href={contact.orcid}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-white hover:underline text-xs md:text-sm w-full truncate"
+            >
+              <span style={{ color: '#ffd700' }}>
+                <ExternalLink size={14} />
+              </span>
+              <span className="truncate">Ver ORCID</span>
+            </a>
+          ) : (
+            <span className="text-white text-xs md:text-sm truncate">ORCID no disponible</span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="bg-white py-12">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center text-[#2d2e77] mb-8">
+    <div className="bg-white py-8 md:py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-center text-[#1a1b59] mb-6 md:mb-8">
           Organigrama Relatic Panamá
         </h2>
 
-        {/* Organigrama en forma de pirámide */}
-        <div className="flex justify-center">
-          <div className="flex flex-col items-center">
-            {/* Primer nivel: Francisco Farnum */}
-            <div className="mb-6">
-              <div className="space-y-6 mt-4">
-              <div className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
-                  <img
-                    src={contacts[0].image}
-                    alt={contacts[0].name}
-                    className="w-32 h-32 rounded-full object-cover"
-                  />
-                  <div className="flex flex-col items-center text-center">
-                    <h3 className="text-xl font-semibold text-white">{contacts[0].name}</h3>
-                    <p className="text-white text-sm">{contacts[0].occupation}</p>
-
-                    <div className="flex flex-col items-center space-y-2 mt-2">
-                      <a
-                        href={`mailto:${contacts[0].email}`}
-                        className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                      >
-                        <Mail size={16} />
-                        <span className="truncate">{contacts[0].email}</span>
-                      </a>
-
-                      <a
-                        href={`tel:${contacts[0].phone}`}
-                        className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                      >
-                        <Phone size={16} />
-                        <span className="truncate">{contacts[0].phone}</span>
-                      </a>
-
-                      {contacts[0].orcid !== "#" ? (
-                        <a
-                          href={contacts[0].orcid}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                        >
-                          <ExternalLink size={16} />
-                          <span className="truncate">Ver ORCID</span>
-                        </a>
-                      ) : (
-                        <span className="text-white text-sm truncate">ORCID no disponible</span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Segundo nivel: Tania, Mónica, Israel */}
-            <div className="flex justify-center gap-12 mb-6">
+        {/* Organigrama con diseño responsive */}
+        <div className="flex flex-col items-center">
+          {/* Primer nivel - siempre centrado en una sola columna */}
+          <div className="mb-8 w-full flex justify-center">
+            <div className="w-full max-w-xs">
               {contacts
-                .filter((contact) => contact.level === 2)
+                .filter(contact => contact.level === 1)
                 .map((contact, idx) => (
-                  <div
-                    key={idx}
-                    className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
-                  >
-                    <img
-                      src={contact.image}
-                      alt={contact.name}
-                      className="w-32 h-32 rounded-full object-cover"
-                    />
-                    <div className="flex flex-col items-center text-center">
-                      <h3 className="text-xl font-semibold text-white">{contact.name}</h3>
-                      <p className="text-white text-sm">{contact.occupation}</p>
-
-                      <div className="flex flex-col items-center space-y-2 mt-2">
-                        <a
-                          href={`mailto:${contact.email}`}
-                          className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                        >
-                          <Mail size={16} />
-                          <span className="truncate">{contact.email}</span>
-                        </a>
-
-                        <a
-                          href={`tel:${contact.phone}`}
-                          className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                        >
-                          <Phone size={16} />
-                          <span className="truncate">{contact.phone}</span>
-                        </a>
-
-                        {contact.orcid !== "#" ? (
-                          <a
-                            href={contact.orcid}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                          >
-                            <ExternalLink size={16} />
-                            <span className="truncate">Ver ORCID</span>
-                          </a>
-                        ) : (
-                          <span className="text-white text-sm truncate">ORCID no disponible</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <ContactCard key={idx} contact={contact} />
                 ))}
             </div>
+          </div>
 
-            {/* Tercer nivel: los 4 restantes */}
-            <div className="flex justify-center gap-6">
+          {/* Segundo nivel - se ajusta según el tamaño de pantalla */}
+          <div className="mb-8 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 justify-items-center">
               {contacts
-                .filter((contact) => contact.level === 3)
+                .filter(contact => contact.level === 2)
                 .map((contact, idx) => (
-                  <div
-                    key={idx}
-                     className="flex flex-col items-center space-y-4 bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105"
-                  >
-                    <img
-                      src={contact.image}
-                      alt={contact.name}
-                      className="w-32 h-32 rounded-full object-cover"
-                    />
-                    <div className="flex flex-col items-center text-center">
-                      <h3 className="text-xl font-semibold text-white">{contact.name}</h3>
-                      <p className="text-white text-sm">{contact.occupation}</p>
+                  <ContactCard key={idx} contact={contact} />
+                ))}
+            </div>
+          </div>
 
-                      <div className="flex flex-col items-center space-y-2 mt-2">
-                        <a
-                          href={`mailto:${contact.email}`}
-                          className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                        >
-                          <Mail size={16} />
-                          <span className="truncate">{contact.email}</span>
-                        </a>
-
-                        <a
-                          href={`tel:${contact.phone}`}
-                          className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                        >
-                          <Phone size={16} />
-                          <span className="truncate">{contact.phone}</span>
-                        </a>
-
-                        {contact.orcid !== "#" ? (
-                          <a
-                            href={contact.orcid}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center space-x-2 text-white hover:underline text-sm w-full truncate"
-                          >
-                            <ExternalLink size={16} />
-                            <span className="truncate">Ver ORCID</span>
-                          </a>
-                        ) : (
-                          <span className="text-white text-sm truncate">ORCID no disponible</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+          {/* Tercer nivel - se ajusta según el tamaño de pantalla */}
+          <div className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 justify-items-center">
+              {contacts
+                .filter(contact => contact.level === 3)
+                .map((contact, idx) => (
+                  <ContactCard key={idx} contact={contact} />
                 ))}
             </div>
           </div>

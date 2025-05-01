@@ -22,7 +22,6 @@ const App = () => {
         <Routes>
           <Route path="/inicio" element={
             <div>
-              <AboutUs />
               <Journals />
               <ScientificPostersPortal />
               <Books />

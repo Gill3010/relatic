@@ -10,7 +10,7 @@ export default [
     files: ['**/*.{js,jsx}'],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: { ...globals.browser, react: true }, // Añadir react como global
+      globals: { ...globals.browser, react: true }, 
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
@@ -18,7 +18,7 @@ export default [
       },
     },
     settings: {
-      react: { version: 'detect' }, // Detectar la versión de React automáticamente
+      react: { version: 'detect' }, 
     },
     plugins: {
       react,
@@ -35,7 +35,7 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
-      'react/react-in-jsx-scope': 'off', // Deshabilitar para React 18
+      'react/react-in-jsx-scope': 'off', 
     },
   },
 ];

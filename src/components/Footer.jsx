@@ -1,9 +1,9 @@
 import { FaLinkedin, FaRegEnvelope, FaPhone, FaMapMarkerAlt, FaInstagram, FaFacebook, FaYoutube, FaWhatsapp } from 'react-icons/fa';
-import { X as PhosphorX } from '@phosphor-icons/react';
+import { SiX } from 'react-icons/si';
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] text-white py-8 shadow-md overflow-x-hidden">
+    <footer className="bg-[#1a1b59] text-white py-8 shadow-md overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
 
@@ -44,7 +44,7 @@ const Footer = () => {
       style={{ backgroundColor: '#000000' }}
       title="X"
     >
-      <PhosphorX size={18} color="#FFFFFF" />
+      <SiX size={16} color="#FFFFFF" />
     </a>
     <a
       href="https://www.facebook.com/share/19hGgzbge1/"
@@ -93,16 +93,29 @@ const Footer = () => {
           <div className="flex flex-col items-center md:items-start">
             <h3 className="text-lg font-semibold mb-2 text-[#FFD700]">Contáctenos</h3>
             <p className="flex flex-col md:flex-row items-center md:items-start space-x-0 md:space-x-2 mb-1 text-center md:text-left">
-              <span className="inline-flex items-center"><FaMapMarkerAlt size={18} className="text-[#FFD700] mr-1" />Mirador del Pacífico, San Miguelito, Local 70</span>
-              <span>Ciudad de Panamá, Panamá</span>
+              <span className="inline-flex items-center"><FaMapMarkerAlt size={18} className="text-[#FFD700] mr-1" />Mirador del Pacífico Local 70, Pannamá</span>
+              
             </p>
-            <p className="flex items-center justify-center md:justify-start space-x-2 mb-1"><FaPhone size={18} className="text-[#FFD700]" /><span>+507 6645-7685 | +507 208-4689</span></p>
-            <p className="flex flex-col md:flex-row items-center md:items-start space-x-0 md:space-x-2 mb-1 text-center md:text-left">
-              <span className="inline-flex items-center"><FaRegEnvelope size={18} className="text-[#FFD700] mr-1" />administracionypagos@relaticpanama.org</span>
-            </p>
-            <p className="flex flex-col md:flex-row items-center md:items-start space-x-0 md:space-x-2 text-center md:text-left">
-              <span className="inline-flex items-center"><FaRegEnvelope size={18} className="text-[#FFD700] mr-1" />mercadeoyventas@relaticpanama.org</span>
-            </p>
+            <p className="flex items-center justify-center md:justify-start space-x-2 mb-1">
+  <FaPhone size={18} className="text-[#FFD700]" />
+  <span>
+    <a href="tel:+50766457685" className="hover:underline">+507 6645-7685</a> | <a href="tel:+5072084689" className="hover:underline">+507 208-4689</a>
+  </span>
+</p>
+
+<p className="flex flex-col md:flex-row items-center md:items-start space-x-0 md:space-x-2 mb-1 text-center md:text-left">
+  <span className="inline-flex items-center">
+    <FaRegEnvelope size={18} className="text-[#FFD700] mr-1" />
+    <a href="mailto:administracion@relaticpanama.org" className="hover:underline">administracion@relaticpanama.org</a>
+  </span>
+</p>
+
+<p className="flex flex-col md:flex-row items-center md:items-start space-x-0 md:space-x-2 text-center md:text-left">
+  <span className="inline-flex items-center">
+    <FaRegEnvelope size={18} className="text-[#FFD700] mr-1" />
+    <a href="mailto:mercadeoyventas@relaticpanama.org" className="hover:underline">mercadeoyventas@relaticpanama.org</a>
+  </span>
+</p>
           </div>
         </div>
 
@@ -111,6 +124,18 @@ const Footer = () => {
 
         {/* Derechos reservados */}
         <p className="text-center text-sm mt-2">©2025 Relatic Panamá. Todos los derechos reservados.</p>
+        <p className="text-center text-sm mt-2">
+  Desarrollado por{" "}
+  <a
+    href="https://innovaproyectos.org/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hover:underline"
+    style={{ color: "#FFD700", fontWeight: "bold" }}
+  >
+    Innova Proyectos
+  </a>.
+</p>
       </div>
     </footer>
   );

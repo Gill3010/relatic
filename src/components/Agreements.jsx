@@ -45,7 +45,7 @@ const Agreements = () => {
 
   return (
     <div className="relative w-full bg-white p-4 rounded-lg shadow-lg border-4 border-[#FFD700] mb-6 overflow-hidden">
-      <h2 className="text-center text-2xl font-semibold text-[#2d2e77] mb-4">
+      <h2 className="text-center text-2xl font-semibold text-[#1a1b59] mb-4">
         Instituciones en convenio
       </h2>
 
@@ -73,14 +73,14 @@ const Agreements = () => {
 
       <button
   onClick={prevImage}
-  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#FFF] bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] hover:bg-[#2d2e77] w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300 flex items-center justify-center"
+  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-[#1a1b59] hover:bg-[rgba(0,0,0,0.7)] w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300 flex items-center justify-center"
 >
   &#8249;
 </button>
 
 <button
   onClick={nextImage}
-  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#FFFF] bg-gradient-to-r from-[#1a1b59] via-[#1a3aa0] to-[#1a8fe3] hover:bg-[#2d2e77] w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300 flex items-center justify-center"
+  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-[#1a1b59] hover:bg-[rgba(0,0,0,0.7)] w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300 flex items-center justify-center"
 >
   &#8250;
 </button>
