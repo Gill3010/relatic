@@ -63,8 +63,8 @@ export default function UpcomingActivities() {
                                 className="max-w-full max-h-full object-contain"
                             />
                         </div>
-                        <div className="p-4 bg-[#1a1b59]">
-  <h3 className="text-lg font-semibold" style={{ color: '#ffd700' }}>
+                        <div className="p-4 bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)]">
+  <h3 className="text-lg font-semibold" style={{ color: '#FFFF00' }}>
     {item.title}
   </h3>
   <p className="text-sm" style={{ color: 'white' }}>

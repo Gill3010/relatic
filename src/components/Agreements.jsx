@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const Agreements = () => {
   const images = [
@@ -7,7 +7,6 @@ const Agreements = () => {
     { src: '/assets/Crupo.jpeg', alt: '', href: "https://crupanamaoeste.up.ac.pa/" },
     { src: '/assets/Investigadores.jpeg', alt: '', href: "https://www.facebook.com/edgardo.reedergonzalez.5" },
     { src: '/assets/Redipai.jpeg', alt: '', href: "" },
-    { src: '/assets/Relatic.jpeg', alt: '', href: "https://relatic.org/" },
     { src: '/assets/Santander.jpeg', alt: '', href: "https://usantander.edu.pa/" },
     { src: '/assets/Udellpa.jpeg', alt: '', href: "https://udellpa.edu.pa/" },
     { src: '/assets/Uea.jpeg', alt: '', href: "" },
@@ -16,43 +15,33 @@ const Agreements = () => {
   ];
 
   const infiniteImages = [...images, ...images];
-  
-  
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const imagesPerSlide = 5;
 
-  
-  const nextImage = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % infiniteImages.length);
-  };
-
- 
   const prevImage = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + infiniteImages.length) % infiniteImages.length);
   };
 
- 
   useEffect(() => {
-    const interval = setInterval(nextImage, 1500);
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % infiniteImages.length);
+    }, 1500);
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, []);
 
-  
   const containerStyle = {
     transform: `translateX(-${(currentIndex % infiniteImages.length) * (100 / imagesPerSlide)}%)`,
-    transition: 'transform 0.5s ease-in-out', 
+    transition: 'transform 0.5s ease-in-out',
   };
 
   return (
-    <div className="relative w-full bg-white p-4 rounded-lg shadow-lg border-4 border-[#FFD700] mb-6 overflow-hidden">
+    <div className="relative w-full bg-white p-4 rounded-lg shadow-lg border-4 border-[#FFFF00] mb-6 overflow-hidden">
       <h2 className="text-center text-2xl font-semibold text-[#1a1b59] mb-4">
         Instituciones en convenio
       </h2>
 
-      <div
-        className="flex"
-        style={containerStyle}
-      >
+      <div className="flex" style={containerStyle}>
         {infiniteImages.map((image, index) => (
           <div key={index} className="flex-shrink-0 w-full sm:w-1/5 mx-2">
             <div className="relative bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
@@ -73,14 +62,14 @@ const Agreements = () => {
 
       <button
   onClick={prevImage}
-  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-[#1a1b59] hover:bg-[rgba(0,0,0,0.7)] w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300 flex items-center justify-center"
+  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-b from-[#00E5FF] to-[#2E332B] hover:bg-[rgba(0,0,0,0.7)] hover:bg-blend-overlay w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300 flex items-center justify-center"
 >
   &#8249;
 </button>
 
 <button
-  onClick={nextImage}
-  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-[#1a1b59] hover:bg-[rgba(0,0,0,0.7)] w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300 flex items-center justify-center"
+  onClick={() => setCurrentIndex((prevIndex) => (prevIndex + 1) % infiniteImages.length)}
+  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-gradient-to-b from-[#00E5FF] to-[#2E332B] hover:bg-[rgba(0,0,0,0.7)] hover:bg-blend-overlay w-14 h-14 rounded-full shadow-xl hover:scale-110 transition duration-300 flex items-center justify-center"
 >
   &#8250;
 </button>
@@ -88,9 +77,9 @@ const Agreements = () => {
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {images.map((_, index) => (
           <span
-            key={index}
-            className={`h-2 w-2 rounded-full ${index === currentIndex ? 'bg-[#1a1b59]' : 'bg-gray-500'}`}
-          />
+  key={index}
+  className={`h-2 w-2 rounded-full ${index === currentIndex % images.length ? 'bg-gradient-to-b from-[#00E5FF] to-[#2E332B]' : 'bg-gray-500'}`}
+/>
         ))}
       </div>
     </div>

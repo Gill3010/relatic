@@ -84,7 +84,7 @@ export default function Gallery() {
                 <span className="text-[#1a1b59]">I Encuentro de Investigaciones Cualitativas</span>
             </h2>
             <p className="text-center text-[#1a1b59] mb-6">
-                Ciudad de Panamá - Octubre 2024
+                Ciudad de Panamá - Octubre 2022
             </p>
 
             <Slider {...topSettings} className="mb-6">
@@ -97,8 +97,8 @@ export default function Gallery() {
                                 className="max-w-full max-h-full object-contain"
                             />
                         </div>
-                        <div className="p-4 bg-[#1a1b59]">
-  <h3 className="text-lg font-semibold" style={{ color: '#ffd700' }}>
+                        <div className="p-4 bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)]">
+  <h3 className="text-lg font-semibold" style={{ color: '#FFFF00' }}>
     {item.title}
   </h3>
   <p className="text-sm" style={{ color: 'white' }}>
@@ -119,8 +119,8 @@ export default function Gallery() {
                                 className="max-w-full max-h-full object-contain"
                             />
                         </div>
-                        <div className="p-4 bg-[#1a1b59]">
-  <h3 className="text-lg font-semibold" style={{ color: '#ffd700' }}>
+                        <div className="p-4 bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)]">
+  <h3 className="text-lg font-semibold" style={{ color: '#FFFF00' }}>
     {item.title}
   </h3>
   <p className="text-sm" style={{ color: 'white' }}>

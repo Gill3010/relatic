@@ -1,56 +1,65 @@
+import { motion } from 'framer-motion';
+
 const ScientificPostersPortal = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="group bg-white p-6 rounded-lg shadow-lg border-4 border-[#FFD700] transform transition-all duration-300 hover:scale-105 hover:bg-[#1a1b59]">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 2, ease: 'easeOut' }}
+      className="w-full max-w-[22cm] mx-auto px-4 py-4"
+    >
+      <div className="group bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)] p-4 rounded-lg shadow-lg border-4 border-[#FFFF00] transform transition-all duration-300 hover:scale-[1.02] hover:bg-[linear-gradient(to_bottom,#2E332B,#00E5FF)] flex flex-col min-h-[500px]">
         
-        {/* Banner con imagen */}
-        <a href="https://relaticpanama.org/_posters/" target="" rel="noopener noreferrer">
-          <div className="relative mb-6 overflow-hidden rounded-lg border-[3px] border-[#FFD700]">
-          <div className="absolute inset-0 bg-[#1a1b59]"></div>
-            <img 
-              src="/assets/2.png" 
-              alt="Plataforma de Carteles científicos"
-              className="w-full h-auto max-h-[24rem] sm:max-h-[28rem] object-contain transform transition-transform duration-300 hover:scale-110" 
-            />
-          </div>
+        {/* Banner pequeño igual a Journals */}
+        <a href="https://relaticpanama.org/_posters/" target="_blank" rel="noopener noreferrer">
+         <div className="relative overflow-hidden rounded-lg border-[3px] border-solid border-[#FFFF00] aspect-video">
+  <div className="absolute inset-0 bg-[#1a1b59] opacity-10"></div>
+  <img 
+    src="/assets/2.png" 
+    alt="Portal de Carteles científicos"
+    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+  />
+</div>
         </a>
 
-        {/* Títulos */}
-        <h2 className="text-3xl font-semibold text-center text-[#1a1b59] mb-6 group-hover:text-white">
-          Portal de Carteles científicos
-        </h2>
-        <h3 className="text-xl font-semibold text-[#1a1b59] mb-4 group-hover:text-white">
-          <strong className="text-[#1a1b59] group-hover:text-white">
-            ¿Qué ofrecemos como soluciones innovadoras, personalizadas y eficientes?
-          </strong>
-        </h3>
-
-        {/* Texto descriptivo */}
-        <div className="text-[#1a1b59] group-hover:text-white">
-          <p>
-            En nuestro Portal de Carteles Científicos, brindamos una plataforma avanzada que permite a los investigadores y académicos presentar sus proyectos de manera visualmente atractiva y profesional. Facilitamos la difusión de investigaciones científicas de forma global, garantizando que los contenidos lleguen a una audiencia amplia e internacional.
-          </p>
-          <p className="mt-4">
-            Ofrecemos soluciones diseñadas para facilitar la carga, visualización y descarga de carteles científicos, optimizando la experiencia tanto para investigadores como para su audiencia. Además, proporcionamos herramientas de colaboración entre investigadores, retroalimentación en tiempo real y una poderosa plataforma de búsqueda para acceder rápidamente a contenido relevante en distintas áreas de la ciencia, todo ello en un entorno amigable e intuitivo.
-          </p>
-        </div>
-
-        {/* Sección con botón */}
-        <div className="bg-[#1a1b59] p-6 mt-6 rounded-lg shadow-lg" style={{ border: '3px solid #FFD700' }}>
-          <div className="mt-6 text-center">
-          <a
-  href="https://relaticpanama.org/_posters/"
-  target=""
-  rel="noopener noreferrer"
-  className="bg-[#ffd700] text-[#1a1b59] px-4 py-2 rounded-lg transition-all duration-300 hover:bg-[#1a1b59] hover:translate-y-2 hover:text-white w-full sm:w-auto text-xs sm:text-sm md:text-base lg:text-lg"
-  style={{ border: '3px solid #ffd700' }}
->
-  Visita nuestro portal de carteles
-</a>
+        {/* Contenido de texto */}
+        <div className="flex flex-col gap-1 flex-grow">
+          <h2 className="text-lg font-bold text-center text-[#FFFF00] group-hover:text-[#FFFF00]">
+            Carteles Científicos Virtuales
+          </h2>
+          <h3 className="text-sm font-bold text-[#fff] group-hover:text-white">
+            ¿Qué soluciones ofrecemos?
+          </h3>
+          <div className="text-[#ffff] group-hover:text-white text-xs space-y-1 max-h-[150px] overflow-y-auto font-bold">
+            <p>
+              Plataforma avanzada para presentar proyectos científicos de forma visual y profesional.
+            </p>
+            <p>
+              Soluciones para carga, visualización y descarga de carteles científicos.
+            </p>
+            <p>
+              Herramientas de colaboración y retroalimentación en tiempo real con buscador especializado.
+            </p>
+            <p>
+              Instrumentos de cooperación y valoración sincrónica con motor de búsqueda específico.
+            </p>
           </div>
         </div>
+
+        {/* Botón más abajo */}
+        <div className="bg-gradient-to-r from-white via-[#dcdcdc] to-[#a9a9a9] p-2 mt-auto rounded-lg border-[0px] border-solid border-[#FFFF00]">
+          <a
+            href="https://relaticpanama.org/_posters/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block bg-gradient-to-r from-white via-[#dcdcdc] to-[#a9a9a9] text-[#1a1b59] px-3 py-1 rounded-lg transition-all duration-300 hover:bg-[#1a1b59] hover:text-[#39FF14] text-xs text-center font-bold"
+            style={{ border: '0px solid #FFFF00' }}
+          >
+            Más Información
+          </a>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
