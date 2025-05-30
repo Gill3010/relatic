@@ -1,4 +1,4 @@
- import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Journals from './components/Journals';
@@ -10,10 +10,12 @@ import Carousel from './components/Carousel';
 import UpcomingActivities from './components/UpcomingActivities';
 import PreviousActivities from './components/PreviousActivities';
 import ContactUs from './components/ContactUs';
-import Agreements from './components/Agreements'; 
+import Agreements from './components/Agreements';
+
 import DiscoverTitle from './components/DiscoverTitle';
 import Suscription from './components/Suscription';
 import CreateOrcidGuide from './components/CreateOrcidGuide';
+import IntellectualProperty from './components/IntellectualProperty'; // 👈 Importación nueva
 
 const App = () => {
   return (
@@ -29,8 +31,9 @@ const App = () => {
                 <div>
                   <DiscoverTitle />
                 </div>
-                {/* Grid de 4 columnas en pantallas grandes (lg) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                {/* Primera fila: 3 elementos */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                   <div className="w-full">
                     <Journals />
                   </div>
@@ -40,12 +43,20 @@ const App = () => {
                   <div className="w-full">
                     <Books />
                   </div>
-                  <div className="w-full">
+                </div>
+                
+                {/* Segunda fila: 2 elementos centrados */}
+                <div className="flex flex-wrap justify-center gap-6">
+                  <div className="w-full sm:w-1/2 lg:w-1/3">
                     <LearningPlatform />
+                  </div>
+                  <div className="w-full sm:w-1/2 lg:w-1/3">
+                    <IntellectualProperty />
                   </div>
                 </div>
               </div>
             } />
+
             <Route path="/nosotros" element={<AboutUs />} />
             <Route path="/journals" element={<Journals />} />
             <Route path="/scientificpostersportal" element={<ScientificPostersPortal />} />
@@ -56,6 +67,7 @@ const App = () => {
             <Route path="/contactus" element={<ContactUs />} />
             <Route path="/suscription" element={<Suscription />} />
             <Route path="/create-orcid-guide" element={<CreateOrcidGuide />} />
+            <Route path="/propiedad-intelectual" element={<IntellectualProperty />} /> {/* Ruta dedicada */}
           </Routes>
         </main>
 

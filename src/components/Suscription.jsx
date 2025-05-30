@@ -25,9 +25,31 @@ export default function Suscription() {
     e.preventDefault();
     setStatus("loading");
 
+    const email = formData.email || "";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setStatus("error");
+      setMessage("Por favor ingrese un correo electrónico válido.");
+      return;
+    }
+
+    const rawOrcid = formData.orcid || "";
+    const orcidRegex = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/;
+    if (!orcidRegex.test(rawOrcid)) {
+      setStatus("error");
+      setMessage("El ORCID debe tener el formato XXXX-XXXX-XXXX-XXXX y puede terminar en un número o la letra 'X'.");
+      return;
+    }
+
+    const orcidConPrefijo = `https://orcid.org/${rawOrcid}`;
     const data = new FormData();
+
     for (const key in formData) {
-      data.append(key, formData[key]);
+      if (key === "orcid") {
+        data.append(key, orcidConPrefijo);
+      } else {
+        data.append(key, formData[key]);
+      }
     }
 
     try {
@@ -73,7 +95,6 @@ export default function Suscription() {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Inputs de texto */}
         {[
           { id: "email", label: "Email", required: true },
           { id: "pais", label: "País", required: true },
@@ -89,17 +110,55 @@ export default function Suscription() {
           <div key={id}>
             <label htmlFor={id} className={labelStyle}>
               {label}
+              {id === "afiliacion" && (
+                <span className="text-white/60 text-xs ml-2">(Ej: Universidad de Panamá)</span>
+              )}
+              {id === "orcid" && (
+                <span className="text-white/60 text-xs ml-2">(Ej: 0000-0002-1825-0097)</span>
+              )}
               {required && <span className="text-red-500 ml-1">*</span>}
             </label>
-            <input
-              type="text"
-              id={id}
-              name={id}
-              required={required}
-              onChange={handleChange}
-              placeholder={`Ingrese su ${label.toLowerCase()}`}
-              className={inputStyle}
-            />
+
+            {id === "pais" ? (
+              <select
+                id={id}
+                name={id}
+                required
+                onChange={handleChange}
+                className={inputStyle}
+                defaultValue=""
+              >
+                <option value="" disabled>Seleccione su país</option>
+                {[
+                  "Argentina", "Bolivia", "Brasil", "Chile", "Colombia", "Costa Rica", "Cuba", "Ecuador", "El Salvador",
+                  "España", "Guatemala", "Honduras", "México", "Nicaragua", "Panamá", "Paraguay", "Perú", "República Dominicana",
+                  "Uruguay", "Venezuela", "Estados Unidos", "Canadá", "Otros"
+                ].map((pais) => (
+                  <option key={pais} value={pais} className="text-black">
+                    {pais}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                id={id}
+                name={id}
+                required={required}
+                onChange={handleChange}
+                placeholder={
+                  id === "cedula"
+                    ? "Ej: 8-999-999 (formato Panamá) o documento nacional"
+                    : id === "pasaporte"
+                    ? "Ej: A12345678 (número internacional)"
+                    : id === "orcid"
+                    ? "XXXX-XXXX-XXXX-XXXX (formato ORCID)"
+                    : `Ingrese su ${label.toLowerCase()}`
+                }
+                className={inputStyle}
+              />
+            )}
+
             {id === "orcid" && (
               <p className="text-sm text-white/70 mt-1">
                 Si no tienes ORCID, créalo{" "}
@@ -113,7 +172,6 @@ export default function Suscription() {
         ))}
       </div>
 
-      {/* Selects */}
       <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
         {[{
           name: "edad",
@@ -161,10 +219,10 @@ export default function Suscription() {
         ))}
       </div>
 
-      {/* Textarea */}
       <div className="mt-10">
         <label htmlFor="palabrasClave" className={labelStyle}>
           Palabras clave
+          <span className="text-white/60 text-xs ml-2">(Ej: Tecnología, Innovación, Educación)</span>
         </label>
         <textarea
           id="palabrasClave"
@@ -176,7 +234,6 @@ export default function Suscription() {
         />
       </div>
 
-      {/* Archivo */}
       <div className="mt-10 space-y-4">
         <div>
           <label className={labelStyle}>
@@ -193,7 +250,6 @@ export default function Suscription() {
         </div>
       </div>
 
-      {/* Botón de envío y mensajes */}
       <button
         type="submit"
         className="w-full mt-10 bg-[#FFFF00] text-[#1a1b59] font-bold py-3 rounded-xl shadow-md hover:bg-[#2CFF05] transition-all duration-300"
