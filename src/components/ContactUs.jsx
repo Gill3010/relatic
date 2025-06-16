@@ -107,7 +107,7 @@ const ContactUs = () => {
       level: 2
     },
     {
-      name: "Mgtr. Mónica Contreras",
+      name: "Dra. Mónica Contreras",
       email: "academico@relaticpanama.org",
       phone: "+507 6773-4854",
       orcid: "https://orcid.org/0000-0003-0972-6951",

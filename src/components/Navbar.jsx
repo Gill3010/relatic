@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { FaLinkedin, FaInstagram, FaFacebook, FaYoutube, FaWhatsapp } from 'react-icons/fa';
 import { SiX } from 'react-icons/si';
-import logo from '../assets/logo.png';
+import logo from '../assets/Vector.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -85,6 +85,7 @@ const Navbar = () => {
 
           
           <a href="/contactus" className="hover:text-[#FFFF00] transition-colors duration-300">Contacto</a>
+          <a href="https://relaticpanama.org/_blog" className="hover:text-[#FFFF00] transition-colors duration-300">Blog</a>
           {/* Regístrate */}
           <div
             className="relative"
@@ -144,6 +145,7 @@ const Navbar = () => {
             
 
             <a href="/contactus" className="hover:text-[#FFFF00] transition-colors duration-300" onClick={toggleMenu}>Contacto</a>
+            <a href="https://relaticpanama.org/_blog" className="hover:text-[#FFFF00] transition-colors duration-300">Blog</a>
             <div className="relative">
               <button onClick={() => setShowRegisterSubMenu(!showRegisterSubMenu)} className="hover:text-[#FFFF00] transition-colors duration-300 focus:outline-none">Regístrate</button>
               {showRegisterSubMenu && (

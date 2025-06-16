@@ -48,7 +48,7 @@ const Footer = () => {
 
             <div className="md:items-start w-full text-center md:text-left">
               <a href="https://www.relaticpanama.org/" target="_blank" rel="noopener noreferrer" title="Sitio web de Relatic Panamá">
-                <img src="/logo.png" alt="Relatic Panamá Logo" className="w-48 h-auto mb-2 object-contain mx-auto md:mx-0" />
+                <img src="/Vector.png" alt="Relatic Panamá Logo" className="w-48 h-auto mb-2 object-contain mx-auto md:mx-0" />
               </a>
             </div>
           </div>
