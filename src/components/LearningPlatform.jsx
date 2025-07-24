@@ -11,7 +11,7 @@ const LearningPlatform = () => {
       <div className="group bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)] p-4 rounded-lg shadow-lg border-4 border-[#FFFF00] transform transition-all duration-300 hover:scale-[1.02] hover:bg-[linear-gradient(to_bottom,#2E332B,#00E5FF)] flex flex-col min-h-[500px]">
         
         {/* Imagen banner optimizada */}
-        <a href="https://portaldecartelescientificos.org/Cursos" target="_blank" rel="noopener noreferrer">
+        <a href="https://relaticpanama.org/_classroom/" target="_blank" rel="noopener noreferrer">
          <div className="relative overflow-hidden rounded-lg border-[3px] border-solid border-[#FFFF00] aspect-video">
   <div className="absolute inset-0 bg-[#1a1b59] opacity-10"></div>
   <img 
@@ -46,7 +46,7 @@ const LearningPlatform = () => {
         {/* Botón */}
         <div className="bg-gradient-to-r from-white via-[#dcdcdc] to-[#a9a9a9] p-2 mt-auto rounded-lg border-[0px] border-solid border-[#FFFF00]">
           <a
-            href="https://portaldecartelescientificos.org/Cursos"
+            href="https://relaticpanama.org/_classroom/"
             target="_blank"
             rel="noopener noreferrer"
             className="block bg-gradient-to-r from-white via-[#dcdcdc] to-[#a9a9a9] text-[#1a1b59] px-3 py-1 rounded-lg transition-all duration-300 hover:bg-[#1a1b59] hover:text-[#39FF14] text-xs text-center font-bold"

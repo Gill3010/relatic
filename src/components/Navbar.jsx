@@ -56,7 +56,7 @@ const Navbar = () => {
                 <a href="https://relaticpanama.org/_journals/" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Portal de revistas</a>
                 <a href="https://relaticpanama.org/_posters/" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Portal de carteles</a>
                 <a href="https://relaticpanama.org/_books/index.php/edrp/inicio" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Portal de libros</a>
-                <a href="https://portaldecartelescientificos.org/Cursos" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Plataforma de aprendizaje</a>
+                <a href="https://relaticpanama.org/_classroom/" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Plataforma de aprendizaje</a>
                 <a href='https://relaticpanama.org/_protect' className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Propiedad Intelectual</a>
               </div>
             )}
@@ -126,7 +126,7 @@ const Navbar = () => {
                   <a href="https://relaticpanama.org/_journals/" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Portal de revistas</a>
                   <a href="https://relaticpanama.org/_posters/" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Portal de carteles</a>
                   <a href="https://relaticpanama.org/_books/index.php/edrp/inicio" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Portal de libros</a>
-                  <a href="https://portaldecartelescientificos.org/Cursos" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Plataforma de aprendizaje</a>
+                  <a href="https://relaticpanama.org/_classroom/" className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Plataforma de aprendizaje</a>
                   <a href='https://relaticpanama.org/_protect' className="block px-4 py-2 hover:text-[#FFFF00] transition-colors duration-300">Propiedad Intelectual</a>
                 </div>
               )}

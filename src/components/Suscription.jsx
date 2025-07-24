@@ -53,7 +53,7 @@ export default function Suscription() {
     }
 
     try {
-      const res = await fetch("https://relaticpanama.org/api/submit.php", {
+      const res = await fetch("https://relaticpanama.org/api/submit_suscriptions.php", {
         method: "POST",
         body: data,
       });
@@ -98,8 +98,8 @@ export default function Suscription() {
         {[
           { id: "email", label: "Email", required: true },
           { id: "pais", label: "País", required: true },
-          { id: "cedula", label: "Cédula", required: true },
-          { id: "pasaporte", label: "Pasaporte" },
+          { id: "cedula", label: "Cédula / DNI", required: true },
+          { id: "pasaporte", label: "Pasaporte / DNI" },
           { id: "afiliacion", label: "Afiliación", required: true },
           { id: "orcid", label: "ORCID", required: true },
           { id: "primerNombre", label: "Primer nombre", required: true },
@@ -248,7 +248,92 @@ export default function Suscription() {
             className="w-full text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
           />
         </div>
+
+        <div className="mt-6 space-y-2">
+          <p className="text-white font-semibold">Precio: $30 USD</p>
+          <label className={labelStyle}>
+            Comprobante de pago <span className="text-white/60 text-xs ml-2">(Opcional)</span>
+          </label>
+          <input
+  type="file"
+  name="comprobantePago"
+  onChange={handleChange}
+  className="w-full text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+/>
+        </div>
       </div>
+     <div className="mt-10 space-y-6">
+  <h3 className="text-2xl font-bold text-white">Métodos de Pago</h3>
+
+  {/* Banco General */}
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white/5 border border-white/20 rounded-xl p-4">
+    <div className="flex items-center space-x-3">
+      <img 
+        src="https://www.bgeneral.com/wp-content/uploads/2025/01/bglogo70-400x72-2-300x54.png" 
+        alt="Banco General" 
+        className="h-6 w-auto object-contain"
+      />
+      <div>
+        <p className="font-semibold text-white">Banco General</p>
+        <p className="text-white/70 text-sm">Cuenta Corriente: <span className="font-medium text-white">03-78-01-089981-8</span></p>
+        <p className="text-white/70 text-sm">Nombre: Multi Servicios TK</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      onClick={() => navigator.clipboard.writeText("03-78-01-089981-8")}
+      className="mt-3 md:mt-0 text-sm font-semibold text-cyan-300 hover:text-cyan-100"
+    >
+      Copiar
+    </button>
+  </div>
+
+  {/* Yappy */}
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white/5 border border-white/20 rounded-xl p-4">
+    <div className="flex items-center space-x-3">
+      <img 
+        src="https://www.yappy.com.pa/wp-content/uploads/2021/06/yappy-landscape-200x50.png" 
+        alt="Yappy" 
+        className="h-6 w-auto object-contain"
+      />
+      <div>
+        <p className="font-semibold text-white">Yappy</p>
+        <p className="text-white/70 text-sm">Directorio: <span className="font-medium text-white">@multiservicio</span></p>
+        <p className="text-white/70 text-sm">Nombre: Multiservicios TK</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      onClick={() => navigator.clipboard.writeText("@multiservicio")}
+      className="mt-3 md:mt-0 text-sm font-semibold text-cyan-300 hover:text-cyan-100"
+    >
+      Copiar
+    </button>
+  </div>
+
+  {/* PayPal */}
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white/5 border border-white/20 rounded-xl p-4">
+    <div className="flex items-center space-x-3">
+      <img 
+        src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg" 
+        alt="PayPal" 
+        className="h-6 w-auto object-contain"
+      />
+      <div>
+        <p className="font-semibold text-white">PayPal</p>
+        <p className="text-white/70 text-sm">Usuario: <span className="font-medium text-white">@multiserviciostk</span></p>
+        <p className="text-white/70 text-sm">Ubicación: Panamá, Panamá</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      onClick={() => navigator.clipboard.writeText("@multiserviciostk")}
+      className="mt-3 md:mt-0 text-sm font-semibold text-cyan-300 hover:text-cyan-100"
+    >
+      Copiar
+    </button>
+  </div>
+</div>
 
       <button
         type="submit"

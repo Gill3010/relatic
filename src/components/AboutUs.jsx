@@ -35,7 +35,7 @@ const AboutUs = () => {
               />
             </div>
             <h3 className="text-xl font-semibold text-white">
-              <strong className="text-[#fff]">Misión</strong>
+              <strong className="text-[#FFFF00]">Misión</strong>
             </h3>
             <p className="text-white text-lg text-center">
               Nuestra misión es promover la participación activa de estudiantes, docentes y administrativos en el desarrollo académico, y fomentar la colaboración entre instituciones y centros de investigación. Buscamos difundir la ciencia generada en la región y formar recursos humanos para avanzar en el conocimiento científico.
@@ -59,7 +59,7 @@ const AboutUs = () => {
               />
             </div>
             <h3 className="text-xl font-semibold text-white">
-              <strong className="text-[#fff]">Objetivos</strong>
+              <strong className="text-[#FFFF00]">Objetivos</strong>
             </h3>
             <p className="text-white text-lg text-center">
               Queremos ofrecer un espacio de reflexión e intercambio académico sobre la publicación científica. Fomentamos la consolidación de los procesos editoriales y fortalecemos el intercambio de conocimiento entre académicos, investigadores y editores científicos para impulsar la ciencia en la región.
@@ -83,7 +83,7 @@ const AboutUs = () => {
               />
             </div>
             <h3 className="text-xl font-semibold text-white">
-              <strong className="text-[#fff]">Visión</strong>
+              <strong className="text-[#FFFF00]">Visión</strong>
             </h3>
             <p className="text-white text-lg text-center">
               Buscamos impulsar la producción de conocimiento científico cualitativo y fortalecer los lazos entre investigadores y universidades latinoamericanas. Promovemos la internacionalización de la investigación académica, fomentando espacios de colaboración global para generar nuevo conocimiento y avanzar en la ciencia.
