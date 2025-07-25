@@ -85,13 +85,13 @@ export default function Suscription() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       onSubmit={handleSubmit}
-      className="w-full max-w-5xl mx-auto p-10 rounded-2xl shadow-2xl border border-white/10 bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)] text-white"
+      className="w-full max-w-5xl mx-auto p-10 rounded-2xl shadow-2xl border border-white/10 bg-[#00bcd4] text-white"
     >
       <h1 className="text-4xl font-extrabold text-center text-white mb-4 drop-shadow">
-        Formulario de Inscripción
+        Formulario de Suscripción a RELATIC-PANAMA
       </h1>
       <h2 className="text-lg text-center text-white/80 mb-10 font-medium">
-        RELATIC-PANAMA
+        MEMBRESÍA
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -162,7 +162,7 @@ export default function Suscription() {
             {id === "orcid" && (
               <p className="text-sm text-white/70 mt-1">
                 Si no tienes ORCID, créalo{" "}
-                <Link to="/create-orcid-guide" className="underline text-cyan-200 hover:text-cyan-100">
+                <Link to="/crear-orcid" className="underline text-cyan-200 hover:text-cyan-100">
                   aquí
                 </Link>
                 .
@@ -336,11 +336,19 @@ export default function Suscription() {
 </div>
 
       <button
-        type="submit"
-        className="w-full mt-10 bg-[#FFFF00] text-[#1a1b59] font-bold py-3 rounded-xl shadow-md hover:bg-[#2CFF05] transition-all duration-300"
-      >
-        {status === "loading" ? "Enviando..." : "Enviar"}
-      </button>
+  type="submit"
+  className="relative w-full mt-10 px-4 py-3 xl:px-6 xl:py-3 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-white rounded-full font-semibold hover:from-purple-500 hover:via-blue-500 hover:to-indigo-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
+>
+  <span className="relative z-10 flex items-center justify-center space-x-2">
+    {status === "loading" ? (
+      <span className="text-sm xl:text-base">Enviando...</span>
+    ) : (
+      <span className="text-sm xl:text-base">Enviar</span>
+    )}
+  </span>
+
+  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full opacity-0 hover:opacity-20 transition-opacity duration-300" />
+</button>
 
       {status === "success" && (
         <p className="mt-4 text-green-400 font-semibold">{message}</p>

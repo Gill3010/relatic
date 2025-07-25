@@ -116,7 +116,8 @@ const steps = [
           <Eye className="w-6 h-6 text-yellow-400" />
           <Settings className="w-5 h-5 text-white/70" />
         </div>
-Selecciona si tu perfil será visible para todos, personas de confianza o solo tú, y haz clic en &#39;Próximo paso&#39;.      </>
+        Selecciona si tu perfil será visible para todos, personas de confianza o solo tú, y haz clic en &#39;Próximo paso&#39;.
+      </>
     ),
   },
   {
@@ -133,7 +134,8 @@ Selecciona si tu perfil será visible para todos, personas de confianza o solo t
           <CheckCircle2 className="w-6 h-6 text-yellow-400" />
           <FileCheck className="w-5 h-5 text-white/70" />
         </div>
-Lee y acepta las condiciones de uso, luego haz clic en &#39;Completar registro&#39;.      </>
+        Lee y acepta las condiciones de uso, luego haz clic en &#39;Completar registro&#39;.
+      </>
     ),
   },
   {
@@ -158,11 +160,11 @@ Lee y acepta las condiciones de uso, luego haz clic en &#39;Completar registro&#
         </div>
         Tu ORCID ha sido creado. Guarda tu identificador ORCID personal. <br />
         <a
-          href="https://relaticpanama.org/suscription"
+          href="/suscription"
           rel="noopener noreferrer"
           className="underline text-cyan-200 hover:text-cyan-300 transition"
         >
-          Regresar al formulario de inscripción
+          Regresar al formulario de suscripción
         </a>
       </>
     ),
@@ -185,7 +187,7 @@ export default function CreateOrcidGuide() {
       initial={{ opacity: 0, y: -30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="w-full max-w-3xl mx-auto p-10 rounded-2xl shadow-2xl border border-white/10 bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)] text-white"
+      className="w-full max-w-3xl mx-auto p-10 rounded-2xl shadow-2xl border border-white/10 bg-[#00bcd4] text-white"
     >
       <h1 className="text-4xl font-extrabold text-center text-white mb-4 drop-shadow">
         Guía para Crear un ORCID
@@ -202,7 +204,7 @@ export default function CreateOrcidGuide() {
               key={index}
               className={`flex-1 h-2 mx-1 rounded-full transition-all duration-300 ${
                 index <= currentStep
-                  ? "bg-yellow-400"
+                  ? "bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700"
                   : "bg-white/30 hover:bg-white/50"
               }`}
             />
@@ -230,7 +232,7 @@ export default function CreateOrcidGuide() {
         <button
           onClick={handleNext}
           disabled={currentStep === steps.length - 1}
-          className="px-6 py-2 rounded-xl font-bold shadow-md transition-all duration-300 bg-[#FFFF00] text-[#1a1b59] hover:bg-[#2CFF05] disabled:opacity-50"
+          className="px-6 py-2 rounded-xl font-bold shadow-md text-white transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 hover:from-purple-500 hover:via-blue-500 hover:to-indigo-600 disabled:opacity-50"
         >
           Siguiente
         </button>

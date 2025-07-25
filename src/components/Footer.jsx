@@ -1,102 +1,212 @@
-import { FaLinkedin, FaRegEnvelope, FaPhone, FaMapMarkerAlt, FaInstagram, FaFacebook, FaYoutube, FaWhatsapp } from 'react-icons/fa';
-import { SiX } from 'react-icons/si';
+import { Mail, Phone, MapPin, BookOpen, FileText, GraduationCap, ShieldCheck, Newspaper, } from 'lucide-react';
+import {
+  FaLinkedin,
+  FaInstagram,
+  FaFacebook,
+  FaYoutube,
+  FaWhatsapp,
+  FaTwitter,
+  FaHome,
+  FaUsers,
+  FaRocket,
+  FaNewspaper,
+  FaRegCalendarCheck,
+} from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className="bg-[linear-gradient(to_bottom,#2E332B,#00E5FF)] text-white font-bold py-8 shadow-md overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+    <>
+      {/* CSS Styles para la animación */}
+      <style jsx>{`
+        .animated-border {
+          position: relative;
+          overflow: hidden;
+        }
 
-          {/* Sección Relatic Panamá */}
-          <div className="flex flex-col items-center md:items-start">
-            <h2 className="text-xl font-bold text-[#FFFF00] mb-2">Relatic Panamá</h2>
-            <div className="relative w-24 h-1 overflow-hidden mb-3">
-  <div className="absolute top-0 left-0 w-1/2 h-full bg-[#FFFF00] animate-slide-horizontal"></div>
-</div>
+        .animated-border::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: -100%;
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(0, 188, 212, 0.3),
+            rgba(0, 188, 212, 0.8),
+            rgba(0, 188, 212, 1),
+            rgba(0, 188, 212, 0.8),
+            rgba(0, 188, 212, 0.3),
+            transparent
+          );
+          animation: shimmer 3s ease-in-out infinite;
+          box-shadow: 0 0 8px rgba(0, 188, 212, 0.4);
+        }
 
-            <p className="text-sm mt-0">Relatic Panamá es una plataforma dedicada a la investigación y difusión del conocimiento científico y académico, conectando instituciones y profesionales del ámbito educativo.</p>
+        @keyframes shimmer {
+          0% {
+            left: -100%;
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            left: 100%;
+            opacity: 0;
+          }
+        }
+      `}</style>
+      
+      <footer className="bg-[#0a2d4d] text-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-12 z-10">
+          
+          {/* Marca RELATIC */}
+          <div className="space-y-4">
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#00bcd4] drop-shadow-xl">
+              RELATIC PANAMÁ
+            </h2>
+            <p className="text-sm text-gray-100 leading-relaxed">
+              Relatic Panamá es una plataforma dedicada a la investigación y difusión del conocimiento científico y académico, conectando instituciones y profesionales del ámbito educativo.
+            </p>
           </div>
 
-          {/* Sección Síguenos */}
-          <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-lg font-semibold mb-2 text-[#FFFF00]">Síguenos</h3>
-            <div className="relative w-24 h-1 overflow-hidden mb-3">
-  <div className="absolute top-0 left-0 w-1/2 h-full bg-[#FFFF00] animate-slide-horizontal"></div>
-</div>
+          {/* Navegación */}
+         <div>
+    <h3 className="text-lg font-semibold mb-4 border-b border-white/20 pb-1 text-[#00bcd4] transition-colors duration-300 animated-border">
+      Navegación
+    </h3>
+    <ul className="space-y-2 text-gray-100 text-sm">
+      <li className="flex items-center gap-2">
+        <FaHome size={14} />
+        <a href="/" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Inicio</a>
+      </li>
+      <li className="flex items-center gap-2">
+        <FaUsers size={14} />
+        <a href="/nosotros" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Nosotros</a>
+      </li>
+      <li className="flex items-center gap-2">
+        <FaNewspaper size={14} />
+        <a href="https://relaticpanama.org/_blog/" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Blog</a>
+      </li>
+      <li className="flex items-center gap-2">
+        <FaRocket size={14} />
+        <a href="/suscription" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Suscríbete</a>
+      </li>
+      <li className="flex items-center gap-2">
+        <FaRegCalendarCheck size={14} />
+        <a href="https://relaticpanama.org/_events/" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">III Congreso</a>
+      </li>
+    </ul>
+  </div>
 
-            <div className="flex flex-wrap justify-center md:justify-start gap-3 mb-4 w-full max-w-xs mx-auto md:mx-0">
-              {/* Redes sociales */}
-              <a href="https://www.linkedin.com/in/relatic-panam%C3%A1-a80b93356/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2d2e77] transition duration-300" style={{ backgroundColor: '#0A66C2' }} title="LinkedIn">
-                <FaLinkedin size={18} className="text-white" />
-              </a>
-              <a href="https://www.instagram.com/relatic.panama?igsh=bGFrcmMwbGZxd3Vq" target="_blank" rel="noopener noreferrer" title="Instagram" className="w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 hover:opacity-80 transition duration-300">
-                <FaInstagram size={18} color="#FFFFFF" />
-              </a>
-              <a href="https://x.com/RelaticPanama" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2d2e77] transition duration-300" style={{ backgroundColor: '#000000' }} title="X">
-                <SiX size={16} color="#FFFFFF" />
-              </a>
-              <a href="https://www.facebook.com/share/19hGgzbge1/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2d2e77] transition duration-300" style={{ backgroundColor: '#1877F2' }} title="Facebook">
-                <FaFacebook size={18} className="text-white" />
-              </a>
-              <a href="https://www.youtube.com/@RelaticPanama" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2d2e77] transition duration-300" style={{ backgroundColor: '#FF0000' }} title="YouTube">
-                <FaYoutube size={18} className="text-white" />
-              </a>
-              <a href="https://wa.me/50766751782" target="_blank" rel="noopener noreferrer" className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-[#2d2e77] transition duration-300" style={{ backgroundColor: '#25D366' }} title="WhatsApp">
-                <FaWhatsapp size={18} className="text-white" />
-              </a>
-            </div>
-
-            <div className="md:items-start w-full text-center md:text-left">
-              <a href="https://www.relaticpanama.org/" target="_blank" rel="noopener noreferrer" title="Sitio web de Relatic Panamá">
-                <img src="/Vector.png" alt="Relatic Panamá Logo" className="w-48 h-auto mb-2 object-contain mx-auto md:mx-0" />
-              </a>
-            </div>
+          {/* Servicios */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 border-b border-white/20 pb-1 text-[#00bcd4] transition-colors duration-300 animated-border">
+              Servicios
+            </h3>
+            <ul className="space-y-2 text-gray-100 text-sm">
+              <li className="flex items-center gap-2">
+                <Newspaper size={14} />
+                <a href="https://relaticpanama.org/_journals/" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Revistas Indexadas</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <FileText size={14} />
+                <a href="https://relaticpanama.org/_posters/" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Carteles Digitales</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <BookOpen size={14} />
+                <a href="https://relaticpanama.org/_books/index.php/edrp/inicio" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Libros Digitales</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <GraduationCap size={14} />
+                <a href="https://relaticpanama.org/_classroom/" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Aprendizaje Continuo</a>
+              </li>
+              <li className="flex items-center gap-2">
+                <ShieldCheck size={14} />
+                <a href="https://relaticpanama.org/_protect/" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Propiedad Intelectual</a>
+              </li>
+            </ul>
           </div>
 
-          {/* Sección Contáctenos */}
-          <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-lg font-semibold mb-2 text-[#FFFF00]">Contáctenos</h3>
-            <div className="relative w-24 h-1 overflow-hidden mb-3">
-  <div className="absolute top-0 left-0 w-full h-full bg-[#FFFF00] animate-slide-horizontal"></div>
-</div>
+          {/* Contacto */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4 border-b border-white/20 pb-1 text-[#00bcd4] transition-colors duration-300 animated-border">
+              Contáctanos
+            </h3>
+            <ul className="space-y-3 text-gray-100 text-sm">
+              <li className="flex items-center gap-3 hover:text-cyan-300 transition duration-300">
+                <div className="p-1 rounded bg-white/10 border border-white/20">
+                  <Mail size={16} className="text-white" />
+                </div>
+                <a href="mailto:gerencia@relaticpanama.org" className="hover:underline">
+                  gerencia@relaticpanama.org
+                </a>
+              </li>
+              <li className="flex items-center gap-3 hover:text-cyan-300 transition duration-300">
+                <div className="p-1 rounded bg-white/10 border border-white/20">
+                  <Phone size={16} className="text-white" />
+                </div>
+                <span>+507 6645-7685 | +507 208-4689</span>
+              </li>
+              <li className="flex items-center gap-3 hover:text-cyan-300 transition duration-300">
+                <div className="p-1 rounded bg-white/10 border border-white/20">
+                  <MapPin size={16} className="text-white" />
+                </div>
+                <span>Ciudad de Panamá, Panamá</span>
+              </li>
+            </ul>
 
-            <p className="flex flex-col md:flex-row items-center md:items-start mb-1 text-center md:text-left">
-              <span className="inline-flex items-center"><FaMapMarkerAlt size={18} className="text-[#FFFF00] mr-1" />Mirador del Pacífico Local 70, Panamá</span>
-            </p>
-            <p className="flex items-center justify-center md:justify-start space-x-2 mb-1">
-              <FaPhone size={18} className="text-[#FFFF00]" />
-              <span>
-                <a href="tel:+50766457685" className="hover:underline">+507 6645-7685</a> | <a href="tel:+5072084689" className="hover:underline">+507 208-4689</a>
-              </span>
-            </p>
-            <p className="flex flex-col md:flex-row items-center md:items-start mb-1 text-center md:text-left">
-              <span className="inline-flex items-center">
-                <FaRegEnvelope size={18} className="text-[#FFFF00] mr-1" />
-                <a href="mailto:administracion@relaticpanama.org" className="hover:underline">administracion@relaticpanama.org</a>
-              </span>
-            </p>
-            <p className="flex flex-col md:flex-row items-center md:items-start text-center md:text-left">
-              <span className="inline-flex items-center">
-                <FaRegEnvelope size={18} className="text-[#FFFF00] mr-1" />
-                <a href="mailto:mercadeoyventas@relaticpanama.org" className="hover:underline">mercadeoyventas@relaticpanama.org</a>
-              </span>
-            </p>
+            {/* Redes sociales */}
+            <div className="flex gap-4 mt-4">
+              <a href="https://www.linkedin.com/in/relatic-panam%C3%A1-a80b93356" target="_blank" rel="noopener noreferrer">
+                <FaLinkedin size={22} className="text-[#0077B5] hover:scale-110 transition-transform" />
+              </a>
+              <a href="https://www.instagram.com/relatic.panama" target="_blank" rel="noopener noreferrer">
+                <FaInstagram size={22} className="text-[#E1306C] hover:scale-110 transition-transform" />
+              </a>
+              <a href="https://x.com/RelaticPanama" target="_blank" rel="noopener noreferrer">
+                <FaTwitter size={22} className="text-white hover:scale-110 transition-transform" />
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61573905375213" target="_blank" rel="noopener noreferrer">
+                <FaFacebook size={22} className="text-[#1877F2] hover:scale-110 transition-transform" />
+              </a>
+              <a href="https://www.youtube.com/@RelaticPanama" target="_blank" rel="noopener noreferrer">
+                <FaYoutube size={22} className="text-[#FF0000] hover:scale-110 transition-transform" />
+              </a>
+              <a href="https://wa.me/50766751782" target="_blank" rel="noopener noreferrer">
+                <FaWhatsapp size={22} className="text-[#25D366] hover:scale-110 transition-transform" />
+              </a>
+            </div>
           </div>
         </div>
 
-        {/* Línea horizontal general */}
-        <hr className="border-t border-[#FFFF00] my-6 mx-auto w-4/5" style={{ borderWidth: '2px' }} />
-
-        {/* Derechos reservados */}
-        <p className="text-center text-sm mt-2">©2025 Relatic Panamá. Todos los derechos reservados.</p>
-        <p className="text-center text-sm mt-2">
-          Desarrollado por{" "}
-          <a href="https://innovaproyectos.org/" target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: "#FFFF00", fontWeight: "bold" }}>
-            Innova Proyectos
-          </a>.
-        </p>
-      </div>
-    </footer>
+        {/* Pie de página final */}
+        <div className="border-t border-white/10 text-center py-6 text-sm text-gray-300 bg-[#0a2d4d]">
+          <p className="mb-2">
+            © {new Date().getFullYear()} <span className="text-cyan-300 font-semibold">Relatic Panamá</span>. Todos los derechos reservados.
+          </p>
+          <p className="text-xs text-gray-400">
+            Ciencia, Tecnología e Innovación.
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Powered by{' '}
+            <a
+              href="https://www.innovaproyectos.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-300 font-semibold hover:underline transition-colors duration-300"
+            >
+              Innova Proyectos
+            </a>
+          </p>
+        </div>
+      </footer>
+    </>
   );
 };
 

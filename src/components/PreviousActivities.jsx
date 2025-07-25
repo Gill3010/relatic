@@ -27,21 +27,15 @@ export default function Gallery() {
         responsive: [
             {
                 breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                },
+                settings: { slidesToShow: 3 },
             },
             {
                 breakpoint: 768,
-                settings: {
-                    slidesToShow: 2,
-                },
+                settings: { slidesToShow: 2 },
             },
             {
                 breakpoint: 640,
-                settings: {
-                    slidesToShow: 1,
-                },
+                settings: { slidesToShow: 1 },
             },
         ],
     };
@@ -59,21 +53,15 @@ export default function Gallery() {
         responsive: [
             {
                 breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                },
+                settings: { slidesToShow: 3 },
             },
             {
                 breakpoint: 768,
-                settings: {
-                    slidesToShow: 2,
-                },
+                settings: { slidesToShow: 2 },
             },
             {
                 breakpoint: 640,
-                settings: {
-                    slidesToShow: 1,
-                },
+                settings: { slidesToShow: 1 },
             },
         ],
     };
@@ -83,7 +71,7 @@ export default function Gallery() {
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-2">
                 <span className="text-[#1a1b59]">I Encuentro de Investigaciones Cualitativas</span>
             </h2>
-            <p className="text-center text-[#1a1b59] mb-6">
+            <p className="text-center text-[#0a2d4d] mb-6">
                 Ciudad de Panamá - Octubre 2022
             </p>
 
@@ -97,14 +85,14 @@ export default function Gallery() {
                                 className="max-w-full max-h-full object-contain"
                             />
                         </div>
-                        <div className="p-4 bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)]">
-  <h3 className="text-lg font-semibold" style={{ color: '#FFFF00' }}>
-    {item.title}
-  </h3>
-  <p className="text-sm" style={{ color: 'white' }}>
-    {item.description}
-  </p>
-</div>
+                        <div className="p-4 bg-[#00bcd4] rounded-b-xl">
+                            <h3 className="text-lg font-semibold" style={{ color: '#0a2d4d' }}>
+                                {item.title}
+                            </h3>
+                            <p className="text-sm text-white">
+                                {item.description}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </Slider>
@@ -119,14 +107,14 @@ export default function Gallery() {
                                 className="max-w-full max-h-full object-contain"
                             />
                         </div>
-                        <div className="p-4 bg-[linear-gradient(to_bottom,#00E5FF,#2E332B)]">
-  <h3 className="text-lg font-semibold" style={{ color: '#FFFF00' }}>
-    {item.title}
-  </h3>
-  <p className="text-sm" style={{ color: 'white' }}>
-    {item.description}
-  </p>
-</div>
+                        <div className="p-4 bg-[#00bcd4] rounded-b-xl">
+                            <h3 className="text-lg font-semibold" style={{ color: '#0a2d4d' }}>
+                                {item.title}
+                            </h3>
+                            <p className="text-sm text-white">
+                                {item.description}
+                            </p>
+                        </div>
                     </div>
                 ))}
             </Slider>
