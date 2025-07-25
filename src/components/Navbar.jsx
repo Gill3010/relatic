@@ -229,7 +229,7 @@ const activities = [
 >
   <span className="relative z-10 flex items-center space-x-2">
     <span className="text-base xl:text-lg">🚀</span>
-    <span className="text-sm xl:text-base text-white">¡SUSCRÍBETE YA!</span>
+    <span className="text-sm xl:text-base text-white">¡AFÍLIATE YA!</span>
   </span>
   <div className={`absolute inset-0 bg-gradient-to-r ${isScrolled ? 'from-blue-700 to-purple-700' : 'from-purple-400 to-blue-400'} rounded-full opacity-0 hover:opacity-20 transition-opacity duration-300`} />
 </a>
@@ -334,7 +334,7 @@ const activities = [
 >
   <span className="relative z-10 flex items-center space-x-2">
     <span className="text-base">🚀</span>
-    <span className="text-sm">¡SUSCRÍBETE YA!</span>
+    <span className="text-sm">¡AFÍLIATE YA!</span>
   </span>
 </a>
           </div>
@@ -431,7 +431,7 @@ const activities = [
   onClick={() => setIsOpen(false)}
 >
   <span className="text-base">🚀</span>
-  <span>¡SUSCRÍBETE YA!</span>
+  <span>¡AFÍLIATE YA!</span>
 </a>
               </div>
             </div>

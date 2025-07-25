@@ -98,15 +98,30 @@ export default function UpcomingActivities() {
       </p>
 
       {/* Banner */}
-      <a href="https://relaticpanama.org/_events/" rel="noopener noreferrer">
-        <div className="rounded-3xl overflow-hidden mb-10 shadow-2xl border border-white/10 hover:scale-[1.01] transition-transform duration-300">
-          <img
-            src="/assets/IIICongreso.jpg"
-            alt="Banner del evento"
-            className="w-full h-auto object-cover"
-          />
-        </div>
-      </a>
+<a href="https://relaticpanama.org/_events/" rel="noopener noreferrer">
+  <div className="rounded-3xl overflow-hidden mb-4 shadow-2xl border border-white/10 hover:scale-[1.01] transition-transform duration-300">
+    <img
+      src="/assets/IIICongreso.jpg"
+      alt="Banner del evento"
+      className="w-full h-auto object-cover"
+    />
+  </div>
+</a>
+
+{/* Botón debajo del banner */}
+<div
+  className="text-center mb-10 px-4"
+  data-aos="fade-up"
+  data-aos-once="false"
+>
+  <a
+    href="https://relaticpanama.org/_events/"
+    rel="noopener noreferrer"
+    className="px-4 py-2 w-full max-w-xs md:max-w-md lg:w-96 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:from-blue-500 hover:to-purple-500 transition-all duration-300 shadow-lg text-base font-medium inline-block"
+  >
+    Ir al Congreso →
+  </a>
+</div>
 
       {/* Carrusel */}
       <Slider {...settings}>
