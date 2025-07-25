@@ -88,7 +88,7 @@ export default function Suscription() {
       className="w-full max-w-5xl mx-auto p-10 rounded-2xl shadow-2xl border border-white/10 bg-[#00bcd4] text-white"
     >
       <h1 className="text-4xl font-extrabold text-center text-white mb-4 drop-shadow">
-        Formulario de Suscripción a RELATIC-PANAMA
+        Formulario de Suscripción a RELATIC-PANAMÁ
       </h1>
       <h2 className="text-lg text-center text-white/80 mb-10 font-medium">
         MEMBRESÍA

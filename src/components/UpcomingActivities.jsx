@@ -1,8 +1,26 @@
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 export default function UpcomingActivities() {
+  useEffect(() => {
+    AOS.init({ once: false });
+
+    const handleScroll = () => {
+      AOS.refreshHard(); // fuerza a AOS a reanalizar la posición
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const images = [
     {
       src: "/assets/AP1.jpeg",
@@ -67,7 +85,11 @@ export default function UpcomingActivities() {
   };
 
   return (
-    <div className="p-6 md:p-10 bg-[#0a2d4d] min-h-screen">
+    <div
+      className="p-6 md:p-10 bg-[#0a2d4d] min-h-screen"
+      data-aos="fade-up"
+      data-aos-once="false"
+    >
       <h2 className="text-4xl md:text-5xl font-extrabold text-center text-white mb-2 drop-shadow-md">
         III Congreso de Investigaciones Cualitativas
       </h2>
@@ -90,7 +112,11 @@ export default function UpcomingActivities() {
       <Slider {...settings}>
         {images.map((item, index) => (
           <div key={index} className="px-2">
-            <div className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.03] transition-all duration-500">
+            <div
+              className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.03] transition-all duration-500"
+              data-aos="zoom-in"
+              data-aos-once="false"
+            >
               <div className="h-64 w-full flex items-center justify-center bg-black/10">
                 <img
                   src={item.src}

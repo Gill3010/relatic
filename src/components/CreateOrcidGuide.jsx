@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import { motion } from "framer-motion";
 import {
   Globe,
@@ -174,6 +177,15 @@ const steps = [
 export default function CreateOrcidGuide() {
   const [currentStep, setCurrentStep] = useState(0);
 
+  useEffect(() => {
+    AOS.init({ once: false });
+
+    const onScroll = () => AOS.refreshHard();
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const handleNext = () => {
     if (currentStep < steps.length - 1) setCurrentStep(currentStep + 1);
   };
@@ -187,6 +199,8 @@ export default function CreateOrcidGuide() {
       initial={{ opacity: 0, y: -30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
+      data-aos="fade-up"
+      data-aos-once="false"
       className="w-full max-w-3xl mx-auto p-10 rounded-2xl shadow-2xl border border-white/10 bg-[#00bcd4] text-white"
     >
       <h1 className="text-4xl font-extrabold text-center text-white mb-4 drop-shadow">

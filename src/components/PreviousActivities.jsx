@@ -1,8 +1,23 @@
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export default function Gallery() {
+  useEffect(() => {
+    AOS.init({ once: false });
+
+    const handleScroll = () => {
+      AOS.refreshHard(); // Forzar re-evaluación de posición
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const images = [
     { src: "/assets/IE1.jpg", title: "Ponencia 1", description: "Presentación sobre métodos cualitativos." },
     { src: "/assets/IE2.jpg", title: "Ponencia 2", description: "Análisis de estudios de caso en educación." },
@@ -58,7 +73,11 @@ export default function Gallery() {
   };
 
   return (
-    <div className="p-6 md:p-10 bg-[#0a2d4d] min-h-screen">
+    <div
+      className="p-6 md:p-10 bg-[#0a2d4d] min-h-screen"
+      data-aos="fade-up"
+      data-aos-once="false"
+    >
       <h2 className="text-4xl md:text-5xl font-extrabold text-center text-white mb-2 drop-shadow-md">
         I Encuentro de Investigaciones Cualitativas
       </h2>
@@ -70,7 +89,11 @@ export default function Gallery() {
       <Slider {...topSettings} className="mb-10">
         {images.slice(0, 4).map((item, index) => (
           <div key={index} className="px-2">
-            <div className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.03] transition-all duration-500">
+            <div
+              className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.03] transition-all duration-500"
+              data-aos="zoom-in"
+              data-aos-once="false"
+            >
               <div className="h-64 w-full flex items-center justify-center bg-black/10">
                 <img
                   src={item.src}
@@ -91,7 +114,11 @@ export default function Gallery() {
       <Slider {...bottomSettings}>
         {images.slice(4, 8).map((item, index) => (
           <div key={index} className="px-2">
-            <div className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.03] transition-all duration-500">
+            <div
+              className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.03] transition-all duration-500"
+              data-aos="zoom-in"
+              data-aos-once="false"
+            >
               <div className="h-64 w-full flex items-center justify-center bg-black/10">
                 <img
                   src={item.src}

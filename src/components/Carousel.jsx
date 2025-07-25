@@ -12,7 +12,15 @@ import {
 
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isAutoPlaying, ] = useState(true);
+  const [isAutoPlaying] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasMounted(true);
+    }, 50);
+    return () => clearTimeout(timer);
+  }, []);
 
   const slides = [
     {
@@ -91,10 +99,15 @@ const Carousel = () => {
       <div className="relative w-full h-full">
         {slides.map((slide, index) => {
           const IconComponent = slide.icon;
+          const isActive = index === currentSlide && hasMounted;
+
           return (
             <div
               key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? 'opacity-100' : 'opacity-0'}`}
+              className={`
+                absolute inset-0 transition-opacity duration-1000 ease-in-out
+                ${index === currentSlide ? 'opacity-100' : 'opacity-0'}
+              `}
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${slide.gradient}`} />
               <div className="absolute inset-0 opacity-10">
@@ -106,23 +119,26 @@ const Carousel = () => {
 
               <div className="relative z-20 h-full flex items-center justify-center px-8">
                 <div className="text-center max-w-4xl">
-                  <div className={`mb-8 transform transition-all duration-1000 delay-300 ${index === currentSlide ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-90'}`}> 
+                  <div className={`mb-8 transform transition-all duration-1000 delay-300 ${isActive ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-90'}`}>
                     <IconComponent size={80} className={`mx-auto ${slide.textColor} drop-shadow-lg`} />
                   </div>
 
-                  <h1 className={`text-6xl md:text-7xl font-bold mb-4 ${slide.textColor} transition-all duration-1000 delay-500 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+                  <h1 className={`text-6xl md:text-7xl font-bold mb-4 ${slide.textColor} transition-all duration-1000 delay-500
+                    ${isActive ? 'translate-y-0 opacity-100 animate-zoom-in' : 'translate-y-8 opacity-0'}`}>
                     {slide.title}
                   </h1>
 
-                  <h2 className={`text-2xl md:text-3xl font-light mb-6 ${slide.textColor} opacity-90 transition-all duration-1000 delay-700 ${index === currentSlide ? 'translate-y-0 opacity-90' : 'translate-y-8 opacity-0'}`}>
+                  <h2 className={`text-2xl md:text-3xl font-light mb-6 ${slide.textColor} opacity-90 transition-all duration-1000 delay-700
+                    ${isActive ? 'translate-y-0 opacity-90 animate-zoom-in' : 'translate-y-8 opacity-0'}`}>
                     {slide.subtitle}
                   </h2>
 
-                  <p className={`text-lg md:text-xl ${slide.textColor} opacity-80 max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-900 ${index === currentSlide ? 'translate-y-0 opacity-80' : 'translate-y-8 opacity-0'}`}>
+                  <p className={`text-lg md:text-xl ${slide.textColor} opacity-80 max-w-2xl mx-auto leading-relaxed transition-all duration-1000 delay-900
+                    ${isActive ? 'translate-y-0 opacity-80 animate-zoom-in' : 'translate-y-8 opacity-0'}`}>
                     {slide.description}
                   </p>
 
-                  <ul className={`mt-4 space-y-2 text-left text-base md:text-lg max-w-xl mx-auto ${slide.textColor} transition-all duration-1000 delay-[1050ms] ${index === currentSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                  <ul className={`mt-4 space-y-2 text-left text-base md:text-lg max-w-xl mx-auto ${slide.textColor} transition-all duration-1000 delay-[1050ms] ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                     {slide.bullets.map((item, i) => (
                       <li key={i} className="flex items-center gap-2">
                         <CheckCircle size={18} className="text-white/90" />
@@ -131,20 +147,20 @@ const Carousel = () => {
                     ))}
                   </ul>
 
-                 <a href={slide.href} rel="noopener noreferrer">
-  <button
-    className={`
-      mt-8 px-8 py-3 rounded-full font-semibold text-white text-lg shadow-lg transform hover:scale-105 transition-all duration-300
-      bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700
-      hover:from-purple-500 hover:via-blue-500 hover:to-indigo-600
-      hover:shadow-purple-500/25
-      ${index === currentSlide ? 'translate-y-0 opacity-100 delay-[1150ms]' : 'translate-y-8 opacity-0'}
-      transition-all duration-1000
-    `}
-  >
-    Ver más detalles ✨
-  </button>
-</a>
+                  <a href={slide.href} rel="noopener noreferrer">
+                    <button
+                      className={`
+                        mt-8 px-8 py-3 rounded-full font-semibold text-white text-lg shadow-lg transform hover:scale-105 transition-all duration-300
+                        bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700
+                        hover:from-purple-500 hover:via-blue-500 hover:to-indigo-600
+                        hover:shadow-purple-500/25
+                        ${isActive ? 'translate-y-0 opacity-100 delay-[1150ms] animate-zoom-in' : 'translate-y-8 opacity-0'}
+                        transition-all duration-1000
+                      `}
+                    >
+                      Ver más detalles ✨
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
