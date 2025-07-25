@@ -4,8 +4,8 @@ import { useEffect, useState, useRef } from 'react';
 
 const colorsByLevel = {
   1: '#0a2d4d',
-  2: '#2FA4E7',
-  3: '#00bcd4',
+  2: '#00bcd4',
+  3: '#0a2d4d',
 };
 
 const ContactCard = ({ contact }) => {
@@ -14,76 +14,62 @@ const ContactCard = ({ contact }) => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setVisible(entry.isIntersecting);
-      },
+      ([entry]) => setVisible(entry.isIntersecting),
       { threshold: 0.1 }
     );
     if (ref.current) observer.observe(ref.current);
-    return () => {
-      if (ref.current) observer.unobserve(ref.current);
-    };
+    return () => ref.current && observer.unobserve(ref.current);
   }, []);
 
   return (
     <div
       ref={ref}
-      style={{ backgroundColor: colorsByLevel[contact.level], color: 'white' }}
       className={`
         flex flex-col items-center space-y-4
-        p-4 md:p-6 rounded-lg shadow-md
-        w-full max-w-xs
+        p-6 md:p-8 rounded-2xl shadow-2xl border border-white/10
+        w-full max-w-xs bg-opacity-90
         transform transition-all duration-700 ease-in-out
         ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
+        hover:scale-[1.03]
+        backdrop-blur-sm
       `}
+      style={{ backgroundColor: colorsByLevel[contact.level], color: 'white' }}
     >
       <img
         src={contact.image}
         alt={contact.name}
-        className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
+        className="w-24 h-24 md:w-28 md:h-28 rounded-full object-cover shadow-md border-2 border-white/20"
       />
       <div className="flex flex-col items-center text-center">
-        <h3 className="text-lg md:text-xl font-semibold" style={{ color: 'white' }}>
-          {contact.name}
-        </h3>
-        <p className="text-xs md:text-sm" style={{ color: 'white' }}>
-          {contact.occupation}
-        </p>
-
-        <div className="flex flex-col items-center space-y-2 mt-2 w-full">
+        <h3 className="text-xl font-semibold mb-1">{contact.name}</h3>
+        <p className="text-sm text-white/90 mb-3">{contact.occupation}</p>
+        <div className="flex flex-col items-center space-y-2 w-full text-sm">
           <a
             href={`mailto:${contact.email}`}
-            className="flex items-center space-x-2 hover:underline text-xs md:text-sm w-full truncate"
-            style={{ color: 'white' }}
+            className="flex items-center space-x-2 hover:underline w-full truncate"
           >
             <Mail size={14} />
-            <span className="truncate max-w-[160px] md:max-w-[200px]">{contact.email}</span>
+            <span className="truncate max-w-[200px]">{contact.email}</span>
           </a>
-
           <a
             href={`tel:${contact.phone}`}
-            className="flex items-center space-x-2 hover:underline text-xs md:text-sm w-full truncate"
-            style={{ color: 'white' }}
+            className="flex items-center space-x-2 hover:underline w-full truncate"
           >
             <Phone size={14} />
             <span className="truncate">{contact.phone}</span>
           </a>
-
           {contact.orcid && contact.orcid !== '#' ? (
             <a
               href={contact.orcid}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 hover:underline text-xs md:text-sm w-full truncate"
-              style={{ color: 'white' }}
+              className="flex items-center space-x-2 hover:underline w-full truncate"
             >
               <ExternalLink size={14} />
               <span className="truncate">Ver ORCID</span>
             </a>
           ) : (
-            <span className="text-xs md:text-sm truncate" style={{ color: 'white' }}>
-              ORCID no disponible
-            </span>
+            <span className="truncate text-white/70">ORCID no disponible</span>
           )}
         </div>
       </div>
@@ -189,15 +175,15 @@ const AboutUs = () => {
   ];
 
   return (
-    <div className="bg-white py-8 md:py-12">
+    <div className="bg-white py-12">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-[#0a2d4d] mb-6 md:mb-8">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-center text-[#0a2d4d] mb-10">
           Conoce a Nuestro Equipo
         </h2>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center space-y-12">
           {/* Nivel 1 */}
-          <div className="mb-8 w-full flex justify-center">
+          <div className="w-full flex justify-center">
             <div className="w-full max-w-xs">
               {contacts
                 .filter((c) => c.level === 1)
@@ -208,8 +194,8 @@ const AboutUs = () => {
           </div>
 
           {/* Nivel 2 */}
-          <div className="mb-8 w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 justify-items-center">
+          <div className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-items-center">
               {contacts
                 .filter((c) => c.level === 2)
                 .map((contact, idx) => (
@@ -220,7 +206,7 @@ const AboutUs = () => {
 
           {/* Nivel 3 */}
           <div className="w-full">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 justify-items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 justify-items-center">
               {contacts
                 .filter((c) => c.level === 3)
                 .map((contact, idx) => (

@@ -17,7 +17,6 @@ const Agreements = () => {
   ];
 
   const infiniteImages = [...images, ...images];
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const imagesPerSlide = 5;
 
@@ -26,13 +25,13 @@ const Agreements = () => {
   };
 
   useEffect(() => {
-    // Inicializa AOS al montar este componente
     AOS.init({ duration: 1000, once: false });
     AOS.refresh();
 
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % infiniteImages.length);
     }, 1500);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -43,18 +42,18 @@ const Agreements = () => {
 
   return (
     <section
-      className="relative w-full p-6 rounded-3xl shadow-2xl backdrop-blur-md border border-white/20 bg-gradient-to-br from-white/30 via-cyan-100/20 to-blue-100/10 mb-10 overflow-hidden"
+      className="relative w-full p-6 rounded-3xl bg-white shadow-xl border border-[#0a2d4d]/20 overflow-hidden"
       data-aos="fade-up"
       data-aos-once="false"
     >
-      <h2 className="text-center text-2xl font-extrabold text-[#0a2d4d] drop-shadow-md mb-6">
+      <h2 className="text-center text-2xl font-extrabold text-[#0a2d4d] drop-shadow-sm mb-6">
         Instituciones en convenio
       </h2>
 
       <div className="flex" style={containerStyle}>
         {infiniteImages.map((image, index) => (
           <div key={index} className="flex-shrink-0 w-full sm:w-1/5 px-2">
-            <div className="relative bg-white/10 border border-white/30 backdrop-blur-lg rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-xl">
+            <div className="relative bg-white border border-[#00bcd4]/50 rounded-xl shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
               <a
                 href={image.href}
                 target={image.href ? '_blank' : '_self'}
@@ -63,7 +62,7 @@ const Agreements = () => {
                 <img
                   src={image.src}
                   alt={image.alt}
-                  className="w-full h-32 object-contain"
+                  className="w-full h-32 object-contain p-2"
                 />
               </a>
             </div>
@@ -72,20 +71,20 @@ const Agreements = () => {
       </div>
 
       {/* Botón izquierdo */}
-<button
-  onClick={prevImage}
-  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#0a2d4d] backdrop-blur-md hover:scale-110 transition duration-300 w-12 h-12 rounded-full shadow-md flex items-center justify-center"
->
-  <span className="text-white text-2xl select-none">&#8249;</span>
-</button>
+      <button
+        onClick={prevImage}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#0a2d4d] hover:bg-[#00bcd4] transition duration-300 w-10 h-10 rounded-full shadow-md flex items-center justify-center"
+      >
+        <span className="text-white text-xl select-none">&#8249;</span>
+      </button>
 
-{/* Botón derecho */}
-<button
-  onClick={() => setCurrentIndex((prevIndex) => (prevIndex + 1) % infiniteImages.length)}
-  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#0a2d4d] backdrop-blur-md hover:scale-110 transition duration-300 w-12 h-12 rounded-full shadow-md flex items-center justify-center"
->
-  <span className="text-white text-2xl select-none">&#8250;</span>
-</button>
+      {/* Botón derecho */}
+      <button
+        onClick={() => setCurrentIndex((prevIndex) => (prevIndex + 1) % infiniteImages.length)}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#0a2d4d] hover:bg-[#00bcd4] transition duration-300 w-10 h-10 rounded-full shadow-md flex items-center justify-center"
+      >
+        <span className="text-white text-xl select-none">&#8250;</span>
+      </button>
 
       {/* Indicadores */}
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
@@ -95,7 +94,7 @@ const Agreements = () => {
             className={`h-2 w-2 rounded-full transition-all duration-300 ${
               index === currentIndex % images.length
                 ? 'bg-[#0a2d4d] shadow-md scale-125'
-                : 'bg-white/30'
+                : 'bg-[#e0f7fa]'
             }`}
           />
         ))}
