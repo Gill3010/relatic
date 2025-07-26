@@ -9,6 +9,11 @@ import UpcomingActivities from './components/UpcomingActivities';
 import PreviousActivities from './components/PreviousActivities';
 import Suscription from './components/Suscription';
 import CreateOrcidGguide from './components/CreateOrcidGuide';
+import JournalsDetails from './components/JournalsDetails';
+import PostersDetails from './components/PostersDetails';
+import BooksDetails from './components/BooksDetails'; 
+import LearningDetails from './components/LearningDetails';
+import IntellectualPropertyDetails from './components/IntellectualPropertyDetails';
 
 const AppContent = () => {
   const location = useLocation();
@@ -19,6 +24,11 @@ const AppContent = () => {
     '/actividades/anteriores',
     '/suscription',
     '/crear-orcid',
+    '/detalles-revistas',
+    '/detalles-carteles',
+    '/detalles-libros',
+    '/detalles-aprendizaje',
+    '/detalles-propiedad-intelectual'
   ];
 
   if (minimalRoutes.includes(location.pathname)) {
@@ -31,6 +41,11 @@ const AppContent = () => {
         {location.pathname === '/actividades/anteriores' && <PreviousActivities />}
         {location.pathname === '/suscription' && <Suscription />}
         {location.pathname === '/crear-orcid' && <CreateOrcidGguide />}
+        {location.pathname === '/detalles-revistas' && <JournalsDetails />}
+        {location.pathname === '/detalles-carteles' && <PostersDetails />}
+        {location.pathname === '/detalles-libros' && <BooksDetails />}
+        {location.pathname === '/detalles-aprendizaje' && <LearningDetails />}
+        {location.pathname === '/detalles-propiedad-intelectual' && <IntellectualPropertyDetails />}
       </main>
     );
   }

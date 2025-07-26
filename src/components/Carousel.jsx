@@ -31,7 +31,7 @@ const Carousel = () => {
       icon: Newspaper,
       gradient: "from-sky-600 via-cyan-500 to-blue-500",
       textColor: "text-white",
-      href: "https://relaticpanama.org/_journals/",
+      href: "/detalles-revistas",
       bullets: ["Acceso abierto a revistas científicas", "Proceso editorial transparente", "Difusión internacional"]
     },
     {
@@ -42,7 +42,7 @@ const Carousel = () => {
       icon: FileText,
       gradient: "from-sky-500 via-cyan-400 to-blue-400",
       textColor: "text-white",
-      href: "https://relaticpanama.org/_posters/",
+      href: "/detalles-carteles",
       bullets: ["Diseño atractivo y moderno", "Fácil visualización en línea", "Difusión en eventos académicos"]
     },
     {
@@ -53,7 +53,7 @@ const Carousel = () => {
       icon: BookOpen,
       gradient: "from-teal-500 via-cyan-500 to-sky-500",
       textColor: "text-white",
-      href: "https://relaticpanama.org/_books/index.php/edrp/inicio",
+      href: "/detalles-libros",
       bullets: ["Publicación sin costo", "ISBN y DOI disponibles", "Distribución digital global"]
     },
     {
@@ -64,7 +64,7 @@ const Carousel = () => {
       icon: GraduationCap,
       gradient: "from-teal-500 via-sky-500 to-blue-600",
       textColor: "text-white",
-      href: "https://relaticpanama.org/_classroom/",
+      href: "/detalles-aprendizaje",
       bullets: ["Cursos asincrónicos y en vivo", "Certificados oficiales", "Expertos latinoamericanos"]
     },
     {
@@ -75,7 +75,7 @@ const Carousel = () => {
       icon: ShieldCheck,
       gradient: "from-sky-600 via-cyan-600 to-blue-700",
       textColor: "text-white",
-      href: "https://relaticpanama.org/_protect/",
+      href: "/detalles-propiedad-intelectual",
       bullets: ["Registro de propiedad intelectual", "Asesoría personalizada", "Cobertura regional"]
     }
   ];

@@ -12,7 +12,7 @@ import {
   FaRegCalendarCheck,
 } from 'react-icons/fa6';
 
-import { FaHome } from 'react-icons/fa'; // ✅ se importa desde 'fa', no 'fa6'
+import { FaHome } from 'react-icons/fa'; 
 import styles from './Footer.module.css';
 
 const Footer = () => {
@@ -50,7 +50,7 @@ const Footer = () => {
     </li>
     <li className="flex items-center gap-2">
       <FaRocket size={14} />
-      <a href="/suscription" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Suscríbete</a>
+      <a href="/suscription" className="hover:text-cyan-300 transition duration-300 hover:translate-x-1">Afíliate</a>
     </li>
     <li className="flex items-center gap-2">
       <FaRegCalendarCheck size={14} />
