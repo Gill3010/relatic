@@ -14,4 +14,14 @@ export default defineConfig({
       aos: path.resolve(__dirname, 'node_modules/aos'),
     },
   },
+  server: {
+    proxy: {
+      // Redirige las llamadas a /_events/api hacia tu backend real
+      '/_events/api': {
+        target: 'https://relaticpanama.org',
+        changeOrigin: true,
+        secure: true,  // Si usas HTTPS en backend, debe quedar true
+      },
+    },
+  },
 });

@@ -11,9 +11,10 @@ import Suscription from './components/Suscription';
 import CreateOrcidGguide from './components/CreateOrcidGuide';
 import JournalsDetails from './components/JournalsDetails';
 import PostersDetails from './components/PostersDetails';
-import BooksDetails from './components/BooksDetails'; 
+import BooksDetails from './components/BooksDetails';
 import LearningDetails from './components/LearningDetails';
 import IntellectualPropertyDetails from './components/IntellectualPropertyDetails';
+import SearchPage from './components/SearchPage'; // 🔍 motor de búsqueda
 
 const AppContent = () => {
   const location = useLocation();
@@ -54,9 +55,16 @@ const AppContent = () => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <Carousel />
+      
+      {/* 🔍 Buscador insertado directamente en el Home */}
+      <div className="container mx-auto px-4 py-10">
+        <SearchPage />
+      </div>
+
       <main className="flex-grow">
-        <Routes>{/* Aquí puedes agregar rutas si lo necesitas más adelante */}</Routes>
+        <Routes>{/* Puedes usar rutas completas si lo necesitas más adelante */}</Routes>
       </main>
+
       <Agreements />
       <Footer />
     </div>
