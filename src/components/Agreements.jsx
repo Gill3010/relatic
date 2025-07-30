@@ -42,7 +42,7 @@ const Agreements = () => {
 
   return (
     <section
-      className="relative w-full p-6 rounded-3xl bg-white shadow-xl border border-[#0a2d4d]/20 overflow-hidden"
+      className="relative w-full p-6 rounded-3xl bg-white shadow-xl border border-[#00bcd4]/50 overflow-hidden"
       data-aos="fade-up"
       data-aos-once="false"
     >
@@ -53,7 +53,7 @@ const Agreements = () => {
       <div className="flex" style={containerStyle}>
         {infiniteImages.map((image, index) => (
           <div key={index} className="flex-shrink-0 w-full sm:w-1/5 px-2">
-            <div className="relative bg-white border border-[#00bcd4]/50 rounded-xl shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+            <div className="relative bg-white border border-[#00bcd4] rounded-xl shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105 hover:shadow-lg">
               <a
                 href={image.href}
                 target={image.href ? '_blank' : '_self'}

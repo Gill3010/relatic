@@ -7,13 +7,15 @@ const SearchBar = ({ query, onQueryChange, type, onTypeChange }) => {
     <div className="flex flex-col md:flex-row gap-4 mb-6">
       <input
         type="search"
-        className="flex-grow border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="flex-grow rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 border"
+        style={{ borderColor: '#00bcd4' }}
         placeholder="Buscar por autor o título..."
         value={query}
         onChange={e => onQueryChange(e.target.value)}
       />
       <select
-        className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 border"
+        style={{ borderColor: '#00bcd4' }}
         value={type}
         onChange={e => onTypeChange(e.target.value)}
       >

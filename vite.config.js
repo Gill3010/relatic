@@ -16,11 +16,21 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      // Redirige las llamadas a /_events/api hacia tu backend real
       '/_events/api': {
         target: 'https://relaticpanama.org',
         changeOrigin: true,
-        secure: true,  // Si usas HTTPS en backend, debe quedar true
+        secure: true,
+      },
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor_react';
+          }
+        },
       },
     },
   },
