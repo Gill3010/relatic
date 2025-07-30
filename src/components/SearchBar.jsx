@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const tipos = ['', 'Ponencia', 'Conferencia', 'Carteles Digitales', 'Facilitador de Taller', 'Libros', 'Panelistas'];
+const tipos = ['', 'Ponencia', 'Conferencia', 'Panelista', 'Facilitador de Taller', 'Revistas Indexadas', 'Carteles Digitales', 'Libros Digitales', 'Cursos'];
 
 const SearchBar = ({ query, onQueryChange, type, onTypeChange }) => {
   return (
@@ -8,7 +8,7 @@ const SearchBar = ({ query, onQueryChange, type, onTypeChange }) => {
       <input
         type="search"
         className="flex-grow border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        placeholder="Buscar por palabra clave..."
+        placeholder="Buscar por autor o título..."
         value={query}
         onChange={e => onQueryChange(e.target.value)}
       />
