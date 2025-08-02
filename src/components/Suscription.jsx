@@ -75,9 +75,9 @@ export default function Suscription() {
     }
   };
 
-  const labelStyle = "block text-sm font-semibold text-white mb-1";
+  const labelStyle = "block text-sm font-semibold text-[#0a2d4d] mb-1";
   const inputStyle =
-    "w-full bg-white/10 text-white placeholder-white/70 border border-white/30 rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-300 hover:border-white/50 transition";
+    "w-full bg-white/10 text-[#0a2d4d] placeholder-[#0a2d4d]/70 border border-[#00bcd4] rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-300 hover:border-[#00bcd4] transition";
 
   return (
     <motion.form
@@ -85,12 +85,12 @@ export default function Suscription() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       onSubmit={handleSubmit}
-      className="w-full max-w-5xl mx-auto p-10 rounded-2xl shadow-2xl border border-white/10 bg-[#00bcd4] text-white"
+      className="w-full max-w-5xl mx-auto p-10 rounded-2xl shadow-2xl border border-[#00bcd4] bg-white text-[#0a2d4d]"
     >
-      <h1 className="text-4xl font-extrabold text-center text-white mb-4 drop-shadow">
+      <h1 className="text-4xl font-extrabold text-center text-[#0a2d4d] mb-4 drop-shadow">
         Formulario de Suscripción a RELATIC-PANAMÁ
       </h1>
-      <h2 className="text-lg text-center text-white/80 mb-10 font-medium">
+      <h2 className="text-lg text-center text-[#0a2d4d]/80 mb-10 font-medium">
         MEMBRESÍA
       </h2>
 
@@ -111,10 +111,10 @@ export default function Suscription() {
             <label htmlFor={id} className={labelStyle}>
               {label}
               {id === "afiliacion" && (
-                <span className="text-white/60 text-xs ml-2">(Ej: Universidad de Panamá)</span>
+                <span className="text-[#0a2d4d]/60 text-xs ml-2">(Ej: Universidad de Panamá)</span>
               )}
               {id === "orcid" && (
-                <span className="text-white/60 text-xs ml-2">(Ej: 0000-0002-1825-0097)</span>
+                <span className="text-[#0a2d4d]/60 text-xs ml-2">(Ej: 0000-0002-1825-0097)</span>
               )}
               {required && <span className="text-red-500 ml-1">*</span>}
             </label>
@@ -160,7 +160,7 @@ export default function Suscription() {
             )}
 
             {id === "orcid" && (
-              <p className="text-sm text-white/70 mt-1">
+              <p className="text-sm text-[#0a2d4d]/70 mt-1">
                 Si no tienes ORCID, créalo{" "}
                 <Link to="/crear-orcid" className="underline text-cyan-200 hover:text-cyan-100">
                   aquí
@@ -222,7 +222,7 @@ export default function Suscription() {
       <div className="mt-10">
         <label htmlFor="palabrasClave" className={labelStyle}>
           Palabras clave
-          <span className="text-white/60 text-xs ml-2">(Ej: Tecnología, Innovación, Educación)</span>
+          <span className="text-[#0a2d4d]/60 text-xs ml-2">(Ej: Tecnología, Innovación, Educación)</span>
         </label>
         <textarea
           id="palabrasClave"
@@ -245,25 +245,25 @@ export default function Suscription() {
             accept=".jpg,.jpeg,.png"
             required
             onChange={handleChange}
-            className="w-full text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+            className="w-full text-[#0a2d4d] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-[#0a2d4d] hover:file:bg-cyan-600"
           />
         </div>
 
         <div className="mt-6 space-y-2">
-          <p className="text-white font-semibold">Precio: $30 USD</p>
+          <p className="text-[#0a2d4d] font-semibold">Precio: $30 USD</p>
           <label className={labelStyle}>
-            Comprobante de pago <span className="text-white/60 text-xs ml-2">(Opcional)</span>
+            Comprobante de pago <span className="text-[#0a2d4d]/60 text-xs ml-2">(Opcional)</span>
           </label>
           <input
   type="file"
   name="comprobantePago"
   onChange={handleChange}
-  className="w-full text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+  className="w-full text-[#0a2d4d] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-[#0a2d4d] hover:file:bg-cyan-600"
 />
         </div>
       </div>
      <div className="mt-10 space-y-6">
-  <h3 className="text-2xl font-bold text-white">Métodos de Pago</h3>
+  <h3 className="text-2xl font-bold text-[#0a2d4d]">Métodos de Pago</h3>
 
   {/* Banco General */}
   <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white/5 border border-white/20 rounded-xl p-4">
@@ -274,9 +274,9 @@ export default function Suscription() {
         className="h-6 w-auto object-contain"
       />
       <div>
-        <p className="font-semibold text-white">Banco General</p>
-        <p className="text-white/70 text-sm">Cuenta Corriente: <span className="font-medium text-white">03-78-01-089981-8</span></p>
-        <p className="text-white/70 text-sm">Nombre: Multi Servicios TK</p>
+        <p className="font-semibold text-[#0a2d4d]">Banco General</p>
+        <p className="text-[#0a2d4d]/70 text-sm">Cuenta Corriente: <span className="font-medium text-[#0a2d4d]">03-78-01-089981-8</span></p>
+        <p className="text-[#0a2d4d]/70 text-sm">Nombre: Multi Servicios TK</p>
       </div>
     </div>
     <button
@@ -297,9 +297,9 @@ export default function Suscription() {
         className="h-6 w-auto object-contain"
       />
       <div>
-        <p className="font-semibold text-white">Yappy</p>
-        <p className="text-white/70 text-sm">Directorio: <span className="font-medium text-white">@multiservicio</span></p>
-        <p className="text-white/70 text-sm">Nombre: Multiservicios TK</p>
+        <p className="font-semibold text-[#0a2d4d]">Yappy</p>
+        <p className="text-[#0a2d4d]/70 text-sm">Directorio: <span className="font-medium text-[#0a2d4d]">@multiservicio</span></p>
+        <p className="text-[#0a2d4d]/70 text-sm">Nombre: Multiservicios TK</p>
       </div>
     </div>
     <button
@@ -320,9 +320,9 @@ export default function Suscription() {
         className="h-6 w-auto object-contain"
       />
       <div>
-        <p className="font-semibold text-white">PayPal</p>
-        <p className="text-white/70 text-sm">Usuario: <span className="font-medium text-white">@multiserviciostk</span></p>
-        <p className="text-white/70 text-sm">Ubicación: Panamá, Panamá</p>
+        <p className="font-semibold text-[#0a2d4d]">PayPal</p>
+        <p className="text-[#0a2d4d]/70 text-sm">Usuario: <span className="font-medium text-[#0a2d4d]">@multiserviciostk</span></p>
+        <p className="text-[#0a2d4d]/70 text-sm">Ubicación: Panamá, Panamá</p>
       </div>
     </div>
     <button
@@ -337,7 +337,7 @@ export default function Suscription() {
 
       <button
   type="submit"
-  className="relative w-full mt-10 px-4 py-3 xl:px-6 xl:py-3 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-white rounded-full font-semibold hover:from-purple-500 hover:via-blue-500 hover:to-indigo-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
+  className="relative w-full mt-10 px-4 py-3 xl:px-6 xl:py-3 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-[#0a2d4d] rounded-full font-semibold hover:from-purple-500 hover:via-blue-500 hover:to-indigo-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
 >
   <span className="relative z-10 flex items-center justify-center space-x-2">
     {status === "loading" ? (

@@ -69,11 +69,12 @@ const AppContent = () => {
         {/* 🔍 Buscador insertado directamente en el Home */}
         <div className="container mx-auto px-4 py-10">
           <SearchPage />
-        </div>
-        <JournalMetrics />
+          <JournalMetrics />
         <PostersMetrics />
         <BooksMetrics />
         <CoursesMetrics />
+        </div>
+        
 
         <main className="flex-grow">
           <Routes>{/* tus rutas actuales sin cambios */}</Routes>

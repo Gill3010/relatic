@@ -120,7 +120,7 @@ const SearchPage = () => {
           data-aos-anchor-placement="top-bottom"
           data-aos-mirror="true"
         >
-          <p className="text-center text-gray-500 mt-6">Escribe una búsqueda o selecciona un tipo para ver resultados.</p>
+          <p className="text-center text-gray-500 mt-6">Selecciona un tipo y escribe una búsqueda para ver resultados.</p>
         </div>
       )}
 
