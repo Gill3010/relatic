@@ -20,6 +20,8 @@ import {
   Inbox,
   UserCheck,
   ArrowLeft,
+  BookOpen,
+  
 } from "lucide-react";
 
 const steps = [
@@ -35,8 +37,8 @@ const steps = [
             loading="lazy"
           />
           <div className="flex items-center space-x-2">
-            <Globe className="w-6 h-6 text-yellow-400" />
-            <MousePointerClick className="w-5 h-5 text-white/70" />
+            <Globe size={40} className="text-blue-600" />
+            <MousePointerClick size={40} className="text-blue-600" />
           </div>
         </div>
         Dirígete al sitio web oficial:{" "}
@@ -44,7 +46,7 @@ const steps = [
           href="https://orcid.org/register"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline text-cyan-200 hover:text-cyan-300 transition"
+          className="underline text-blue-400 hover:text-blue-300 transition"
         >
           https://orcid.org/register
         </a>
@@ -62,8 +64,8 @@ const steps = [
           loading="lazy"
         />
         <div className="flex items-center space-x-2 mb-2">
-          <FileText className="w-6 h-6 text-yellow-400" />
-          <Edit className="w-5 h-5 text-white/70" />
+          <FileText size={40} className="text-blue-600" />
+          <Edit size={40} className="text-blue-600" />
         </div>
         Ingresa tu nombre, correo electrónico y haz clic en &#39;Próximo paso&#39;.
       </>
@@ -80,8 +82,8 @@ const steps = [
           loading="lazy"
         />
         <div className="flex items-center space-x-2 mb-2">
-          <KeyRound className="w-6 h-6 text-yellow-400" />
-          <ShieldCheck className="w-5 h-5 text-white/70" />
+          <KeyRound size={40} className="text-blue-600" />
+          <ShieldCheck size={40} className="text-blue-600" />
         </div>
         Crea una contraseña segura que cumpla con los requisitos, y haz clic en &#39;Próximo paso&#39;.
       </>
@@ -98,8 +100,8 @@ const steps = [
           loading="lazy"
         />
         <div className="flex items-center space-x-2 mb-2">
-          <Briefcase className="w-6 h-6 text-yellow-400" />
-          <Building2 className="w-5 h-5 text-white/70" />
+          <Briefcase size={40} className="text-blue-600" />
+          <Building2 size={40} className="text-blue-600" />
         </div>
         Completa los campos de organización, departamento, cargo y fecha de inicio, y haz clic en &#39;Próximo paso&#39;.
       </>
@@ -116,8 +118,8 @@ const steps = [
           loading="lazy"
         />
         <div className="flex items-center space-x-2 mb-2">
-          <Eye className="w-6 h-6 text-yellow-400" />
-          <Settings className="w-5 h-5 text-white/70" />
+          <Eye size={40} className="text-blue-600" />
+          <Settings size={40} className="text-blue-600" />
         </div>
         Selecciona si tu perfil será visible para todos, personas de confianza o solo tú, y haz clic en &#39;Próximo paso&#39;.
       </>
@@ -134,8 +136,8 @@ const steps = [
           loading="lazy"
         />
         <div className="flex items-center space-x-2 mb-2">
-          <CheckCircle2 className="w-6 h-6 text-yellow-400" />
-          <FileCheck className="w-5 h-5 text-white/70" />
+          <CheckCircle2 size={40} className="text-blue-600" />
+          <FileCheck size={40} className="text-blue-600" />
         </div>
         Lee y acepta las condiciones de uso, luego haz clic en &#39;Completar registro&#39;.
       </>
@@ -146,8 +148,8 @@ const steps = [
     content: (
       <>
         <div className="flex items-center space-x-2 mb-4">
-          <MailCheck className="w-8 h-8 text-yellow-400" />
-          <Inbox className="w-6 h-6 text-white/70" />
+          <MailCheck size={40} className="text-blue-600" />
+          <Inbox size={40} className="text-blue-600" />
         </div>
         Revisa tu correo electrónico y haz clic en el enlace de verificación.
       </>
@@ -158,14 +160,14 @@ const steps = [
     content: (
       <>
         <div className="flex items-center space-x-2 mb-4">
-          <UserCheck className="w-8 h-8 text-yellow-400" />
-          <ArrowLeft className="w-6 h-6 text-white/70" />
+          <UserCheck size={40} className="text-blue-600" />
+          <ArrowLeft size={40} className="text-blue-600" />
         </div>
         Tu ORCID ha sido creado. Guarda tu identificador ORCID personal. <br />
         <a
           href="/suscription"
           rel="noopener noreferrer"
-          className="underline text-cyan-200 hover:text-cyan-300 transition"
+          className="underline text-blue-400 hover:text-blue-300 transition"
         >
           Regresar al formulario de suscripción
         </a>
@@ -178,12 +180,7 @@ export default function CreateOrcidGuide() {
   const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
-    AOS.init({ once: false });
-
-    const onScroll = () => AOS.refreshHard();
-    window.addEventListener("scroll", onScroll);
-
-    return () => window.removeEventListener("scroll", onScroll);
+    AOS.init({ duration: 800 });
   }, []);
 
   const handleNext = () => {
@@ -195,62 +192,96 @@ export default function CreateOrcidGuide() {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      data-aos="fade-up"
-      data-aos-once="false"
-      className="w-full max-w-3xl mx-auto p-10 rounded-2xl shadow-2xl border border-white/10 bg-[#00bcd4] text-white"
-    >
-      <h1 className="text-4xl font-extrabold text-center text-white mb-4 drop-shadow">
-        Guía para Crear un ORCID
-      </h1>
-      <h2 className="text-lg text-center text-white/80 mb-10 font-medium">
-        Sigue estos pasos para obtener tu identificador ORCID
-      </h2>
-
-      {/* Indicadores de progreso */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-6">
-          {steps.map((_, index) => (
-            <div
-              key={index}
-              className={`flex-1 h-2 mx-1 rounded-full transition-all duration-300 ${
-                index <= currentStep
-                  ? "bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700"
-                  : "bg-white/30 hover:bg-white/50"
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Contenido del paso */}
-        <div className="p-6 bg-white/10 border border-white/20 rounded-xl shadow-inner">
-          <h3 className="text-2xl font-bold mb-4">{steps[currentStep].title}</h3>
-          <div className="text-white/80 text-base leading-relaxed">
-            {steps[currentStep].content}
+    <div className="w-full px-6 py-16 md:py-24 bg-slate-800 text-white rounded-lg">
+      <div className="max-w-6xl mx-auto">
+        {/* Header Section */}
+        <div className="text-center mb-16" data-aos="zoom-in">
+          <div className="flex justify-center mb-8">
+            <div className="bg-blue-600 p-4 rounded-lg">
+              <BookOpen size={56} className="text-white" />
+            </div>
           </div>
+          
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+            Guía para Crear un ORCID
+          </h2>
+          
+          <p className="text-2xl md:text-3xl mb-6 font-light text-slate-300">
+            Sigue estos pasos para obtener tu identificador ORCID
+          </p>
+        </div>
+
+        {/* Main Content */}
+        <motion.div
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="bg-white p-8 md:p-10 rounded-lg border border-slate-200"
+          data-aos="fade-up"
+        >
+          {/* Indicadores de progreso */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-6">
+              {steps.map((_, index) => (
+                <div
+                  key={index}
+                  className={`flex-1 h-2 mx-1 rounded-full transition-all duration-300 ${
+                    index <= currentStep
+                      ? "bg-blue-600"
+                      : "bg-slate-200 hover:bg-slate-300"
+                  }`}
+                />
+              ))}
+            </div>
+
+            {/* Contenido del paso */}
+            <div className="p-6 bg-slate-50 rounded-lg border border-slate-200">
+              <h3 className="text-2xl font-semibold mb-4 text-slate-700">{steps[currentStep].title}</h3>
+              <div className="text-slate-600 leading-relaxed">
+                {steps[currentStep].content}
+              </div>
+            </div>
+          </div>
+
+          {/* Botones de navegación */}
+          <div className="flex justify-between">
+            <button
+              onClick={handleBack}
+              disabled={currentStep === 0}
+              className="group px-6 py-3 rounded-lg font-semibold text-white text-lg transform hover:scale-105 transition-all duration-300
+               bg-slate-600 hover:bg-slate-700 border border-slate-200 disabled:opacity-50"
+            >
+              Anterior
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={currentStep === steps.length - 1}
+              className="group px-6 py-3 rounded-lg font-semibold text-white text-lg transform hover:scale-105 transition-all duration-300
+               bg-blue-600 hover:bg-blue-700 border border-slate-200 disabled:opacity-50"
+            >
+              <span className="flex items-center space-x-2">
+                <span>Siguiente</span>
+                <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+              </span>
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Call to Action */}
+        <div className="mt-16 text-center" data-aos="fade-up" data-aos-delay="200">
+          <a
+            href="/suscription"
+            rel="noopener noreferrer"
+            className="group inline-block px-10 py-4 rounded-lg font-semibold text-white text-xl transform hover:scale-105 transition-all duration-300
+             bg-blue-600 hover:bg-blue-700 border border-slate-200"
+          >
+            <span className="flex items-center space-x-3">
+              <span className="text-2xl">🎓</span>
+              <span>¡AFÍLIATE YA!</span>
+            </span>
+          </a>
         </div>
       </div>
-
-      {/* Botones de navegación */}
-      <div className="flex justify-between">
-        <button
-          onClick={handleBack}
-          disabled={currentStep === 0}
-          className="px-6 py-2 rounded-xl font-semibold shadow-md transition-all duration-300 bg-white/10 border border-white/30 text-white disabled:opacity-50 hover:bg-white/20"
-        >
-          Anterior
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={currentStep === steps.length - 1}
-          className="px-6 py-2 rounded-xl font-bold shadow-md text-white transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 hover:from-purple-500 hover:via-blue-500 hover:to-indigo-600 disabled:opacity-50"
-        >
-          Siguiente
-        </button>
-      </div>
-    </motion.div>
+    </div>
   );
 }

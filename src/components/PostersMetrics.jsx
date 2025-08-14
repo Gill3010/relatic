@@ -33,19 +33,23 @@ const PostersMetrics = () => {
   }
 
   const cards = [
+    { label: 'Eventos', value: metrics.events },
     { label: 'Carteles', value: metrics.posters },
     { label: 'Autores', value: metrics.authors },
-    { label: 'Desde', value: metrics.first_year },
-    { label: 'Hasta', value: metrics.last_year },
+    {
+      label: 'Años Activos',
+      value: `${metrics.first_year} - ${metrics.last_year}`,
+    },
   ];
 
-  // Para gráfico sólo los valores numéricos relevantes
+  // Datos para el gráfico (Eventos primero)
   const pieData = [
+    { name: 'Eventos', value: metrics.events },
     { name: 'Carteles', value: metrics.posters },
     { name: 'Autores', value: metrics.authors },
   ];
 
-  const COLORS = ['#00bcd4', '#4caf50'];
+  const COLORS = ['#ff9800', '#00bcd4', '#4caf50'];
 
   return (
     <section
@@ -62,7 +66,7 @@ const PostersMetrics = () => {
           <div
             key={index}
             className="border backdrop-blur-lg bg-white/10 rounded-xl p-3 text-center transition-all hover:scale-105 hover:shadow-md"
-            style={{ borderColor: '#00bcd4' }}
+            style={{ borderColor: '#2563EBE6' }}
             data-aos="zoom-in"
             data-aos-delay={index * 100}
           >
@@ -103,7 +107,11 @@ const PostersMetrics = () => {
         </div>
 
         {/* Leyenda minimalista */}
-        <div className="flex justify-center gap-4 mt-2 text-xs text-gray-700">
+        <div className="flex justify-center gap-4 mt-2 text-xs text-gray-700 flex-wrap">
+          <div className="flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-[#ff9800] inline-block" />
+            Eventos
+          </div>
           <div className="flex items-center gap-1">
             <span className="w-3 h-3 rounded-full bg-[#00bcd4] inline-block" />
             Carteles

@@ -1,4 +1,4 @@
-import  { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
 
 // Lazy imports para todos los componentes
@@ -50,10 +50,33 @@ const AppContent = () => {
           {location.pathname === '/actividades/anteriores' && <PreviousActivities />}
           {location.pathname === '/suscription' && <Suscription />}
           {location.pathname === '/crear-orcid' && <CreateOrcidGguide />}
-          {location.pathname === '/detalles-revistas' && <JournalsDetails />}
-          {location.pathname === '/detalles-carteles' && <PostersDetails />}
-          {location.pathname === '/detalles-libros' && <BooksDetails />}
-          {location.pathname === '/detalles-aprendizaje' && <LearningDetails />}
+          {location.pathname === '/detalles-revistas' && (
+            <div className='space-y-8'>
+              <JournalMetrics />
+              <JournalsDetails />
+            </div>
+          )}
+          {location.pathname === '/detalles-carteles' &&  (
+            <div className='space-y-8'>
+              <PostersMetrics />
+              <PostersDetails />
+            </div>
+
+          )}
+          {location.pathname === '/detalles-libros' && (
+            <div className='space-y-8'>
+              <BooksMetrics />
+              <BooksDetails />
+
+            </div>
+          ) }
+          {location.pathname === '/detalles-aprendizaje' && (
+            <div className='space-y-8'>
+              <CoursesMetrics />
+              <LearningDetails />
+
+            </div>
+          ) }
           {location.pathname === '/detalles-propiedad-intelectual' && <IntellectualPropertyDetails />}
         </main>
       </Suspense>
@@ -69,13 +92,12 @@ const AppContent = () => {
         {/* 🔍 Buscador insertado directamente en el Home */}
         <div className="container mx-auto px-4 py-10">
           <SearchPage />
-          <JournalMetrics />
-        <PostersMetrics />
-        <BooksMetrics />
-        <CoursesMetrics />
+          {/* Se han eliminado JournalMetrics y JournalsDetails del home */}
+          
+          
+          
         </div>
         
-
         <main className="flex-grow">
           <Routes>{/* tus rutas actuales sin cambios */}</Routes>
         </main>

@@ -3,7 +3,29 @@ import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
 
 export default function Suscription() {
-  const [formData, setFormData] = useState({});
+  // Estado inicial con todos los campos definidos
+  const initialState = {
+    email: "",
+    pais: "",
+    cedula: "",
+    pasaporte: "",
+    afiliacion: "",
+    orcid: "",
+    primerNombre: "",
+    segundoNombre: "",
+    primerApellido: "",
+    segundoApellido: "",
+    edad: "",
+    genero: "",
+    grado: "",
+    actividad: "",
+    area: "",
+    palabrasClave: "",
+    foto: null,
+    comprobantePago: null
+  };
+
+  const [formData, setFormData] = useState(initialState);
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
 
@@ -63,7 +85,12 @@ export default function Suscription() {
       if (result.success) {
         setStatus("success");
         setMessage("Formulario enviado correctamente.");
-        setFormData({});
+        
+        // Resetear el estado del formulario
+        setFormData(initialState);
+        
+        // Resetear los elementos del formulario en el DOM
+        e.target.reset();
       } else {
         setStatus("error");
         setMessage(result.message || "Hubo un problema al enviar.");
@@ -75,9 +102,9 @@ export default function Suscription() {
     }
   };
 
-  const labelStyle = "block text-sm font-semibold text-[#0a2d4d] mb-1";
+  const labelStyle = "block text-sm font-semibold text-slate-700 mb-2";
   const inputStyle =
-    "w-full bg-white/10 text-[#0a2d4d] placeholder-[#0a2d4d]/70 border border-[#00bcd4] rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-300 hover:border-[#00bcd4] transition";
+    "w-full bg-white text-slate-700 placeholder-slate-500 border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-blue-400 transition-colors duration-300";
 
   return (
     <motion.form
@@ -85,12 +112,12 @@ export default function Suscription() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       onSubmit={handleSubmit}
-      className="w-full max-w-5xl mx-auto p-10 rounded-2xl shadow-2xl border border-[#00bcd4] bg-white text-[#0a2d4d]"
+      className="w-full max-w-5xl mx-auto p-6 md:p-8 rounded-xl shadow-sm border border-slate-200 bg-white text-slate-700"
     >
-      <h1 className="text-4xl font-extrabold text-center text-[#0a2d4d] mb-4 drop-shadow">
+      <h1 className="text-3xl font-bold text-center text-slate-800 mb-3">
         Formulario de Suscripción a RELATIC-PANAMÁ
       </h1>
-      <h2 className="text-lg text-center text-[#0a2d4d]/80 mb-10 font-medium">
+      <h2 className="text-lg text-center text-slate-600 mb-8 font-medium">
         MEMBRESÍA
       </h2>
 
@@ -111,10 +138,10 @@ export default function Suscription() {
             <label htmlFor={id} className={labelStyle}>
               {label}
               {id === "afiliacion" && (
-                <span className="text-[#0a2d4d]/60 text-xs ml-2">(Ej: Universidad de Panamá)</span>
+                <span className="text-slate-500 text-xs ml-2">(Ej: Universidad de Panamá)</span>
               )}
               {id === "orcid" && (
-                <span className="text-[#0a2d4d]/60 text-xs ml-2">(Ej: 0000-0002-1825-0097)</span>
+                <span className="text-slate-500 text-xs ml-2">(Ej: 0000-0002-1825-0097)</span>
               )}
               {required && <span className="text-red-500 ml-1">*</span>}
             </label>
@@ -126,7 +153,7 @@ export default function Suscription() {
                 required
                 onChange={handleChange}
                 className={inputStyle}
-                defaultValue=""
+                value={formData.pais || ""}
               >
                 <option value="" disabled>Seleccione su país</option>
                 {[
@@ -134,7 +161,7 @@ export default function Suscription() {
                   "España", "Guatemala", "Honduras", "México", "Nicaragua", "Panamá", "Paraguay", "Perú", "República Dominicana",
                   "Uruguay", "Venezuela", "Estados Unidos", "Canadá", "Otros"
                 ].map((pais) => (
-                  <option key={pais} value={pais} className="text-black">
+                  <option key={pais} value={pais} className="text-slate-700">
                     {pais}
                   </option>
                 ))}
@@ -146,6 +173,7 @@ export default function Suscription() {
                 name={id}
                 required={required}
                 onChange={handleChange}
+                value={formData[id] || ""}
                 placeholder={
                   id === "cedula"
                     ? "Ej: 8-999-999 (formato Panamá) o documento nacional"
@@ -160,9 +188,9 @@ export default function Suscription() {
             )}
 
             {id === "orcid" && (
-              <p className="text-sm text-[#0a2d4d]/70 mt-1">
+              <p className="text-sm text-slate-500 mt-1">
                 Si no tienes ORCID, créalo{" "}
-                <Link to="/crear-orcid" className="underline text-cyan-200 hover:text-cyan-100">
+                <Link to="/crear-orcid" className="underline text-blue-600 hover:text-blue-500">
                   aquí
                 </Link>
                 .
@@ -172,7 +200,7 @@ export default function Suscription() {
         ))}
       </div>
 
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         {[{
           name: "edad",
           label: "Edad",
@@ -203,14 +231,14 @@ export default function Suscription() {
               name={name}
               onChange={handleChange}
               className={inputStyle}
-              defaultValue=""
+              value={formData[name] || ""}
               required
             >
               <option value="" disabled>
                 Selecciona una opción
               </option>
               {options.map((opt) => (
-                <option key={opt} value={opt} className="text-black">
+                <option key={opt} value={opt} className="text-slate-700">
                   {opt}
                 </option>
               ))}
@@ -219,22 +247,23 @@ export default function Suscription() {
         ))}
       </div>
 
-      <div className="mt-10">
+      <div className="mt-8">
         <label htmlFor="palabrasClave" className={labelStyle}>
           Palabras clave
-          <span className="text-[#0a2d4d]/60 text-xs ml-2">(Ej: Tecnología, Innovación, Educación)</span>
+          <span className="text-slate-500 text-xs ml-2">(Ej: Tecnología, Innovación, Educación)</span>
         </label>
         <textarea
           id="palabrasClave"
           name="palabrasClave"
           rows={3}
           onChange={handleChange}
+          value={formData.palabrasClave || ""}
           placeholder="3 a 5 palabras relacionadas con su actividad académica o profesional; separadas por comas"
           className={`${inputStyle} resize-none`}
         />
       </div>
 
-      <div className="mt-10 space-y-4">
+      <div className="mt-8 space-y-4">
         <div>
           <label className={labelStyle}>
             Foto tamaño carnet<span className="text-red-500 ml-1">*</span>
@@ -245,116 +274,113 @@ export default function Suscription() {
             accept=".jpg,.jpeg,.png"
             required
             onChange={handleChange}
-            className="w-full text-[#0a2d4d] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-[#0a2d4d] hover:file:bg-cyan-600"
+            className="w-full text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
           />
         </div>
 
-        <div className="mt-6 space-y-2">
-          <p className="text-[#0a2d4d] font-semibold">Precio: $30 USD</p>
+        <div className="mt-4 space-y-2">
+          <p className="text-slate-700 font-semibold">Precio: $30 USD</p>
           <label className={labelStyle}>
-            Comprobante de pago <span className="text-[#0a2d4d]/60 text-xs ml-2">(Opcional)</span>
+            Comprobante de pago <span className="text-slate-500 text-xs ml-2">(Opcional)</span>
           </label>
           <input
-  type="file"
-  name="comprobantePago"
-  onChange={handleChange}
-  className="w-full text-[#0a2d4d] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-cyan-500 file:text-[#0a2d4d] hover:file:bg-cyan-600"
-/>
+            type="file"
+            name="comprobantePago"
+            onChange={handleChange}
+            className="w-full text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+          />
         </div>
       </div>
-     <div className="mt-10 space-y-6">
-  <h3 className="text-2xl font-bold text-[#0a2d4d]">Métodos de Pago</h3>
 
-  {/* Banco General */}
-  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white/5 border border-white/20 rounded-xl p-4">
-    <div className="flex items-center space-x-3">
-      <img 
-        src="https://www.bgeneral.com/wp-content/uploads/2025/01/bglogo70-400x72-2-300x54.png" 
-        alt="Banco General" 
-        className="h-6 w-auto object-contain"
-      />
-      <div>
-        <p className="font-semibold text-[#0a2d4d]">Banco General</p>
-        <p className="text-[#0a2d4d]/70 text-sm">Cuenta Corriente: <span className="font-medium text-[#0a2d4d]">03-78-01-089981-8</span></p>
-        <p className="text-[#0a2d4d]/70 text-sm">Nombre: Multi Servicios TK</p>
-      </div>
-    </div>
-    <button
-      type="button"
-      onClick={() => navigator.clipboard.writeText("03-78-01-089981-8")}
-      className="mt-3 md:mt-0 text-sm font-semibold text-cyan-300 hover:text-cyan-100"
-    >
-      Copiar
-    </button>
-  </div>
+      <div className="mt-8 space-y-4">
+        <h3 className="text-xl font-bold text-slate-800">Métodos de Pago</h3>
 
-  {/* Yappy */}
-  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white/5 border border-white/20 rounded-xl p-4">
-    <div className="flex items-center space-x-3">
-      <img 
-        src="https://www.yappy.com.pa/wp-content/uploads/2021/06/yappy-landscape-200x50.png" 
-        alt="Yappy" 
-        className="h-6 w-auto object-contain"
-      />
-      <div>
-        <p className="font-semibold text-[#0a2d4d]">Yappy</p>
-        <p className="text-[#0a2d4d]/70 text-sm">Directorio: <span className="font-medium text-[#0a2d4d]">@multiservicio</span></p>
-        <p className="text-[#0a2d4d]/70 text-sm">Nombre: Multiservicios TK</p>
-      </div>
-    </div>
-    <button
-      type="button"
-      onClick={() => navigator.clipboard.writeText("@multiservicio")}
-      className="mt-3 md:mt-0 text-sm font-semibold text-cyan-300 hover:text-cyan-100"
-    >
-      Copiar
-    </button>
-  </div>
+        {/* Banco General */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <img 
+              src="https://www.bgeneral.com/wp-content/uploads/2025/01/bglogo70-400x72-2-300x54.png" 
+              alt="Banco General" 
+              className="h-6 w-auto object-contain"
+            />
+            <div>
+              <p className="font-semibold text-slate-800">Banco General</p>
+              <p className="text-slate-600 text-sm">Cuenta Corriente: <span className="font-medium text-slate-800">03-78-01-089981-8</span></p>
+              <p className="text-slate-600 text-sm">Nombre: Multi Servicios TK</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigator.clipboard.writeText("03-78-01-089981-8")}
+            className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
+          >
+            Copiar
+          </button>
+        </div>
 
-  {/* PayPal */}
-  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-white/5 border border-white/20 rounded-xl p-4">
-    <div className="flex items-center space-x-3">
-      <img 
-        src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg" 
-        alt="PayPal" 
-        className="h-6 w-auto object-contain"
-      />
-      <div>
-        <p className="font-semibold text-[#0a2d4d]">PayPal</p>
-        <p className="text-[#0a2d4d]/70 text-sm">Usuario: <span className="font-medium text-[#0a2d4d]">@multiserviciostk</span></p>
-        <p className="text-[#0a2d4d]/70 text-sm">Ubicación: Panamá, Panamá</p>
+        {/* Yappy */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <img 
+              src="https://www.yappy.com.pa/wp-content/uploads/2021/06/yappy-landscape-200x50.png" 
+              alt="Yappy" 
+              className="h-6 w-auto object-contain"
+            />
+            <div>
+              <p className="font-semibold text-slate-800">Yappy</p>
+              <p className="text-slate-600 text-sm">Directorio: <span className="font-medium text-slate-800">@multiservicio</span></p>
+              <p className="text-slate-600 text-sm">Nombre: Multiservicios TK</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigator.clipboard.writeText("@multiservicio")}
+            className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
+          >
+            Copiar
+          </button>
+        </div>
+
+        {/* PayPal */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <img 
+              src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg" 
+              alt="PayPal" 
+              className="h-6 w-auto object-contain"
+            />
+            <div>
+              <p className="font-semibold text-slate-800">PayPal</p>
+              <p className="text-slate-600 text-sm">Usuario: <span className="font-medium text-slate-800">@multiserviciostk</span></p>
+              <p className="text-slate-600 text-sm">Ubicación: Panamá, Panamá</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigator.clipboard.writeText("@multiserviciostk")}
+            className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
+          >
+            Copiar
+          </button>
+        </div>
       </div>
-    </div>
-    <button
-      type="button"
-      onClick={() => navigator.clipboard.writeText("@multiserviciostk")}
-      className="mt-3 md:mt-0 text-sm font-semibold text-cyan-300 hover:text-cyan-100"
-    >
-      Copiar
-    </button>
-  </div>
-</div>
 
       <button
-  type="submit"
-  className="relative w-full mt-10 px-4 py-3 xl:px-6 xl:py-3 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-700 text-[#0a2d4d] rounded-full font-semibold hover:from-purple-500 hover:via-blue-500 hover:to-indigo-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
->
-  <span className="relative z-10 flex items-center justify-center space-x-2">
-    {status === "loading" ? (
-      <span className="text-sm xl:text-base">Enviando...</span>
-    ) : (
-      <span className="text-sm xl:text-base">Enviar</span>
-    )}
-  </span>
-
-  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 rounded-full opacity-0 hover:opacity-20 transition-opacity duration-300" />
-</button>
+        type="submit"
+        className="w-full mt-8 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold transition-all duration-300 hover:bg-blue-700 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        {status === "loading" ? (
+          <span>Enviando...</span>
+        ) : (
+          <span>Enviar formulario</span>
+        )}
+      </button>
 
       {status === "success" && (
-        <p className="mt-4 text-green-400 font-semibold">{message}</p>
+        <p className="mt-4 text-green-600 font-medium text-center">{message}</p>
       )}
       {status === "error" && (
-        <p className="mt-4 text-red-400 font-semibold">{message}</p>
+        <p className="mt-4 text-red-600 font-medium text-center">{message}</p>
       )}
     </motion.form>
   );

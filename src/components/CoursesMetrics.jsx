@@ -63,7 +63,7 @@ const CoursesMetrics = () => {
           <div
             key={index}
             className="border backdrop-blur-lg bg-white/10 rounded-xl p-3 text-center transition-all hover:scale-105 hover:shadow-md"
-            style={{ borderColor: '#00bcd4' }}
+            style={{ borderColor: '#2563EBE6' }}
             data-aos="zoom-in"
             data-aos-delay={index * 100}
           >

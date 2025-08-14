@@ -74,15 +74,15 @@ export default function Gallery() {
 
   return (
     <div
-      className="p-6 md:p-10 bg-[#0a2d4d] min-h-screen"
+      className="p-6 md:p-10 bg-slate-800 min-h-screen"
       data-aos="fade-up"
       data-aos-once="false"
     >
-      <h2 className="text-4xl md:text-5xl font-extrabold text-center text-white mb-2 drop-shadow-md">
+      <h2 className="text-4xl md:text-5xl font-bold text-center text-white mb-2">
         I Encuentro de Investigaciones Cualitativas
       </h2>
-      <p className="text-center text-[#00bcd4] text-lg mb-10">
-        Ciudad de Panamá | Octubre 2022
+      <p className="text-center text-slate-300 text-lg mb-10">
+        📍 Ciudad de Panamá | Octubre 2022
       </p>
 
       {/* Carrusel superior */}
@@ -90,20 +90,20 @@ export default function Gallery() {
         {images.slice(0, 4).map((item, index) => (
           <div key={index} className="px-2">
             <div
-              className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.03] transition-all duration-500"
+              className="rounded-lg overflow-hidden bg-white border border-slate-200 hover:scale-[1.03] transition-all duration-300"
               data-aos="zoom-in"
               data-aos-once="false"
             >
-              <div className="h-64 w-full flex items-center justify-center bg-black/10">
+              <div className="h-64 w-full flex items-center justify-center bg-slate-100">
                 <img
                   src={item.src}
                   alt={item.title}
-                  className="object-cover max-h-full rounded-t-3xl"
+                  className="object-cover max-h-full rounded-t-lg"
                 />
               </div>
-              <div className="p-6 bg-[#00bcd4] rounded-b-3xl">
-                <h3 className="text-xl font-bold text-[#0a2d4d] mb-2">{item.title}</h3>
-                <p className="text-white text-sm leading-relaxed">{item.description}</p>
+              <div className="p-6 bg-white rounded-b-lg">
+                <h3 className="text-xl font-bold text-slate-700 mb-2">{item.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{item.description}</p>
               </div>
             </div>
           </div>
@@ -115,27 +115,27 @@ export default function Gallery() {
         {images.slice(4, 8).map((item, index) => (
           <div key={index} className="px-2">
             <div
-              className="rounded-3xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg hover:scale-[1.03] transition-all duration-500"
+              className="rounded-lg overflow-hidden bg-white border border-slate-200 hover:scale-[1.03] transition-all duration-300"
               data-aos="zoom-in"
               data-aos-once="false"
             >
-              <div className="h-64 w-full flex items-center justify-center bg-black/10">
+              <div className="h-64 w-full flex items-center justify-center bg-slate-100">
                 <img
                   src={item.src}
                   alt={item.title}
-                  className="object-cover max-h-full rounded-t-3xl"
+                  className="object-cover max-h-full rounded-t-lg"
                 />
               </div>
-              <div className="p-6 bg-[#00bcd4] rounded-b-3xl">
-                <h3 className="text-xl font-bold text-[#0a2d4d] mb-2">{item.title}</h3>
-                <p className="text-white text-sm leading-relaxed">{item.description}</p>
+              <div className="p-6 bg-white rounded-b-lg">
+                <h3 className="text-xl font-bold text-slate-700 mb-2">{item.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{item.description}</p>
               </div>
             </div>
           </div>
         ))}
       </Slider>
 
-      {/* Estilos en línea para los dots blancos */}
+      {/* Estilos en línea para los dots */}
       <style>
         {`
           .slick-dots li button:before {

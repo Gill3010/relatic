@@ -3,9 +3,9 @@ import { Mail, Phone, ExternalLink } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 
 const colorsByLevel = {
-  1: '#0a2d4d',
-  2: '#00bcd4',
-  3: '#0a2d4d',
+  1: 'bg-slate-800',
+  2: 'bg-blue-600',
+  3: 'bg-slate-800',
 };
 
 const ContactCard = ({ contact, isDirector = false }) => {
@@ -26,18 +26,15 @@ const ContactCard = ({ contact, isDirector = false }) => {
       ref={ref}
       className={`
         relative flex flex-col items-center space-y-4
-        p-4 md:p-6 rounded-xl shadow-lg border-2
-        w-full max-w-sm bg-opacity-95
-        transform transition-all duration-700 ease-in-out
+        p-4 md:p-6 rounded-lg border border-slate-200
+        w-full max-w-sm
+        transform transition-all duration-300 ease-in-out
         ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-        hover:scale-[1.02] hover:shadow-xl
-        ${isDirector ? 'border-white/30 shadow-2xl' : 'border-white/20'}
+        hover:scale-[1.02] hover:shadow-md
+        ${isDirector ? 'border-slate-300 shadow-md' : 'border-slate-200'}
+        ${colorsByLevel[contact.level]}
+        text-white
       `}
-      style={{ 
-        backgroundColor: colorsByLevel[contact.level], 
-        color: 'white',
-        boxShadow: isDirector ? '0 20px 40px rgba(10, 45, 77, 0.3)' : undefined
-      }}
     >
       {/* Imagen del perfil */}
       <div className={`relative ${isDirector ? 'mb-2' : 'mb-1'}`}>
@@ -46,7 +43,7 @@ const ContactCard = ({ contact, isDirector = false }) => {
           alt={contact.name}
           className={`
             ${isDirector ? 'w-28 h-28 md:w-32 md:h-32' : 'w-20 h-20 md:w-24 md:h-24'} 
-            rounded-full object-cover shadow-lg border-3 border-white/30
+            rounded-full object-cover shadow-md border-2 border-white/30
           `}
         />
         {isDirector && (
@@ -57,7 +54,7 @@ const ContactCard = ({ contact, isDirector = false }) => {
       </div>
 
       {/* Información personal */}
-      <div className="flex flex-col items-center text-center space-y-2">
+      <div className="flex flex-col items-center text-center space-y-2 w-full">
         <h3 className={`
           ${isDirector ? 'text-lg md:text-xl' : 'text-base md:text-lg'} 
           font-bold leading-tight
@@ -75,22 +72,22 @@ const ContactCard = ({ contact, isDirector = false }) => {
         </div>
 
         {/* Información de contacto */}
-        <div className="flex flex-col items-center space-y-1.5 w-full text-xs md:text-sm pt-2">
+        <div className="flex flex-col items-center space-y-2 w-full text-sm pt-3">
           <a
             href={`mailto:${contact.email}`}
-            className="flex items-center space-x-2 hover:text-white/80 transition-colors w-full justify-center"
+            className="flex items-center gap-2 hover:text-blue-200 transition-colors w-full justify-center px-2 text-center break-all"
             title={contact.email}
           >
-            <Mail size={12} className="flex-shrink-0" />
-            <span className="truncate max-w-[160px]">{contact.email}</span>
+            <Mail size={14} className="flex-shrink-0" />
+            <span className="text-xs md:text-sm">{contact.email}</span>
           </a>
           
           <a
             href={`tel:${contact.phone}`}
-            className="flex items-center space-x-2 hover:text-white/80 transition-colors"
+            className="flex items-center gap-2 hover:text-blue-200 transition-colors"
           >
-            <Phone size={12} className="flex-shrink-0" />
-            <span>{contact.phone}</span>
+            <Phone size={14} className="flex-shrink-0" />
+            <span className="text-xs md:text-sm">{contact.phone}</span>
           </a>
           
           {contact.orcid && contact.orcid !== '#' ? (
@@ -98,10 +95,10 @@ const ContactCard = ({ contact, isDirector = false }) => {
               href={contact.orcid}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 hover:text-white/80 transition-colors text-center"
+              className="flex items-center gap-2 hover:text-blue-200 transition-colors"
             >
-              <ExternalLink size={12} className="flex-shrink-0" />
-              <span>ORCID</span>
+              <ExternalLink size={14} className="flex-shrink-0" />
+              <span className="text-xs md:text-sm">ORCID</span>
             </a>
           ) : (
             <span className="text-white/60 text-xs">ORCID no disponible</span>
@@ -129,13 +126,13 @@ ContactCard.propTypes = {
 const HierarchyConnector = ({ type, className = "" }) => {
   if (type === 'vertical') {
     return (
-      <div className={`w-0.5 h-8 md:h-12 bg-gray-300 mx-auto ${className}`} />
+      <div className={`w-0.5 h-8 md:h-12 bg-slate-400 mx-auto ${className}`} />
     );
   }
   
   if (type === 'horizontal') {
     return (
-      <div className={`h-0.5 w-full bg-gray-300 ${className}`} 
+      <div className={`h-0.5 w-full bg-slate-400 ${className}`} 
            style={{ maxWidth: '600px' }} />
     );
   }
@@ -143,8 +140,8 @@ const HierarchyConnector = ({ type, className = "" }) => {
   if (type === 'branch') {
     return (
       <div className={`relative ${className}`}>
-        <div className="w-0.5 h-6 bg-gray-300 mx-auto"></div>
-        <div className="h-0.5 w-8 bg-gray-300 absolute top-6 left-1/2 transform -translate-x-1/2"></div>
+        <div className="w-0.5 h-6 bg-slate-400 mx-auto"></div>
+        <div className="h-0.5 w-8 bg-slate-400 absolute top-6 left-1/2 transform -translate-x-1/2"></div>
       </div>
     );
   }
@@ -246,17 +243,17 @@ const AboutUs = () => {
   const specialists = contacts.filter(c => c.level === 3);
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 to-white py-12 md:py-16">
+    <div className="bg-gradient-to-b from-slate-50 to-white py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         {/* Título principal */}
         <div className="text-center mb-12 md:mb-16">
-          <h1 className="text-3xl md:text-5xl font-bold text-[#0a2d4d] mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
             Organigrama RELATIC
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
             Red Latinoamericana de Investigaciones Cualitativas
           </p>
-          <div className="w-24 h-1 bg-[#00bcd4] mx-auto mt-4 rounded-full"></div>
+          <div className="w-24 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
         </div>
 
         {/* Estructura jerárquica */}
@@ -264,8 +261,8 @@ const AboutUs = () => {
           
           {/* NIVEL 1: DIRECCIÓN GENERAL */}
           <div className="flex flex-col items-center">
-            <div className="bg-[#0a2d4d]/5 px-6 py-2 rounded-full mb-6">
-              <h2 className="text-lg md:text-xl font-bold text-[#0a2d4d] text-center">
+            <div className="bg-slate-100 px-6 py-2 rounded-full mb-6 border border-slate-200">
+              <h2 className="text-lg font-semibold text-slate-800 text-center">
                 DIRECCIÓN GENERAL
               </h2>
             </div>
@@ -277,8 +274,8 @@ const AboutUs = () => {
 
           {/* NIVEL 2: GERENCIAS */}
           <div className="flex flex-col items-center w-full">
-            <div className="bg-[#00bcd4]/10 px-6 py-2 rounded-full mb-8">
-              <h2 className="text-lg md:text-xl font-bold text-[#0a2d4d] text-center">
+            <div className="bg-blue-100 px-6 py-2 rounded-full mb-8 border border-blue-200">
+              <h2 className="text-lg font-semibold text-slate-800 text-center">
                 COORDINACIONES
               </h2>
             </div>
@@ -288,9 +285,9 @@ const AboutUs = () => {
               <HierarchyConnector type="horizontal" />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 w-full max-w-6xl justify-items-center">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 w-full max-w-6xl justify-items-center">
               {managers.map((contact, idx) => (
-                <div key={idx} className="flex flex-col items-center">
+                <div key={idx} className="flex flex-col items-center w-full">
                   {/* Conector vertical desde línea horizontal (solo desktop) */}
                   <div className="hidden md:block mb-4">
                     <HierarchyConnector type="vertical" />
@@ -306,8 +303,8 @@ const AboutUs = () => {
 
           {/* NIVEL 3: ESPECIALISTAS */}
           <div className="flex flex-col items-center w-full">
-            <div className="bg-[#0a2d4d]/5 px-6 py-2 rounded-full mb-8">
-              <h2 className="text-lg md:text-xl font-bold text-[#0a2d4d] text-center">
+            <div className="bg-slate-100 px-6 py-2 rounded-full mb-8 border border-slate-200">
+              <h2 className="text-lg font-semibold text-slate-800 text-center">
                 SERVICIOS ESPECIALIZADOS
               </h2>
             </div>
@@ -317,9 +314,9 @@ const AboutUs = () => {
               <HierarchyConnector type="horizontal" />
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full max-w-7xl justify-items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl justify-items-center">
               {specialists.map((contact, idx) => (
-                <div key={idx} className="flex flex-col items-center">
+                <div key={idx} className="flex flex-col items-center w-full">
                   {/* Conector vertical desde línea horizontal (solo desktop) */}
                   <div className="hidden lg:block mb-4">
                     <HierarchyConnector type="vertical" />
@@ -332,19 +329,19 @@ const AboutUs = () => {
         </div>
 
         {/* Información adicional */}
-        <div className="mt-16 bg-gradient-to-r from-[#0a2d4d]/5 to-[#00bcd4]/5 rounded-2xl p-6 md:p-8 text-center">
-          <h3 className="text-xl md:text-2xl font-bold text-[#0a2d4d] mb-4">
+        <div className="mt-16 bg-slate-100 rounded-xl p-6 md:p-8 text-center border border-slate-200">
+          <h3 className="text-xl font-semibold text-slate-800 mb-4">
             Áreas de Especialización
           </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm md:text-base text-gray-700">
-            <div className="bg-white/70 p-3 rounded-lg">Educación</div>
-            <div className="bg-white/70 p-3 rounded-lg">Producción Científica</div>
-            <div className="bg-white/70 p-3 rounded-lg">Revistas Indexadas</div>
-            <div className="bg-white/70 p-3 rounded-lg">Libros Digitales</div>
-            <div className="bg-white/70 p-3 rounded-lg">Carteles</div>
-            <div className="bg-white/70 p-3 rounded-lg">Propiedad Intelectual</div>
-            <div className="bg-white/70 p-3 rounded-lg">Aprendizaje Continuo</div>
-            <div className="bg-white/70 p-3 rounded-lg">Investigación Cualitativa</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-slate-700">
+            <div className="bg-white p-3 rounded-lg border border-slate-200">Educación</div>
+            <div className="bg-white p-3 rounded-lg border border-slate-200">Producción Científica</div>
+            <div className="bg-white p-3 rounded-lg border border-slate-200">Revistas Indexadas</div>
+            <div className="bg-white p-3 rounded-lg border border-slate-200">Libros Digitales</div>
+            <div className="bg-white p-3 rounded-lg border border-slate-200">Carteles</div>
+            <div className="bg-white p-3 rounded-lg border border-slate-200">Propiedad Intelectual</div>
+            <div className="bg-white p-3 rounded-lg border border-slate-200">Aprendizaje Continuo</div>
+            <div className="bg-white p-3 rounded-lg border border-slate-200">Investigación Cualitativa</div>
           </div>
         </div>
       </div>

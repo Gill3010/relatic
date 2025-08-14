@@ -8,14 +8,14 @@ const SearchBar = ({ query, onQueryChange, type, onTypeChange }) => {
       <input
         type="search"
         className="flex-grow rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 border"
-        style={{ borderColor: '#00bcd4' }}
+        style={{ borderColor: '#2563EBE6' }}
         placeholder="Buscar por autor o título..."
         value={query}
         onChange={e => onQueryChange(e.target.value)}
       />
       <select
         className="rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 border"
-        style={{ borderColor: '#00bcd4' }}
+        style={{ borderColor: '#2563EBE6' }}
         value={type}
         onChange={e => onTypeChange(e.target.value)}
       >
