@@ -161,7 +161,7 @@ export default function BooksDetails() {
         {/* Call to Action Buttons */}
         <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-8" data-aos="fade-up" data-aos-delay="600">
           <a
-            href="https://relaticpanama.org/_books/index.php/edrp/inicio"
+            href="https://relaticpanama.org/_books/index.php/edrp/catalog"
             rel="noopener noreferrer"
             className="group px-10 py-4 rounded-lg font-semibold text-white text-xl transform hover:scale-105 transition-all duration-300
              bg-blue-600 hover:bg-blue-700 border border-slate-200"

@@ -108,7 +108,7 @@ const Footer = () => {
               </a>
             </li>
             <li className="group">
-              <a href="https://relaticpanama.org/_books/index.php/edrp/inicio" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300">
+              <a href="https://relaticpanama.org/_books/index.php/edrp/catalog" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300">
                 <BookOpen size={14} />
                 <span className="relative">
                   Libros Digitales

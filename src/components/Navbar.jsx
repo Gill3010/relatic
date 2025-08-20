@@ -54,7 +54,7 @@ const Navbar = () => {
   const services = [
   { name: 'Revistas Indexadas', href: 'https://relaticpanama.org/_journals/', icon: Newspaper },
   { name: 'Carteles Digitales', href: 'https://relaticpanama.org/_posters/', icon: FileText },
-  { name: 'Libros Digitales', href: 'https://relaticpanama.org/_books/index.php/edrp/inicio', icon: BookOpen },
+  { name: 'Libros Digitales', href: 'https://relaticpanama.org/_books/index.php/edrp/catalog', icon: BookOpen },
   { name: 'Aprendizaje Continuo', href: 'https://relaticpanama.org/_classroom/', icon: GraduationCap },
   { name: 'Propiedad Intelectual', href: 'https://relaticpanama.org/_protect/', icon: ShieldCheck }
 ];

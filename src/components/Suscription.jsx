@@ -114,12 +114,18 @@ export default function Suscription() {
       onSubmit={handleSubmit}
       className="w-full max-w-5xl mx-auto p-6 md:p-8 rounded-xl shadow-sm border border-slate-200 bg-white text-slate-700"
     >
-      <h1 className="text-3xl font-bold text-center text-slate-800 mb-3">
-        Formulario de Suscripción a RELATIC-PANAMÁ
-      </h1>
-      <h2 className="text-lg text-center text-slate-600 mb-8 font-medium">
-        MEMBRESÍA
-      </h2>
+     <h1 className="text-3xl font-bold text-center text-slate-800 mb-3">
+  Formulario de Suscripción a RELATIC-PANAMÁ
+</h1>
+
+<h2 className="text-lg text-center text-slate-600 mb-8 font-medium">
+  MEMBRESÍA
+</h2>
+
+<p className="text-sm text-red-400 text-center mt-4 mb-6">
+  Todos los campos marcados con un asterisco rojo (*) son obligatorios.
+</p>
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {[
