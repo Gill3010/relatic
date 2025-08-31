@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
-
+import { ExternalLink } from "lucide-react";
 export default function Suscription() {
   // Estado inicial con todos los campos definidos
   const initialState = {
@@ -299,77 +299,147 @@ export default function Suscription() {
       </div>
 
       <div className="mt-8 space-y-4">
-        <h3 className="text-xl font-bold text-slate-800">Métodos de Pago</h3>
+  <h3 className="text-xl font-bold text-slate-800">Métodos de Pago</h3>
 
-        {/* Banco General */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
-          <div className="flex items-center gap-3">
-            <img 
-              src="https://www.bgeneral.com/wp-content/uploads/2025/01/bglogo70-400x72-2-300x54.png" 
-              alt="Banco General" 
-              className="h-6 w-auto object-contain"
-            />
-            <div>
-              <p className="font-semibold text-slate-800">Banco General</p>
-              <p className="text-slate-600 text-sm">Cuenta Corriente: <span className="font-medium text-slate-800">03-78-01-089981-8</span></p>
-              <p className="text-slate-600 text-sm">Nombre: Multi Servicios TK</p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => navigator.clipboard.writeText("03-78-01-089981-8")}
-            className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
-          >
-            Copiar
-          </button>
-        </div>
-
-        {/* Yappy */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
-          <div className="flex items-center gap-3">
-            <img 
-              src="https://www.yappy.com.pa/wp-content/uploads/2021/06/yappy-landscape-200x50.png" 
-              alt="Yappy" 
-              className="h-6 w-auto object-contain"
-            />
-            <div>
-              <p className="font-semibold text-slate-800">Yappy</p>
-              <p className="text-slate-600 text-sm">Directorio: <span className="font-medium text-slate-800">@multiservicio</span></p>
-              <p className="text-slate-600 text-sm">Nombre: Multiservicios TK</p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => navigator.clipboard.writeText("@multiservicio")}
-            className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
-          >
-            Copiar
-          </button>
-        </div>
-
-        {/* PayPal */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
-          <div className="flex items-center gap-3">
-            <img 
-              src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg" 
-              alt="PayPal" 
-              className="h-6 w-auto object-contain"
-            />
-            <div>
-              <p className="font-semibold text-slate-800">PayPal</p>
-              <p className="text-slate-600 text-sm">Usuario: <span className="font-medium text-slate-800">@multiserviciostk</span></p>
-              <p className="text-slate-600 text-sm">Ubicación: Panamá, Panamá</p>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => navigator.clipboard.writeText("@multiserviciostk")}
-            className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
-          >
-            Copiar
-          </button>
-        </div>
+{/* Nuevo texto sobre pago con tarjeta de crédito */}
+<div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+  <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+    {/* Logos */}
+    <div className="flex flex-col items-center sm:items-start gap-2 flex-shrink-0 w-full sm:w-auto">
+      <div className="flex justify-center sm:justify-start items-center gap-2 w-full">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"
+          alt="Visa"
+          className="h-6 sm:h-7 w-auto object-contain"
+          loading="lazy"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"
+          alt="Mastercard"
+          className="h-6 sm:h-7 w-auto object-contain"
+          loading="lazy"
+        />
       </div>
+      
+      {/* Botón agregado debajo de los logos - Ancho completo en desktop */}
+      <a
+        href="mailto:administracion@relaticpanama.org"
+        className="group relative overflow-hidden bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl border border-blue-500 text-sm flex items-center justify-center gap-2 w-full sm:w-full md:max-w-[200px] mt-2"
+      >
+        <ExternalLink className="w-4 h-4" />
+        <span>Ir al pago</span>
+      </a>
+    </div>
+
+    {/* Texto */}
+    <p className="text-blue-800 font-semibold text-sm sm:text-base leading-snug">
+      Si realiza el pago con tarjeta de crédito, por favor envíe un correo a 
+      <a
+        href="mailto:administracion@relaticpanama.org"
+        className="text-blue-600 underline ml-1 break-words"
+      >
+        administracion@relaticpanama.org
+      </a>{" "}
+      indicando esta modalidad, para que podamos remitirle el enlace correspondiente y completar su pago.
+    </p>
+  </div>
+</div>
+
+
+  {/* Banco General */}
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
+    <div className="flex items-center gap-3">
+      <img 
+        src="https://www.bgeneral.com/wp-content/uploads/2025/01/bglogo70-400x72-2-300x54.png" 
+        alt="Banco General" 
+        className="h-6 w-auto object-contain"
+      />
+      <div>
+        <p className="font-semibold text-slate-800">Banco General</p>
+        <p className="text-slate-600 text-sm">Cuenta Corriente: <span className="font-medium text-slate-800">03-78-01-089981-8</span></p>
+        <p className="text-slate-600 text-sm">Nombre: Multi Servicios TK</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      onClick={() => navigator.clipboard.writeText("03-78-01-089981-8")}
+      className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
+    >
+      Copiar
+    </button>
+  </div>
+
+  {/* Yappy */}
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
+    <div className="flex items-center gap-3">
+      <img 
+        src="https://www.yappy.com.pa/wp-content/uploads/2021/06/yappy-landscape-200x50.png" 
+        alt="Yappy" 
+        className="h-6 w-auto object-contain"
+      />
+      <div>
+        <p className="font-semibold text-slate-800">Yappy</p>
+        <p className="text-slate-600 text-sm">Directorio: <span className="font-medium text-slate-800">@multiservicio</span></p>
+        <p className="text-slate-600 text-sm">Nombre: Multiservicios TK</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      onClick={() => navigator.clipboard.writeText("@multiservicio")}
+      className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
+    >
+      Copiar
+    </button>
+  </div>
+
+  {/* PayPal */}
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
+    <div className="flex items-center gap-3">
+      <img 
+        src="https://www.paypalobjects.com/digitalassets/c/website/logo/full-text/pp_fc_hl.svg" 
+        alt="PayPal" 
+        className="h-6 w-auto object-contain"
+      />
+      <div>
+        <p className="font-semibold text-slate-800">PayPal</p>
+        <p className="text-slate-600 text-sm">Usuario: <span className="font-medium text-slate-800">@multiserviciostk</span></p>
+        <p className="text-slate-600 text-sm">Ubicación: Panamá, Panamá</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      onClick={() => navigator.clipboard.writeText("@multiserviciostk")}
+      className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
+    >
+      Copiar
+    </button>
+  </div>
+
+  {/* Interbank */}
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between bg-slate-50 border border-slate-200 rounded-lg p-4">
+    <div className="flex items-center gap-3">
+      <img 
+        src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYxIiBoZWlnaHQ9IjQ5IiB2aWV3Qm94PSIwIDAgMjYxIDQ5IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KPHJlY3QgeD0iMCIgeT0iMTQiIHdpZHRoPSI3NiIgaGVpZ2h0PSIzNiIgcng9IjMiIGZpbGw9IiMyNDU2QTQiLz4NCjxwYXRoIGQ9Ik05IDE5SDI2VjI3SDlWMTlaTTkgMzFIMjZWMzlIOVYzMVoiIGZpbGw9IndoaXRlIi8+DQo8dGV4dCB4PSI4OCIgeT0iMzMiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiMwMEJGNjMiPkludGVyYmFuazwvdGV4dD4NCjwvc3ZnPg==" 
+        alt="Interbank" 
+        className="h-6 w-auto object-contain"
+      />
+      <div>
+        <p className="font-semibold text-slate-800">Interbank</p>
+        <p className="text-slate-600 text-sm">Cuenta de Ahorros: <span className="font-medium text-slate-800">898-346625274-5</span></p>
+        <p className="text-slate-600 text-sm">CCI: <span className="font-medium text-slate-800">003-898-013466252745-43</span></p>
+        <p className="text-slate-600 text-sm">Titular: Poma Gonzáles Sósimo Misael</p>
+      </div>
+    </div>
+    <button
+      type="button"
+      onClick={() => navigator.clipboard.writeText("898-346625274-5")}
+      className="mt-3 md:mt-0 text-sm font-semibold text-blue-600 hover:text-blue-500"
+    >
+      Copiar
+    </button>
+  </div>
+</div>
+
 
       <button
         type="submit"

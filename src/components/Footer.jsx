@@ -72,7 +72,7 @@ const Footer = () => {
               </a>
             </li>
             <li className="group">
-              <a href="https://relaticpanama.org/_events/" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300">
+              <a href="https://relaticpanama.org/_events" className="flex items-center gap-2 hover:text-blue-200 transition-colors duration-300">
                 <FaRegCalendarCheck size={14} />
                 <span className="relative">
                   III Congreso IC

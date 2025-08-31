@@ -27,11 +27,35 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // Librerías principales
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
             return 'vendor_react';
           }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'vendor_icons';
+          }
+          if (id.includes('node_modules/chart.js')) {
+            return 'vendor_charts';
+          }
+
+          // Componentes grandes separados
+          if (id.includes('components/CertificateGenerator')) return 'CertificateGenerator';
+          if (id.includes('components/CertificateList')) return 'CertificateList';
+          if (id.includes('components/BooksMetrics')) return 'BooksMetrics';
+          if (id.includes('components/CoursesMetrics')) return 'CoursesMetrics';
+          if (id.includes('components/JournalMetrics')) return 'JournalMetrics';
+          if (id.includes('components/PostersMetrics')) return 'PostersMetrics';
+          if (id.includes('components/UpcomingActivities')) return 'UpcomingActivities';
+          if (id.includes('components/PreviousActivities')) return 'PreviousActivities';
+          if (id.includes('components/CreateOrcidGuide')) return 'CreateOrcidGuide';
+          if (id.includes('components/SearchPage')) return 'SearchPage';
+          if (id.includes('components/Carousel')) return 'Carousel';
+          if (id.includes('components/Navbar')) return 'Navbar';
+          if (id.includes('components/Footer')) return 'Footer';
+          if (id.includes('components/Agreements')) return 'Agreements';
         },
       },
     },
+    chunkSizeWarningLimit: 800, // aumenta límite para advertencias, opcional
   },
 });

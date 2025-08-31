@@ -22,6 +22,9 @@ const JournalMetrics = lazy(() => import('./components/JournalMetrics'));
 const PostersMetrics = lazy(() => import('./components/PostersMetrics'));
 const BooksMetrics = lazy(() => import('./components/BooksMetrics'));
 const CoursesMetrics = lazy(() => import('./components/CoursesMetrics'));
+const GenerateCertificates = lazy(() => import('./components/GenerateCertificates'));
+const GenerateCarnet = lazy(() => import('./components/GenerateCarnet'));
+
 
 const AppContent = () => {
   const location = useLocation();
@@ -36,7 +39,9 @@ const AppContent = () => {
     '/detalles-carteles',
     '/detalles-libros',
     '/detalles-aprendizaje',
-    '/detalles-propiedad-intelectual'
+    '/detalles-propiedad-intelectual',
+    '/generar-certificado',
+    '/generar-carnet'
   ];
 
   if (minimalRoutes.includes(location.pathname)) {
@@ -50,6 +55,8 @@ const AppContent = () => {
           {location.pathname === '/actividades/anteriores' && <PreviousActivities />}
           {location.pathname === '/suscription' && <Suscription />}
           {location.pathname === '/crear-orcid' && <CreateOrcidGguide />}
+          {location.pathname === '/generar-certificado' && <GenerateCertificates />}
+          {location.pathname === '/generar-carnet' && <GenerateCarnet />}
           {location.pathname === '/detalles-revistas' && (
             <div className='space-y-8'>
               <JournalMetrics />
