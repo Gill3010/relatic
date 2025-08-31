@@ -8,7 +8,7 @@ if (!isset($_GET['key']) || $_GET['key'] !== 'relatic2025json') {
     exit;
 }
 
-// Conexión con PDO
+// Conexi贸n con PDO
 require_once 'config.php'; // Este archivo ya define $pdo
 
 try {
