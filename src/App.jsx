@@ -24,6 +24,9 @@ const BooksMetrics = lazy(() => import('./components/BooksMetrics'));
 const CoursesMetrics = lazy(() => import('./components/CoursesMetrics'));
 const GenerateCertificates = lazy(() => import('./components/GenerateCertificates'));
 const GenerateCarnet = lazy(() => import('./components/GenerateCarnet'));
+const UserRegistration = lazy(() => import('./components/UserRegistration'));
+const AdminPanel = lazy(() => import('./components/AdminPanel'));
+const MemberPanel = lazy(() => import('./components/MemberPanel'));
 
 
 const AppContent = () => {
@@ -41,7 +44,10 @@ const AppContent = () => {
     '/detalles-aprendizaje',
     '/detalles-propiedad-intelectual',
     '/generar-certificado',
-    '/generar-carnet'
+    '/generar-carnet',
+    '/registro-usuario',
+    '/panel-administracion',
+    '/panel-miembro'
   ];
 
   if (minimalRoutes.includes(location.pathname)) {
@@ -57,6 +63,9 @@ const AppContent = () => {
           {location.pathname === '/crear-orcid' && <CreateOrcidGguide />}
           {location.pathname === '/generar-certificado' && <GenerateCertificates />}
           {location.pathname === '/generar-carnet' && <GenerateCarnet />}
+          {location.pathname === '/registro-usuario' && <UserRegistration />}
+          {location.pathname === '/panel-administracion' && <AdminPanel />}
+          {location.pathname === '/panel-miembro' && <MemberPanel />}
           {location.pathname === '/detalles-revistas' && (
             <div className='space-y-8'>
               <JournalMetrics />

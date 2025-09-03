@@ -19,28 +19,28 @@ const GenerateCertificates = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const certificateRef = useRef(null);
 
-  // Coordenadas y estilos para cada campo en el certificado - VERSIÓN CORREGIDA
+  // ✅ Posiciones con fuentes responsivas
   const textPositions = {
     nombre_estudiante: { 
       top: '42%', 
       left: '50%', 
       transform: 'translateX(-50%)', 
-      fontSize: '32px', 
+      fontSize: 'clamp(1rem, 2.5vw, 2rem)', 
       fontWeight: 'bold', 
       color: '#1a365d' 
     },
     id_estudiante: { 
-      top: '48%', 
+      top: '50%', 
       left: '50%', 
       transform: 'translateX(-50%)', 
-      fontSize: '18px', 
+      fontSize: 'clamp(0.8rem, 1.5vw, 1.1rem)', 
       color: '#4a5568' 
     },
     nombre_curso: { 
       top: '58%', 
       left: '50%', 
       transform: 'translateX(-50%)', 
-      fontSize: '22px', 
+      fontSize: 'clamp(1rem, 2vw, 1.4rem)', 
       fontWeight: '600', 
       color: '#2d3748' 
     },
@@ -48,21 +48,21 @@ const GenerateCertificates = () => {
       top: '63%', 
       left: '50%', 
       transform: 'translateX(-50%)', 
-      fontSize: '18px', 
+      fontSize: 'clamp(0.8rem, 1.5vw, 1.1rem)', 
       color: '#4a5568' 
     },
     fecha_inicio_fin: { 
       top: '68%', 
       left: '50%', 
       transform: 'translateX(-50%)', 
-      fontSize: '16px', 
+      fontSize: 'clamp(0.7rem, 1.2vw, 1rem)', 
       color: '#4a5568' 
     },
     fecha_emision: { 
       top: '78%', 
       left: '50%', 
       transform: 'translateX(-50%)', 
-      fontSize: '14px', 
+      fontSize: 'clamp(0.6rem, 1vw, 0.9rem)', 
       color: '#718096' 
     }
   };
@@ -82,9 +82,7 @@ const GenerateCertificates = () => {
     try {
       const response = await fetch('http://relaticpanama.org/api/generate_certificate.php', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
       
@@ -117,43 +115,36 @@ const GenerateCertificates = () => {
   };
 
   const downloadPDF = () => {
-    const input = certificateRef.current;
-    
-    html2canvas(input, {
-      scale: 3,
-      useCORS: true,
-      logging: false,
-      backgroundColor: null
+  if (certificateRef.current) {
+    html2canvas(certificateRef.current, {
+      scale: 3, // mayor calidad
+      useCORS: true
     }).then((canvas) => {
-      const imgData = canvas.toDataURL('image/png', 1.0);
+      const imgData = canvas.toDataURL('image/png');
+
+      // PDF del mismo tamaño que el certificado
       const pdf = new jsPDF({
         orientation: 'landscape',
-        unit: 'mm',
-        format: 'a4'
+        unit: 'px',
+        format: [canvas.width, canvas.height]
       });
-      
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = (pdfHeight - imgHeight * ratio) / 2;
-      
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-      pdf.save(`certificado-${formData.nombre_estudiante}.pdf`);
+
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+      pdf.save(`certificado_${formData.nombre_estudiante}.pdf`);
     });
-  };
+  }
+};
+
 
   return (
-    <div className="min-h-screen bg-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-blue-50 py-6 px-4 sm:px-6 lg:px-8">
       <motion.div 
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm p-6"
       >
-        <h1 className="text-3xl font-bold text-center text-slate-800 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center text-slate-800 mb-8">
           Sistema de Generación de Certificados
         </h1>
         
@@ -166,120 +157,34 @@ const GenerateCertificates = () => {
         {!preview ? (
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Nombre completo
-                </label>
-                <input
-                  type="text"
-                  name="nombre_estudiante"
-                  value={formData.nombre_estudiante}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Número de ID
-                </label>
-                <input
-                  type="text"
-                  name="id_estudiante"
-                  value={formData.id_estudiante}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Nombre del Curso
-                </label>
-                <input
-                  type="text"
-                  name="nombre_curso"
-                  value={formData.nombre_curso}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Horas Académicas
-                </label>
-                <input
-                  type="number"
-                  name="horas_academicas"
-                  value={formData.horas_academicas}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Créditos
-                </label>
-                <input
-                  type="number"
-                  name="creditos"
-                  value={formData.creditos}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Fecha de Inicio
-                </label>
-                <input
-                  type="date"
-                  name="fecha_inicio"
-                  value={formData.fecha_inicio}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Fecha de Fin
-                </label>
-                <input
-                  type="date"
-                  name="fecha_fin"
-                  value={formData.fecha_fin}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
-                  Fecha de Emisión
-                </label>
-                <input
-                  type="date"
-                  name="fecha_emision"
-                  value={formData.fecha_emision}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                  required
-                />
-              </div>
+              {/* Inputs iguales que antes */}
+              {[
+                { label: 'Nombre completo', name: 'nombre_estudiante', type: 'text' },
+                { label: 'Número de ID', name: 'id_estudiante', type: 'text' },
+                { label: 'Nombre del Curso', name: 'nombre_curso', type: 'text' },
+                { label: 'Horas Académicas', name: 'horas_academicas', type: 'number' },
+                { label: 'Créditos', name: 'creditos', type: 'number' },
+                { label: 'Fecha de Inicio', name: 'fecha_inicio', type: 'date' },
+                { label: 'Fecha de Fin', name: 'fecha_fin', type: 'date' },
+                { label: 'Fecha de Emisión', name: 'fecha_emision', type: 'date' }
+              ].map((field, i) => (
+                <div key={i}>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
+                    {field.label}
+                  </label>
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    required
+                  />
+                </div>
+              ))}
             </div>
             
-            <div className="flex justify-between pt-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-4 pt-4">
               <button
                 type="button"
                 onClick={resetForm}
@@ -298,10 +203,10 @@ const GenerateCertificates = () => {
           </form>
         ) : (
           <div className="space-y-6">
+            {/* ✅ Contenedor flexible del certificado */}
             <div 
               ref={certificateRef} 
-              className="relative mx-auto"
-              style={{ width: '794px', height: '562px' }}
+              className="relative mx-auto w-full max-w-4xl aspect-[4/3]"
             >
               <img 
                 src="/assets/certificates/certificate.png" 
@@ -309,32 +214,33 @@ const GenerateCertificates = () => {
                 className="absolute inset-0 w-full h-full object-contain"
               />
               
-              <div className="absolute" style={textPositions.nombre_estudiante}>
+              <div className="absolute w-full text-center" style={textPositions.nombre_estudiante}>
                 {formData.nombre_estudiante}
               </div>
-              
-              <div className="absolute" style={textPositions.id_estudiante}>
+
+              <div className="absolute w-full text-center" style={textPositions.id_estudiante}>
                 ID# {formData.id_estudiante}
               </div>
-              
-              <div className="absolute text-center" style={textPositions.nombre_curso}>
+
+              <div className="absolute w-full px-[5%] text-center" style={textPositions.nombre_curso}>
                 {formData.nombre_curso}
               </div>
-              
-              <div className="absolute text-center" style={textPositions.horas_creditos}>
+
+              <div className="absolute w-full px-[8%] text-center" style={textPositions.horas_creditos}>
                 con una duración total de {formData.horas_academicas} horas académicas, equivalente a {formData.creditos} créditos.
               </div>
-              
-              <div className="absolute text-center" style={textPositions.fecha_inicio_fin}>
+
+              <div className="absolute w-full text-center" style={textPositions.fecha_inicio_fin}>
                 {new Date(formData.fecha_inicio).toLocaleDateString()} - {new Date(formData.fecha_fin).toLocaleDateString()}
               </div>
-              
-              <div className="absolute text-center" style={textPositions.fecha_emision}>
+
+              <div className="absolute w-full text-center" style={textPositions.fecha_emision}>
                 Emitido el: {new Date(formData.fecha_emision).toLocaleDateString()}
               </div>
             </div>
             
-            <div className="flex justify-between">
+            {/* ✅ Botones responsivos */}
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
               <button
                 onClick={() => setPreview(false)}
                 className="px-6 py-2 bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition-colors duration-300"
@@ -342,7 +248,7 @@ const GenerateCertificates = () => {
                 Editar
               </button>
               
-              <div className="space-x-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={downloadPDF}
                   className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300"
