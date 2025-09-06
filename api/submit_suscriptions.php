@@ -22,7 +22,7 @@ $comprobante = $_FILES['comprobantePago'] ?? null;
 
 try {
     // Guardar archivos
-    $uploadDir = '../uploads/';
+    $uploadDir = '../api/suscriptions/';
     if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
 
     // Foto carnet (obligatoria)

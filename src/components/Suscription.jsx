@@ -59,7 +59,7 @@ export default function Suscription() {
     const orcidRegex = /^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/;
     if (!orcidRegex.test(rawOrcid)) {
       setStatus("error");
-      setMessage("El ORCID debe tener el formato XXXX-XXXX-XXXX-XXXX y puede terminar en un número o la letra 'X'.");
+      setMessage("El ORCID debe tener el formato 0000-0000-0000-0000 y puede terminar en un número o la letra 'X'.");
       return;
     }
 

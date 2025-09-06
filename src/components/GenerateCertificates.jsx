@@ -1,299 +1,235 @@
-import { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import { useState, useRef, useCallback } from 'react';
+import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 
 const GenerateCertificates = () => {
-  const [formData, setFormData] = useState({
-    nombre_estudiante: '',
-    id_estudiante: '',
-    concepto: '',
-    tipo_documento: '',
-    horas_academicas: '',
-    creditos: '',
-    fecha_inicio: '',
-    fecha_fin: '',
-    fecha_emision: ''
-  });
-  
-  const [preview, setPreview] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  const certificateRef = useRef(null);
+  const [excelFile, setExcelFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef(null);
 
-  // ✅ Posiciones de texto ajustadas para una mejor legibilidad y orden
-  const textPositions = {
-    // La primera frase completa ahora se compone de dos partes
-    tipo_documento: {
-      top: '32%',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      fontSize: 'clamp(0.9rem, 1.8vw, 1.3rem)',
-      color: '#4a5568',
-      fontWeight: '500'
-    },
-    // El nombre del estudiante ahora tiene más énfasis visual
-    nombre_estudiante: { 
-      top: '36%', 
-      left: '50%', 
-      transform: 'translateX(-50%)', 
-      fontSize: 'clamp(1.2rem, 3vw, 2.5rem)', 
-      fontWeight: 'bold', 
-      color: '#1a365d' 
-    },
-    // ID del estudiante
-    id_estudiante: { 
-      top: '44%', // Ajustado para seguir al nombre y evitar la linea
-      left: '50%', 
-      transform: 'translateX(-50%)', 
-      fontSize: 'clamp(0.8rem, 1.5vw, 1.1rem)', 
-      color: '#4a5568' 
-    },
-    // Etiqueta del concepto
-    concepto_label: {
-      top: '52%', // Ajustado
-      left: '50%',
-      transform: 'translateX(-50%)',
-      fontSize: 'clamp(0.9rem, 1.8vw, 1.3rem)',
-      color: '#4a5568',
-      fontWeight: '500'
-    },
-    // Valor del concepto, con más peso visual
-    concepto_value: { 
-      top: '57%', // Ajustado
-      left: '50%', 
-      transform: 'translateX(-50%)', 
-      fontSize: 'clamp(1rem, 2.2vw, 1.6rem)', // Tamaño un poco más grande
-      fontWeight: '600', 
-      color: '#2d3748' 
-    },
-    // Horas académicas y créditos
-    horas_creditos: { 
-      top: '65%', // Ajustado
-      left: '50%', 
-      transform: 'translateX(-50%)', 
-      fontSize: 'clamp(0.8rem, 1.5vw, 1.1rem)', 
-      color: '#4a5568' 
-    },
-    // Fechas
-    fecha_inicio_fin: { 
-      top: '70%', // Ajustado
-      left: '50%', 
-      transform: 'translateX(-50%)', 
-      fontSize: 'clamp(0.7rem, 1.2vw, 1rem)', 
-      color: '#4a5568' 
-    },
-    fecha_emision: { 
-      top: '80%', // Ajustado
-      left: '50%', 
-      transform: 'translateX(-50%)', 
-      fontSize: 'clamp(0.6rem, 1vw, 0.9rem)', 
-      color: '#718096' 
+  const handleFileChange = useCallback((e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validar tipo de archivo
+      const validTypes = [
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel'
+      ];
+      
+      if (!validTypes.includes(file.type)) {
+        setSubmitStatus({ 
+          type: 'error', 
+          message: 'Por favor, seleccione un archivo Excel válido (.xlsx o .xls).' 
+        });
+        return;
+      }
+      
+      // Validar tamaño del archivo (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setSubmitStatus({ 
+          type: 'error', 
+          message: 'El archivo es demasiado grande. Máximo 5MB permitido.' 
+        });
+        return;
+      }
+      
+      setExcelFile(file);
+      setSubmitStatus(null);
     }
-  };
+  }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
+  const handleFileUpload = useCallback(async (e) => {
     e.preventDefault();
+    
+    if (!excelFile) {
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Por favor, seleccione un archivo de Excel.' 
+      });
+      return;
+    }
+    
+    setIsLoading(true);
     setSubmitStatus(null);
     
+    const formData = new FormData();
+    formData.append('excel_file', excelFile);
+    
     try {
-      const response = await fetch('http://relaticpanama.org/api/generate_certificate.php', {
+      const response = await fetch('https://relaticpanama.org/api/process_excel.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: formData,
+        headers: {
+          'Accept': 'application/json',
+        },
       });
+      
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
       
       const result = await response.json();
       
-      if (result.success) {
-        setSubmitStatus({ type: 'success', message: result.message });
-        setPreview(true);
-      } else {
-        setSubmitStatus({ type: 'error', message: result.message });
-      }
-    } catch {
-      setSubmitStatus({ type: 'error', message: 'Error de conexión' });
-    }
-  };
-
-  const resetForm = () => {
-    setFormData({
-      nombre_estudiante: '',
-      id_estudiante: '',
-      concepto: '',
-      tipo_documento: '',
-      horas_academicas: '',
-      creditos: '',
-      fecha_inicio: '',
-      fecha_fin: '',
-      fecha_emision: ''
-    });
-    setPreview(false);
-    setSubmitStatus(null);
-  };
-
-  const downloadPDF = () => {
-    if (certificateRef.current) {
-      html2canvas(certificateRef.current, {
-        scale: 3,
-        useCORS: true
-      }).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-
-        const pdf = new jsPDF({
-          orientation: 'landscape',
-          unit: 'px',
-          format: [canvas.width, canvas.height]
-        });
-
-        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-        pdf.save(`certificado_${formData.nombre_estudiante}.pdf`);
+      setSubmitStatus({
+        type: result.success ? 'success' : 'error',
+        message: result.message || (result.success ? 'Certificados generados correctamente.' : 'Error al procesar el archivo.')
       });
+      
+    } catch (error) {
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Error de conexión. Verifique su conexión a internet e intente nuevamente.' 
+      });
+      console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
     }
+  }, [excelFile]);
+
+  const resetForm = useCallback(() => {
+    setSubmitStatus(null);
+    setExcelFile(null);
+    setIsLoading(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, []);
+
+  const getStatusIcon = () => {
+    if (!submitStatus) return null;
+    return submitStatus.type === 'success' ? 
+      <CheckCircle className="w-5 h-5 flex-shrink-0" /> : 
+      <AlertCircle className="w-5 h-5 flex-shrink-0" />;
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 py-6 px-4 sm:px-6 lg:px-8">
-      <motion.div 
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm p-6"
-      >
-        <h1 className="text-2xl sm:text-3xl font-bold text-center text-slate-800 mb-8">
-          Sistema de Generación de Certificados
-        </h1>
-        
-        {submitStatus && (
-          <div className={`mb-6 p-4 rounded-lg ${submitStatus.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-500 text-white'}`}>
-            {submitStatus.message}
+    <div className="min-h-screen bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="bg-white border border-slate-200 rounded-lg p-8 mb-8">
+          <div className="text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+              <FileText className="w-8 h-8 text-blue-600" />
+            </div>
+            <h1 className="text-3xl font-semibold text-slate-900 mb-2">
+              Sistema de Generación de Certificados
+            </h1>
+            <p className="text-slate-600 max-w-2xl mx-auto leading-relaxed">
+              Genere múltiples certificados de manera eficiente cargando un archivo Excel con los datos de los participantes.
+            </p>
           </div>
-        )}
-        
-        {!preview ? (
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                { label: 'Tipo de Documento', name: 'tipo_documento', type: 'text' },
-                { label: 'Nombre completo', name: 'nombre_estudiante', type: 'text' },
-                { label: 'Número de ID', name: 'id_estudiante', type: 'text' },
-                { label: 'Concepto', name: 'concepto', type: 'text' },
-                { label: 'Horas Académicas', name: 'horas_academicas', type: 'number' },
-                { label: 'Créditos', name: 'creditos', type: 'number' },
-                { label: 'Fecha de Inicio', name: 'fecha_inicio', type: 'date' },
-                { label: 'Fecha de Fin', name: 'fecha_fin', type: 'date' },
-                { label: 'Fecha de Emisión', name: 'fecha_emision', type: 'date' }
-              ].map((field, i) => (
-                <div key={i}>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">
-                    {field.label}
-                  </label>
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    value={formData[field.name]}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                    required={field.name !== 'creditos' && field.name !== 'tipo_documento'}
-                  />
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex flex-col sm:flex-row justify-between gap-4 pt-4">
-              <button
-                type="button"
-                onClick={resetForm}
-                className="px-6 py-2 bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition-colors duration-300"
-              >
-                Limpiar
-              </button>
-              
-              <button
-                type="submit"
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
-              >
-                Generar Certificado
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="space-y-6">
-            {/* Contenedor del certificado */}
-            <div 
-              ref={certificateRef} 
-              className="relative mx-auto w-full max-w-4xl aspect-[4/3]"
-            >
-              <img 
-                src="/assets/certificates/certificate.png" 
-                alt="Plantilla de Certificado" 
-                className="absolute inset-0 w-full h-full object-contain"
-              />
-              
-              {/* ✅ Elementos con estilos y posiciones mejorados */}
-              <div className="absolute w-full px-[5%] text-center" style={textPositions.tipo_documento}>
-                {formData.tipo_documento} por haber culminado satisfactoriamente los requisitos a: 
-              </div>
-              <div className="absolute w-full text-center" style={textPositions.nombre_estudiante}>
-                {formData.nombre_estudiante}
-              </div>
-              <div className="absolute w-full text-center" style={textPositions.id_estudiante}>
-                ID: {formData.id_estudiante}
-              </div>
-              <div className="absolute w-full px-[5%] text-center" style={textPositions.concepto_label}>
-                En concepto de
-              </div>
-              <div className="absolute w-full px-[5%] text-center" style={textPositions.concepto_value}>
-                {formData.concepto}
-              </div>
+        </div>
 
-              <div className="absolute w-full px-[8%] text-center" style={textPositions.horas_creditos}>
-                Con una duración total de {formData.horas_academicas} horas académicas
-                {formData.creditos && ` , equivalente a ${formData.creditos} créditos.`}
-              </div>
-              <div className="absolute w-full text-center" style={textPositions.fecha_inicio_fin}>
-                De {new Date(formData.fecha_inicio).toLocaleDateString()} hasta {new Date(formData.fecha_fin).toLocaleDateString()}
-              </div>
-              <div className="absolute w-full text-center" style={textPositions.fecha_emision}>
-                Emitido el: {new Date(formData.fecha_emision).toLocaleDateString()}
-              </div>
-            </div>
-            
-            {/* Botones responsivos */}
-            <div className="flex flex-col sm:flex-row justify-between gap-4">
-              <button
-                onClick={() => setPreview(false)}
-                className="px-6 py-2 bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition-colors duration-300"
-              >
-                Editar
-              </button>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={downloadPDF}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-300"
-                >
-                  Descargar PDF
-                </button>
-                
-                <button
-                  onClick={resetForm}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
-                >
-                  Crear Nuevo Certificado
-                </button>
-              </div>
-            </div>
+        {/* Status Messages */}
+        {submitStatus && (
+          <div className={`mb-6 p-4 rounded-lg border flex items-start gap-3 ${
+            submitStatus.type === 'success' 
+              ? 'bg-green-50 border-green-200 text-green-800' 
+              : 'bg-red-50 border-red-200 text-red-800'
+          }`}>
+            {getStatusIcon()}
+            <span className="text-sm font-medium leading-relaxed">
+              {submitStatus.message}
+            </span>
           </div>
         )}
-      </motion.div>
+
+        {/* Main Form */}
+        <div className="bg-white border border-slate-200 rounded-lg p-8">
+          <div className="text-center mb-8">
+            <h2 className="text-xl font-semibold text-slate-900 mb-2">
+              Cargar Archivo Excel
+            </h2>
+            <p className="text-slate-600 text-sm">
+              Formatos soportados: .xlsx, .xls (máximo 5MB)
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* File Input */}
+            <div className="space-y-2">
+              <label htmlFor="excel-file" className="block text-sm font-medium text-slate-700">
+                Archivo Excel
+              </label>
+              <div className="relative">
+                <input
+                  id="excel-file"
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileChange}
+                  accept=".xlsx,.xls"
+                  disabled={isLoading}
+                  className="sr-only"
+                />
+                <label
+                  htmlFor="excel-file"
+                  className={`
+                    relative block w-full rounded-lg border-2 border-dashed border-slate-300 p-8 text-center hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer transition-colors duration-200
+                    ${isLoading ? 'pointer-events-none opacity-50' : ''}
+                  `}
+                >
+                  <Upload className="mx-auto h-10 w-10 text-slate-400 mb-3" />
+                  <span className="block text-sm font-medium text-slate-700 mb-1">
+                    {excelFile ? excelFile.name : 'Seleccionar archivo Excel'}
+                  </span>
+                  <span className="block text-xs text-slate-500">
+                    Haga clic para seleccionar o arrastre el archivo aquí
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              onClick={handleFileUpload}
+              disabled={!excelFile || isLoading}
+              className={`
+                w-full flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200
+                ${!excelFile || isLoading
+                  ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                  : 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800'
+                }
+              `}
+            >
+              {isLoading ? (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                  Procesando...
+                </>
+              ) : (
+                <>
+                  <FileText className="w-4 h-4 mr-2" />
+                  Generar Certificados
+                </>
+              )}
+            </button>
+
+            {/* Reset Button */}
+            <button
+              type="button"
+              onClick={resetForm}
+              disabled={isLoading}
+              className="w-full px-6 py-3 border border-slate-300 text-sm font-medium text-slate-700 bg-white rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            >
+              Limpiar Formulario
+            </button>
+          </div>
+
+          {/* Instructions */}
+          <div className="mt-8 pt-8 border-t border-slate-200">
+            <h3 className="text-sm font-medium text-slate-900 mb-3">
+              Instrucciones de uso:
+            </h3>
+            <ul className="text-sm text-slate-600 space-y-1">
+              <li>• El archivo Excel debe contener las columnas necesarias para generar los certificados</li>
+              <li>• Asegúrese de que los datos estén correctamente formateados</li>
+              <li>• El tamaño máximo del archivo es de 5MB</li>
+              <li>• Los formatos soportados son .xlsx y .xls</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
