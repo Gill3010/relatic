@@ -35,7 +35,7 @@ if (!isset($_FILES['excel_file']) || $_FILES['excel_file']['error'] !== UPLOAD_E
 $uploadedFile = $_FILES['excel_file']['tmp_name'];
 
 // Define la URL base de tu sitio para el QR
-$baseUrl = "http://relaticpanama.org/verify.php";
+$baseUrl = "http://relaticpanama.org/verify_certificate.php";
 
 try {
     $spreadsheet = IOFactory::load($uploadedFile);

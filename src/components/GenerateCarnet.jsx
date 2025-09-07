@@ -76,7 +76,7 @@ const GenerateCarnet = () => {
     }
 
     try {
-      const response = await fetch('http://relaticpanama.org/api/generate_carne.php', {
+      const response = await fetch('https://relaticpanama.org/api/generate_carne.php', {
         method: 'POST',
         body: formDataToSend
       });

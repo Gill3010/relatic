@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom'; // 1. Importa useNavigate
 
 const UserRegistration = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ const UserRegistration = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
   const [showCaptcha] = useState(false);
+
+  const navigate = useNavigate(); // 2. Inicializa useNavigate
 
   // Lista de dominios de correo temporales/bloqueados
   const blockedDomains = ['tempmail.com', 'mailinator.com', 'guerrillamail.com', '10minutemail.com'];
@@ -197,7 +200,7 @@ const UserRegistration = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Función handleSubmit ACTUALIZADA
+  // Función handleSubmit ACTUALIZADA con redirección
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -229,19 +232,14 @@ const UserRegistration = () => {
       if (response.ok && data.success) {
         setSubmitStatus({ 
           type: 'success', 
-          message: data.message || '¡Registro exitoso! Te hemos enviado un correo de verificación.' 
+          message: data.message || '¡Registro exitoso! Redirigiendo a la página de inicio de sesión...' 
         });
         
-        // Resetear formulario después de éxito
-        setFormData({
-          email: '',
-          password: '',
-          confirmPassword: '',
-          role: 'member',
-          firstName: '',
-          lastName: '',
-          acceptTerms: false
-        });
+        // 3. Redirigir al usuario a la página de login
+        setTimeout(() => {
+          navigate('/login-usuario');
+        }, 2000); // Se espera 2 segundos para que el usuario pueda ver el mensaje de éxito
+
       } else {
         setSubmitStatus({ 
           type: 'error', 
@@ -409,19 +407,19 @@ const UserRegistration = () => {
             
             <div>
               <input
-                id="role-admin"
+                id="role-gestor"
                 name="role"
                 type="radio"
-                value="admin"
-                checked={formData.role === 'admin'}
+                value="gestor"
+                checked={formData.role === 'gestor'}
                 onChange={handleChange}
                 className="hidden peer"
               />
               <label 
-                htmlFor="role-admin" 
+                htmlFor="role-gestor" 
                 className="flex flex-col p-4 border border-gray-300 rounded-md cursor-pointer peer-checked:border-blue-500 peer-checked:bg-blue-50 transition-colors"
               >
-                <span className="font-medium">Administrador</span>
+                <span className="font-medium">Gestor</span>
               </label>
             </div>
           </div>
@@ -429,25 +427,25 @@ const UserRegistration = () => {
 
         {/* Términos y condiciones */}
         <div className="flex items-start">
-          <div className="flex items-center h-5">
-            <input
-              id="acceptTerms"
-              name="acceptTerms"
-              type="checkbox"
-              checked={formData.acceptTerms}
-              onChange={handleChange}
-              className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
-            />
-          </div>
-          <div className="ml-3 text-sm">
-            <label htmlFor="acceptTerms" className="font-medium text-gray-700">
-              Acepto los <a href="/terms" className="text-blue-600 hover:text-blue-500">términos y condiciones</a> y la <a href="/privacy" className="text-blue-600 hover:text-blue-500">política de privacidad</a>
-            </label>
-            {errors.acceptTerms && (
-              <p className="mt-1 text-sm text-red-600">{errors.acceptTerms}</p>
-            )}
-          </div>
-        </div>
+  <div className="flex items-center h-5">
+    <input
+      id="acceptTerms"
+      name="acceptTerms"
+      type="checkbox"
+      checked={formData.acceptTerms}
+      onChange={handleChange}
+      className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+    />
+  </div>
+  <div className="ml-3 text-sm">
+    <label htmlFor="acceptTerms" className="font-medium text-gray-700">
+      Acepto los <a href="/terminos-condiciones" className="text-blue-600 hover:text-blue-500">términos y condiciones</a> y la <a href="/terminos-condiciones" className="text-blue-600 hover:text-blue-500">política de privacidad</a> de Relatic Panamá
+    </label>
+    {errors.acceptTerms && (
+      <p className="mt-1 text-sm text-red-600">{errors.acceptTerms}</p>
+    )}
+  </div>
+</div>
 
         {/* Honeypot para protección anti-bots */}
         <div className="hidden">

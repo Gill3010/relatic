@@ -1,5 +1,9 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+// Importa el AuthProvider desde la carpeta de componentes
+import { AuthProvider } from './components/AuthContext';
 
 // Lazy imports para todos los componentes
 const Navbar = lazy(() => import('./components/Navbar'));
@@ -27,107 +31,104 @@ const GenerateCarnet = lazy(() => import('./components/GenerateCarnet'));
 const UserRegistration = lazy(() => import('./components/UserRegistration'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const MemberPanel = lazy(() => import('./components/MemberPanel'));
+const UserLogin = lazy(() => import('./components/UserLogin'));
+const GestorSelection = lazy(() => import('./components/GestorSelection'));
+const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
+const Unauthorized = lazy(() => import('./components/Unauthorized'));
+const TermsAndConditions = lazy(() => import('./components/TermsAndConditions'));
 
-
-const AppContent = () => {
-  const location = useLocation();
-
-  const minimalRoutes = [
-    '/nosotros',
-    '/actividades/proximas',
-    '/actividades/anteriores',
-    '/suscription',
-    '/crear-orcid',
-    '/detalles-revistas',
-    '/detalles-carteles',
-    '/detalles-libros',
-    '/detalles-aprendizaje',
-    '/detalles-propiedad-intelectual',
-    '/generar-certificado',
-    '/generar-carnet',
-    '/registro-usuario',
-    '/panel-administracion',
-    '/panel-miembro'
-  ];
-
-  if (minimalRoutes.includes(location.pathname)) {
-    return (
-      <Suspense fallback={<div className="text-center py-10">Cargando...</div>}>
-        <main className="flex flex-col min-h-screen container mx-auto px-4 py-10">
-          <RedirectToHomeButton />
-
-          {location.pathname === '/nosotros' && <AboutUs />}
-          {location.pathname === '/actividades/proximas' && <UpcomingActivities />}
-          {location.pathname === '/actividades/anteriores' && <PreviousActivities />}
-          {location.pathname === '/suscription' && <Suscription />}
-          {location.pathname === '/crear-orcid' && <CreateOrcidGguide />}
-          {location.pathname === '/generar-certificado' && <GenerateCertificates />}
-          {location.pathname === '/generar-carnet' && <GenerateCarnet />}
-          {location.pathname === '/registro-usuario' && <UserRegistration />}
-          {location.pathname === '/panel-administracion' && <AdminPanel />}
-          {location.pathname === '/panel-miembro' && <MemberPanel />}
-          {location.pathname === '/detalles-revistas' && (
-            <div className='space-y-8'>
-              <JournalMetrics />
-              <JournalsDetails />
-            </div>
-          )}
-          {location.pathname === '/detalles-carteles' &&  (
-            <div className='space-y-8'>
-              <PostersMetrics />
-              <PostersDetails />
-            </div>
-
-          )}
-          {location.pathname === '/detalles-libros' && (
-            <div className='space-y-8'>
-              <BooksMetrics />
-              <BooksDetails />
-
-            </div>
-          ) }
-          {location.pathname === '/detalles-aprendizaje' && (
-            <div className='space-y-8'>
-              <CoursesMetrics />
-              <LearningDetails />
-
-            </div>
-          ) }
-          {location.pathname === '/detalles-propiedad-intelectual' && <IntellectualPropertyDetails />}
-        </main>
-      </Suspense>
-    );
-  }
-
-  return (
-    <Suspense fallback={<div className="text-center py-10">Cargando...</div>}>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <Carousel />
-
-        {/* 🔍 Buscador insertado directamente en el Home */}
-        <div className="container mx-auto px-4 py-10">
-          <SearchPage />
-          {/* Se han eliminado JournalMetrics y JournalsDetails del home */}
-          
-          
-          
-        </div>
-        
-        <main className="flex-grow">
-          <Routes>{/* tus rutas actuales sin cambios */}</Routes>
-        </main>
-
-        <Agreements />
-        <Footer />
+// Componente de envoltura para páginas que no son el Home, incluye el botón
+const PageLayout = ({ children }) => (
+  <Suspense fallback={<div className="text-center py-10">Cargando...</div>}>
+    <main className="flex flex-col min-h-screen container mx-auto px-4 py-10">
+      <div className="flex justify-start mb-6">
+        <RedirectToHomeButton />
       </div>
-    </Suspense>
-  );
+      {children}
+    </main>
+  </Suspense>
+);
+
+// Agrega la validación de propTypes aquí
+PageLayout.propTypes = {
+  children: PropTypes.node.isRequired,
 };
+
+const HomeLayout = () => (
+  <Suspense fallback={<div className="text-center py-10">Cargando...</div>}>
+    <Navbar />
+    <Carousel />
+    <div className="container mx-auto px-4 py-10">
+      <SearchPage />
+    </div>
+    <Agreements />
+    <Footer />
+  </Suspense>
+);
 
 const App = () => (
   <Router>
-    <AppContent />
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<HomeLayout />} />
+
+        {/* Rutas con el layout de PageLayout */}
+        <Route path="/nosotros" element={<PageLayout><AboutUs /></PageLayout>} />
+        <Route path="/actividades/proximas" element={<PageLayout><UpcomingActivities /></PageLayout>} />
+        <Route path="/actividades/anteriores" element={<PageLayout><PreviousActivities /></PageLayout>} />
+        <Route path="/suscription" element={<PageLayout><Suscription /></PageLayout>} />
+        <Route path="/crear-orcid" element={<PageLayout><CreateOrcidGguide /></PageLayout>} />
+        <Route path="/registro-usuario" element={<PageLayout><UserRegistration /></PageLayout>} />
+        <Route path="/login-usuario" element={<PageLayout><UserLogin /></PageLayout>} />
+        <Route path="/panel-administracion" element={<PageLayout><AdminPanel /></PageLayout>} />
+        <Route path="/panel-miembro" element={<PageLayout><MemberPanel /></PageLayout>} />
+        <Route path="/seleccionar-tarea" element={<PageLayout><GestorSelection /></PageLayout>} />
+        <Route path="/unauthorized" element={<PageLayout><Unauthorized /></PageLayout>} />
+        <Route path="/terminos-condiciones" element={<PageLayout><TermsAndConditions /></PageLayout>} />
+
+        {/* Rutas con detalles y métricas que usan el mismo PageLayout */}
+        <Route
+          path="/detalles-revistas"
+          element={<PageLayout><div className='space-y-8'><JournalMetrics /><JournalsDetails /></div></PageLayout>}
+        />
+        <Route
+          path="/detalles-carteles"
+          element={<PageLayout><div className='space-y-8'><PostersMetrics /><PostersDetails /></div></PageLayout>}
+        />
+        <Route
+          path="/detalles-libros"
+          element={<PageLayout><div className='space-y-8'><BooksMetrics /><BooksDetails /></div></PageLayout>}
+        />
+        <Route
+          path="/detalles-aprendizaje"
+          element={<PageLayout><div className='space-y-8'><CoursesMetrics /><LearningDetails /></div></PageLayout>}
+        />
+        <Route path="/detalles-propiedad-intelectual" element={<PageLayout><IntellectualPropertyDetails /></PageLayout>} />
+        <Route path='terminos-condiciones' element={<PageLayout><TermsAndConditions /></PageLayout>} />
+
+        {/* Rutas Protegidas que ahora usan el PageLayout */}
+        <Route
+          path="/generar-certificado"
+          element={
+            <PageLayout>
+              <ProtectedRoute requiredRoles={['gestor', 'admin']}>
+                <GenerateCertificates />
+              </ProtectedRoute>
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/generar-carnet"
+          element={
+            <PageLayout>
+              <ProtectedRoute requiredRoles={['gestor', 'admin']}>
+                <GenerateCarnet />
+              </ProtectedRoute>
+            </PageLayout>
+          }
+        />
+      </Routes>
+    </AuthProvider>
   </Router>
 );
 

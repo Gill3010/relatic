@@ -7,6 +7,7 @@ import {
   X, 
   ChevronDown,
   Newspaper,
+  UserPlus
 } from 'lucide-react';
 import { 
   BookOpen, 
@@ -235,6 +236,21 @@ const activities = [
               <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full`} />
             </a>
 
+            {/* Botón de Registro */}
+            <a
+              href="/registro-usuario"
+              className={`relative px-3 py-1.5 xl:px-4 xl:py-2 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${
+                isScrolled 
+                  ? 'border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white' 
+                  : 'border-emerald-400 text-emerald-300 hover:bg-emerald-400 hover:text-slate-800'
+              }`}
+            >
+              <span className="relative z-10 flex items-center space-x-1.5">
+                <UserPlus className="w-3 h-3 xl:w-4 xl:h-4" />
+                <span className="text-sm xl:text-base">Registrarse</span>
+              </span>
+            </a>
+
             {/* CTA Button con diseño institucional */}
             <a
               href="/suscription"
@@ -348,6 +364,21 @@ const activities = [
               Blog
             </a>
 
+            {/* Botón de Registro para Tablet */}
+            <a
+              href="/registro-usuario"
+              className={`relative px-3 py-1.5 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${
+                isScrolled 
+                  ? 'border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white' 
+                  : 'border-emerald-400 text-emerald-300 hover:bg-emerald-400 hover:text-slate-800'
+              }`}
+            >
+              <span className="relative z-10 flex items-center space-x-1.5">
+                <UserPlus className="w-3 h-3" />
+                <span className="text-sm">Registrarse</span>
+              </span>
+            </a>
+
             <a
               href="#suscribete"
               className={`relative px-4 py-2 ${
@@ -454,6 +485,20 @@ const activities = [
                 onClick={() => setIsOpen(false)}
               >
                 Blog
+              </a>
+
+              {/* Botón de Registro Móvil */}
+              <a
+                href="/registro-usuario"
+                className={`flex items-center justify-center space-x-2 w-full px-4 py-2 sm:px-6 sm:py-3 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-sm sm:text-base ${
+                  isScrolled 
+                    ? 'border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white' 
+                    : 'border-emerald-400 text-emerald-300 hover:bg-emerald-400 hover:text-slate-800'
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                <UserPlus className="w-4 h-4" />
+                <span>Registrarse</span>
               </a>
 
               <div className="pt-3 sm:pt-4 border-t border-slate-200">
