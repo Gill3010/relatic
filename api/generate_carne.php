@@ -10,14 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-// Configuración de la base de datos
-$servername = "localhost";
-$username = "Forms25";
-$password = "Forms.2025";
-$dbname = "Forms";
+// Incluir el archivo de configuración
+require_once 'config.php';
 
 // Crear conexión
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
 // Verificar conexión
 if ($conn->connect_error) {

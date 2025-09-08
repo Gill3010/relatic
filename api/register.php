@@ -90,174 +90,173 @@ try {
 
 // Este es el único punto de salida para la respuesta JSON
 echo json_encode($response);
-exit; // <-- ¡La clave! Asegura que no se ejecute más código.
+exit;
 
 // Funciones de validación y procesamiento
 function validateRegistrationData($data) {
-    // ... (tu código de validación sin cambios)
     $errors = [];
-    
-    // Validar email
-    if (empty($data['email'])) {
-        $errors['email'] = 'El email es obligatorio';
-    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = 'El email no tiene un formato válido';
-    } elseif (!isValidDomain($data['email'])) {
-        $errors['email'] = 'El dominio de correo no está permitido';
-    } elseif (strlen($data['email']) > 255) {
-        $errors['email'] = 'El email es demasiado largo';
-    }
-    
-    // Validar contraseña
-    if (empty($data['password'])) {
-        $errors['password'] = 'La contraseña es obligatoria';
-    } elseif (strlen($data['password']) < 8) {
-        $errors['password'] = 'La contraseña debe tener al menos 8 caracteres';
-    } elseif (strlen($data['password']) > 12) {
-        $errors['password'] = 'La contraseña no puede exceder los 12 caracteres';
-    } elseif (!preg_match('/(?=.*[a-z])(?=.*[A-Z])/', $data['password'])) {
-        $errors['password'] = 'La contraseña debe contener mayúsculas y minúsculas';
-    } elseif (!preg_match('/(?=.*\d)/', $data['password'])) {
-        $errors['password'] = 'La contraseña debe contener al menos un número';
-    } elseif (!preg_match('/(?=.*[!@#$%^&*()_+\-=\[\]{};\':"\\|,.<>\/?])/', $data['password'])) {
-        $errors['password'] = 'La contraseña debe contener al menos un carácter especial';
-    }
-    
-    // Validar confirmación de contraseña
-    if (empty($data['confirmPassword'])) {
-        $errors['confirmPassword'] = 'Debes confirmar tu contraseña';
-    } elseif ($data['password'] !== $data['confirmPassword']) {
-        $errors['confirmPassword'] = 'Las contraseñas no coinciden';
-    }
-    
-    // Validar nombre
-    if (empty($data['firstName'])) {
-        $errors['firstName'] = 'El nombre es obligatorio';
-    } elseif (strlen($data['firstName']) > 50) {
-        $errors['firstName'] = 'El nombre no puede exceder los 50 caracteres';
-    } elseif (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $data['firstName'])) {
-        $errors['firstName'] = 'El nombre no puede contener números ni caracteres especiales';
-    }
-    
-    // Validar apellido
-    if (empty($data['lastName'])) {
-        $errors['lastName'] = 'El apellido es obligatorio';
-    } elseif (strlen($data['lastName']) > 50) {
-        $errors['lastName'] = 'El apellido no puede exceder los 50 caracteres';
-    } elseif (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $data['lastName'])) {
-        $errors['lastName'] = 'El apellido no puede contener números ni caracteres especiales';
-    }
-    
-    // Validar rol
-    $allowedRoles = ['member', 'gestor'];
-    if (empty($data['role']) || !in_array($data['role'], $allowedRoles)) {
-        $errors['role'] = 'Rol no válido';
-    }
-    
-    // Validar términos y condiciones
-    if (empty($data['acceptTerms']) || !$data['acceptTerms']) {
-        $errors['acceptTerms'] = 'Debes aceptar los términos y condiciones';
-    }
-    
-    return $errors;
+    
+    // Validar email
+    if (empty($data['email'])) {
+        $errors['email'] = 'El email es obligatorio';
+    } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors['email'] = 'El email no tiene un formato válido';
+    } elseif (!isValidDomain($data['email'])) {
+        $errors['email'] = 'El dominio de correo no está permitido';
+    } elseif (strlen($data['email']) > 255) {
+        $errors['email'] = 'El email es demasiado largo';
+    }
+    
+    // Validar contraseña
+    if (empty($data['password'])) {
+        $errors['password'] = 'La contraseña es obligatoria';
+    } elseif (strlen($data['password']) < 8) {
+        $errors['password'] = 'La contraseña debe tener al menos 8 caracteres';
+    } elseif (strlen($data['password']) > 12) {
+        $errors['password'] = 'La contraseña no puede exceder los 12 caracteres';
+    } elseif (!preg_match('/(?=.*[a-z])(?=.*[A-Z])/', $data['password'])) {
+        $errors['password'] = 'La contraseña debe contener mayúsculas y minúsculas';
+    } elseif (!preg_match('/(?=.*\d)/', $data['password'])) {
+        $errors['password'] = 'La contraseña debe contener al menos un número';
+    } elseif (!preg_match('/(?=.*[!@#$%^&*()_+\-=\[\]{};\'":\\|,.<>\/?])/', $data['password'])) {
+        $errors['password'] = 'La contraseña debe contener al menos un carácter especial';
+    }
+    
+    // Validar confirmación de contraseña
+    if (empty($data['confirmPassword'])) {
+        $errors['confirmPassword'] = 'Debes confirmar tu contraseña';
+    } elseif ($data['password'] !== $data['confirmPassword']) {
+        $errors['confirmPassword'] = 'Las contraseñas no coinciden';
+    }
+    
+    // Validar nombre
+    if (empty($data['firstName'])) {
+        $errors['firstName'] = 'El nombre es obligatorio';
+    } elseif (strlen($data['firstName']) > 50) {
+        $errors['firstName'] = 'El nombre no puede exceder los 50 caracteres';
+    } elseif (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $data['firstName'])) {
+        $errors['firstName'] = 'El nombre no puede contener números ni caracteres especiales';
+    }
+    
+    // Validar apellido
+    if (empty($data['lastName'])) {
+        $errors['lastName'] = 'El apellido es obligatorio';
+    } elseif (strlen($data['lastName']) > 50) {
+        $errors['lastName'] = 'El apellido no puede exceder los 50 caracteres';
+    } elseif (!preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $data['lastName'])) {
+        $errors['lastName'] = 'El apellido no puede contener números ni caracteres especiales';
+    }
+    
+    // Validar rol
+    $allowedRoles = ['member', 'gestor'];
+    if (empty($data['role']) || !in_array($data['role'], $allowedRoles)) {
+        $errors['role'] = 'Rol no válido';
+    }
+    
+    // Validar términos y condiciones
+    if (empty($data['acceptTerms']) || !$data['acceptTerms']) {
+        $errors['acceptTerms'] = 'Debes aceptar los términos y condiciones';
+    }
+    
+    return $errors;
 }
 
 function isValidDomain($email) {
-    $blockedDomains = ['tempmail.com', 'mailinator.com', 'guerrillamail.com', '10minutemail.com'];
-    $domain = explode('@', $email)[1];
-    return !in_array($domain, $blockedDomains);
+    $blockedDomains = ['tempmail.com', 'mailinator.com', 'guerrillamail.com', '10minutemail.com'];
+    $domain = explode('@', $email)[1];
+    return !in_array($domain, $blockedDomains);
 }
 
 function emailExists($email) {
-    global $pdo;
-    
-    try {
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        return $stmt->fetch() !== false;
-    } catch (PDOException $e) {
-        error_log('Error checking email: ' . $e->getMessage());
-        return false;
-    }
+    global $pdo;
+    
+    try {
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetch() !== false;
+    } catch (PDOException $e) {
+        error_log('Error checking email: ' . $e->getMessage());
+        return false;
+    }
 }
 
 function logRegistrationAttempt($ipAddress, $email) {
-    global $pdo;
-    
-    try {
-        $stmt = $pdo->prepare("
-            INSERT INTO registration_attempts (ip_address, email, successful) 
-            VALUES (?, ?, ?)
-        ");
-        $stmt->execute([$ipAddress, $email, false]);
-    } catch (PDOException $e) {
-        error_log('Error logging registration attempt: ' . $e->getMessage());
-    }
+    global $pdo;
+    
+    try {
+        $stmt = $pdo->prepare("
+            INSERT INTO registration_attempts (ip_address, email, successful) 
+            VALUES (?, ?, ?)
+        ");
+        $stmt->execute([$ipAddress, $email, false]);
+    } catch (PDOException $e) {
+        error_log('Error logging registration attempt: ' . $e->getMessage());
+    }
 }
 
 function createUser($data) {
-    global $pdo;
-    
-    try {
-        $salt = bin2hex(random_bytes(16));
-        $passwordHash = hash('sha256', $data['password'] . $salt);
-        $verificationToken = bin2hex(random_bytes(32));
-        $verificationTokenExpires = date('Y-m-d H:i:s', strtotime('+24 hours'));
-        
-        $pdo->beginTransaction();
-        
-        $stmt = $pdo->prepare("
-            INSERT INTO users (
-                first_name, last_name, email, password_hash, password_salt,
-                role, verification_token, verification_token_expires,
-                accepted_terms, terms_acceptance_date
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-        ");
-        
-        $stmt->execute([
-            ucwords(strtolower($data['firstName'])),
-            ucwords(strtolower($data['lastName'])),
-            $data['email'],
-            $passwordHash,
-            $salt,
-            $data['role'],
-            $verificationToken,
-            $verificationTokenExpires,
-            $data['acceptTerms'] ? 1 : 0
-        ]);
-        
-        $userId = $pdo->lastInsertId();
-        
-        $stmtHistory = $pdo->prepare("
-            INSERT INTO password_history (user_id, password_hash) 
-            VALUES (?, ?)
-        ");
-        $stmtHistory->execute([$userId, $passwordHash]);
-        
-        $stmtAttempt = $pdo->prepare("
-            UPDATE registration_attempts 
-            SET successful = true 
-            WHERE ip_address = ? AND email = ? 
-            ORDER BY attempt_time DESC 
-            LIMIT 1
-        ");
-        $stmtAttempt->execute([$_SERVER['REMOTE_ADDR'], $data['email']]);
-        
-        $pdo->commit();
-        
-        sendVerificationEmail($data['email'], $verificationToken);
-        
-        return $userId;
-        
-    } catch (PDOException $e) {
-        $pdo->rollBack();
-        error_log('Error creating user: ' . $e->getMessage());
-        return false;
-    }
+    global $pdo;
+    
+    try {
+        $salt = bin2hex(random_bytes(16));
+        $passwordHash = hash('sha256', $data['password'] . $salt);
+        $verificationToken = bin2hex(random_bytes(32));
+        $verificationTokenExpires = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        
+        $pdo->beginTransaction();
+        
+        $stmt = $pdo->prepare("
+            INSERT INTO users (
+                first_name, last_name, email, password_hash, password_salt,
+                role, verification_token, verification_token_expires,
+                accepted_terms, terms_acceptance_date
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+        ");
+        
+        $stmt->execute([
+            ucwords(strtolower($data['firstName'])),
+            ucwords(strtolower($data['lastName'])),
+            $data['email'],
+            $passwordHash,
+            $salt,
+            $data['role'],
+            $verificationToken,
+            $verificationTokenExpires,
+            $data['acceptTerms'] ? 1 : 0
+        ]);
+        
+        $userId = $pdo->lastInsertId();
+        
+        $stmtHistory = $pdo->prepare("
+            INSERT INTO password_history (user_id, password_hash) 
+            VALUES (?, ?)
+        ");
+        $stmtHistory->execute([$userId, $passwordHash]);
+        
+        $stmtAttempt = $pdo->prepare("
+            UPDATE registration_attempts 
+            SET successful = true 
+            WHERE ip_address = ? AND email = ? 
+            ORDER BY attempt_time DESC 
+            LIMIT 1
+        ");
+        $stmtAttempt->execute([$_SERVER['REMOTE_ADDR'], $data['email']]);
+        
+        $pdo->commit();
+        
+        sendVerificationEmail($data['email'], $verificationToken);
+        
+        return $userId;
+        
+    } catch (PDOException $e) {
+        $pdo->rollBack();
+        error_log('Error creating user: ' . $e->getMessage());
+        return false;
+    }
 }
 
 function sendVerificationEmail($email, $token) {
-    // Implementa envío real de email según tu sistema
-    error_log("Email de verificación para $email con token: $token");
+    // Implementa envío real de email según tu sistema
+    error_log("Email de verificación para $email con token: $token");
 }
 ?>

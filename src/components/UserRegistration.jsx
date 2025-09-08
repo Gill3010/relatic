@@ -262,6 +262,11 @@ const UserRegistration = () => {
     }
   };
 
+  // 4. Función para manejar la redirección al login
+  const handleLoginRedirect = () => {
+    navigate('/login-usuario');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <motion.form
@@ -489,6 +494,24 @@ const UserRegistration = () => {
             <p>Verificación de seguridad requerida</p>
           </div>
         )}
+        
+        {/* Nueva sección para el enlace de inicio de sesión */}
+        <div className="mt-4 text-center text-sm">
+          ¿Ya tienes una cuenta?{' '}
+          <motion.a
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            href="/login-usuario"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLoginRedirect();
+            }}
+            className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
+          >
+            Inicia sesión aquí
+          </motion.a>
+        </div>
+        
       </motion.form>
     </div>
   );
