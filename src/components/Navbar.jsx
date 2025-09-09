@@ -7,7 +7,8 @@ import {
   X, 
   ChevronDown,
   Newspaper,
-  UserPlus
+  UserPlus,
+  Rocket // Nuevo ícono para el botón "¡AFÍLIATE YA!"
 } from 'lucide-react';
 import { 
   BookOpen, 
@@ -53,19 +54,18 @@ const Navbar = () => {
   }, [activeDropdown]);
 
   const services = [
-  { name: 'Revistas Indexadas', href: 'https://relaticpanama.org/_journals/', icon: Newspaper },
-  { name: 'Carteles Digitales', href: 'https://relaticpanama.org/_posters/', icon: FileText },
-  { name: 'Libros Digitales', href: 'https://relaticpanama.org/_books/index.php/edrp/catalog', icon: BookOpen },
-  { name: 'Aprendizaje Continuo', href: 'https://relaticpanama.org/_classroom/', icon: GraduationCap },
-  { name: 'Propiedad Intelectual', href: 'https://relaticpanama.org/_protect/', icon: ShieldCheck }
-];
+    { name: 'Revistas Indexadas', href: 'https://relaticpanama.org/_journals/', icon: Newspaper },
+    { name: 'Carteles Digitales', href: 'https://relaticpanama.org/_posters/', icon: FileText },
+    { name: 'Libros Digitales', href: 'https://relaticpanama.org/_books/index.php/edrp/catalog', icon: BookOpen },
+    { name: 'Aprendizaje Continuo', href: 'https://relaticpanama.org/_classroom/', icon: GraduationCap },
+    { name: 'Propiedad Intelectual', href: 'https://relaticpanama.org/_protect/', icon: ShieldCheck }
+  ];
 
-const activities = [
-  { name: 'Próximas Actividades', href: '/actividades/proximas', icon: CalendarCheck },
-  { name: 'Actividades Anteriores', href: '/actividades/anteriores', icon: History }
-];
+  const activities = [
+    { name: 'Próximas Actividades', href: '/actividades/proximas', icon: CalendarCheck },
+    { name: 'Actividades Anteriores', href: '/actividades/anteriores', icon: History }
+  ];
 
-  // Colores institucionales universitarios suaves y claros
   const textColor = isScrolled ? 'text-slate-700' : 'text-white';
   const hoverTextColor = isScrolled ? 'hover:text-blue-600' : 'hover:text-blue-200';
   const dropdownBg = isScrolled ? 'bg-white' : 'bg-slate-800';
@@ -236,6 +236,21 @@ const activities = [
               <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full`} />
             </a>
 
+            {/* Botón de Afiliación con efecto de borde y color azul claro */}
+            <a
+              href="/suscription"
+              className={`relative px-3 py-1.5 xl:px-4 xl:py-2 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${
+                isScrolled 
+                  ? 'border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white' 
+                  : 'border-sky-400 text-sky-300 hover:bg-sky-400 hover:text-slate-800'
+              }`}
+            >
+              <span className="relative z-10 flex items-center space-x-1.5">
+                <Rocket className="w-3 h-3 xl:w-4 xl:h-4" />
+                <span className="text-sm xl:text-base">¡AFÍLIATE YA!</span>
+              </span>
+            </a>
+
             {/* Botón de Registro */}
             <a
               href="/registro-usuario"
@@ -248,21 +263,6 @@ const activities = [
               <span className="relative z-10 flex items-center space-x-1.5">
                 <UserPlus className="w-3 h-3 xl:w-4 xl:h-4" />
                 <span className="text-sm xl:text-base">Registrarse</span>
-              </span>
-            </a>
-
-            {/* CTA Button con diseño institucional */}
-            <a
-              href="/suscription"
-              className={`relative px-4 py-2 xl:px-6 xl:py-2 ${
-                isScrolled 
-                  ? 'bg-blue-600 hover:bg-blue-700' 
-                  : 'bg-slate-700 hover:bg-slate-600'
-              } text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex-shrink-0`}
-            >
-              <span className="relative z-10 flex items-center space-x-2">
-                <span className="text-base xl:text-lg">🎓</span>
-                <span className="text-sm xl:text-base text-white">¡AFÍLIATE YA!</span>
               </span>
             </a>
           </div>
@@ -364,6 +364,21 @@ const activities = [
               Blog
             </a>
 
+            {/* Botón de Afiliación para Tablet */}
+            <a
+              href="/suscription"
+              className={`relative px-3 py-1.5 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${
+                isScrolled 
+                  ? 'border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white' 
+                  : 'border-sky-400 text-sky-300 hover:bg-sky-400 hover:text-slate-800'
+              }`}
+            >
+              <span className="relative z-10 flex items-center space-x-1.5">
+                <Rocket className="w-3 h-3" />
+                <span className="text-sm">¡AFÍLIATE YA!</span>
+              </span>
+            </a>
+
             {/* Botón de Registro para Tablet */}
             <a
               href="/registro-usuario"
@@ -376,20 +391,6 @@ const activities = [
               <span className="relative z-10 flex items-center space-x-1.5">
                 <UserPlus className="w-3 h-3" />
                 <span className="text-sm">Registrarse</span>
-              </span>
-            </a>
-
-            <a
-              href="#suscribete"
-              className={`relative px-4 py-2 ${
-                isScrolled 
-                  ? 'bg-blue-600 hover:bg-blue-700' 
-                  : 'bg-slate-700 hover:bg-slate-600'
-              } text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 flex-shrink-0`}
-            >
-              <span className="relative z-10 flex items-center space-x-2">
-                <span className="text-base">🎓</span>
-                <span className="text-sm">¡AFÍLIATE YA!</span>
               </span>
             </a>
           </div>
@@ -487,6 +488,20 @@ const activities = [
                 Blog
               </a>
 
+              {/* Botón de Afiliación Móvil */}
+              <a
+                href="/suscription"
+                className={`flex items-center justify-center space-x-2 w-full px-4 py-2 sm:px-6 sm:py-3 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-sm sm:text-base ${
+                  isScrolled 
+                    ? 'border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white' 
+                    : 'border-sky-400 text-sky-300 hover:bg-sky-400 hover:text-slate-800'
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                <Rocket className="w-4 h-4" />
+                <span>¡AFÍLIATE YA!</span>
+              </a>
+
               {/* Botón de Registro Móvil */}
               <a
                 href="/registro-usuario"
@@ -500,21 +515,6 @@ const activities = [
                 <UserPlus className="w-4 h-4" />
                 <span>Registrarse</span>
               </a>
-
-              <div className="pt-3 sm:pt-4 border-t border-slate-200">
-                <a
-                  href="/suscription"
-                  className={`flex items-center justify-center space-x-2 w-full px-4 py-2 sm:px-6 sm:py-3 ${
-                    isScrolled 
-                      ? 'bg-blue-600 hover:bg-blue-700' 
-                      : 'bg-slate-700 hover:bg-slate-600'
-                  } text-white rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 text-sm sm:text-base`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <span className="text-base">🎓</span>
-                  <span>¡AFÍLIATE YA!</span>
-                </a>
-              </div>
             </div>
           </div>
         </div>

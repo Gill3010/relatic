@@ -1,4 +1,3 @@
-// En src/components/UserLogin.jsx
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -76,12 +75,15 @@ const UserLogin = () => {
       if (response.ok && data.success) {
         setSubmitStatus({ type: 'success', message: data.message || '¡Inicio de sesión exitoso! Redirigiendo...' });
         
-        const userRole = data.user?.role?.trim().toLowerCase(); // <-- CAMBIO CLAVE: todo a minúsculas
+        const token = data.token;
+        const userRole = data.user?.role?.trim().toLowerCase();
         
         // Asume un rol por defecto si no se recibe uno válido
         const roleToUse = (userRole === 'gestor' || userRole === 'admin') ? userRole : 'usuario';
         
-        login(roleToUse); // <-- Se guarda el rol en minúsculas en el contexto
+        // **Llamada a la función de login del contexto con el rol y el token**
+        // La función 'login' en tu AuthContext ahora guardará estos datos en localStorage.
+        login(roleToUse, token);
         
         setTimeout(() => {
           if (roleToUse === 'gestor' || roleToUse === 'admin') {

@@ -82,7 +82,19 @@ const App = () => (
         <Route path="/login-usuario" element={<PageLayout><UserLogin /></PageLayout>} />
         <Route path="/panel-administracion" element={<PageLayout><AdminPanel /></PageLayout>} />
         <Route path="/panel-miembro" element={<PageLayout><MemberPanel /></PageLayout>} />
-        <Route path="/seleccionar-tarea" element={<PageLayout><GestorSelection /></PageLayout>} />
+        
+        {/* Ruta protegida para la selección de tareas */}
+        <Route
+          path="/seleccionar-tarea"
+          element={
+            <PageLayout>
+              <ProtectedRoute requiredRoles={['gestor', 'admin']}>
+                <GestorSelection />
+              </ProtectedRoute>
+            </PageLayout>
+          }
+        />
+        
         <Route path="/unauthorized" element={<PageLayout><Unauthorized /></PageLayout>} />
         <Route path="/terminos-condiciones" element={<PageLayout><TermsAndConditions /></PageLayout>} />
 
@@ -106,7 +118,7 @@ const App = () => (
         <Route path="/detalles-propiedad-intelectual" element={<PageLayout><IntellectualPropertyDetails /></PageLayout>} />
         <Route path='terminos-condiciones' element={<PageLayout><TermsAndConditions /></PageLayout>} />
 
-        {/* Rutas Protegidas que ahora usan el PageLayout */}
+        {/* Rutas Protegidas existentes */}
         <Route
           path="/generar-certificado"
           element={
