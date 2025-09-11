@@ -78,17 +78,20 @@ const UserLogin = () => {
         const token = data.token;
         const userRole = data.user?.role?.trim().toLowerCase();
         
-        // Asume un rol por defecto si no se recibe uno válido
-        const roleToUse = (userRole === 'gestor' || userRole === 'admin') ? userRole : 'usuario';
+        // CORRECCIÓN CLAVE: Se ajusta el array para reconocer el rol 'member'
+        const validRoles = ['gestor', 'admin', 'member'];
+        const roleToUse = validRoles.includes(userRole) ? userRole : 'usuario';
         
-        // **Llamada a la función de login del contexto con el rol y el token**
-        // La función 'login' en tu AuthContext ahora guardará estos datos en localStorage.
+        // Llamada a la función de login del contexto con el rol y el token
         login(roleToUse, token);
         
         setTimeout(() => {
           if (roleToUse === 'gestor' || roleToUse === 'admin') {
-            navigate('/seleccionar-tarea');
+            navigate('/panel-gestor');
+          } else if (roleToUse === 'member') {
+            navigate('/panel-miembro');
           } else {
+            // Si el rol es 'usuario' u otro no reconocido, redirige al inicio
             navigate('/');
           }
         }, 1500);

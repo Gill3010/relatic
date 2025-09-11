@@ -12,11 +12,11 @@ const RedirectToHomeButton = () => {
     <div className="w-full flex justify-start mb-6">
       <button
   onClick={handleClick}
-  className="px-4 py-2 w-96 text-white rounded-full transition-all duration-300 shadow-lg text-base font-medium"
+  className="px-4 py-2 w-96 text-white rounded-lg transition-all duration-300 shadow-lg text-base font-medium"
   style={{
     backgroundColor: "#2563EBE6"
   }}
-  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#1E4FCC"} // azul un poco más oscuro
+  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#1E4FCC"}
   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "#2563EBE6"}
 >
   ← Volver a la página principal

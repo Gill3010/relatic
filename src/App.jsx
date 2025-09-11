@@ -36,6 +36,7 @@ const GestorSelection = lazy(() => import('./components/GestorSelection'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
 const Unauthorized = lazy(() => import('./components/Unauthorized'));
 const TermsAndConditions = lazy(() => import('./components/TermsAndConditions'));
+const ManageEvents = lazy(() => import('./components/ManageEvents')); // Importación del nuevo componente
 
 // Componente de envoltura para páginas que no son el Home, incluye el botón
 const PageLayout = ({ children }) => (
@@ -81,11 +82,25 @@ const App = () => (
         <Route path="/registro-usuario" element={<PageLayout><UserRegistration /></PageLayout>} />
         <Route path="/login-usuario" element={<PageLayout><UserLogin /></PageLayout>} />
         <Route path="/panel-administracion" element={<PageLayout><AdminPanel /></PageLayout>} />
-        <Route path="/panel-miembro" element={<PageLayout><MemberPanel /></PageLayout>} />
+        
+        {/*
+          Nueva ruta protegida para el panel de miembro.
+          Verifica si el usuario tiene el rol 'miembro' o 'admin'.
+        */}
+        <Route 
+          path="/panel-miembro" 
+          element={
+            <PageLayout>
+              <ProtectedRoute requiredRoles={['member', 'admin']}>
+                <MemberPanel />
+              </ProtectedRoute>
+            </PageLayout>
+          } 
+        />
         
         {/* Ruta protegida para la selección de tareas */}
         <Route
-          path="/seleccionar-tarea"
+          path="/panel-gestor"
           element={
             <PageLayout>
               <ProtectedRoute requiredRoles={['gestor', 'admin']}>
@@ -118,17 +133,21 @@ const App = () => (
         <Route path="/detalles-propiedad-intelectual" element={<PageLayout><IntellectualPropertyDetails /></PageLayout>} />
         <Route path='terminos-condiciones' element={<PageLayout><TermsAndConditions /></PageLayout>} />
 
-        {/* Rutas Protegidas existentes */}
+        {/* Ruta protegida que ahora muestra ambos componentes juntos */}
         <Route
           path="/generar-certificado"
           element={
             <PageLayout>
               <ProtectedRoute requiredRoles={['gestor', 'admin']}>
-                <GenerateCertificates />
+                <div className='space-y-8'>
+                  <ManageEvents />
+                  <GenerateCertificates />
+                </div>
               </ProtectedRoute>
             </PageLayout>
           }
         />
+        
         <Route
           path="/generar-carnet"
           element={

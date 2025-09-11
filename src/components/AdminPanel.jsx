@@ -1,199 +1,214 @@
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { Shield, Users, Settings, Clock, ChevronRight, Home, Activity, User, UserCheck } from 'lucide-react';
 
 const AdminPanel = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState({ type: '', message: '' });
-  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
-  // Estilos consistentes con el diseño existente
-  const labelStyle = "block text-sm font-medium text-gray-700 mb-1";
-  const inputStyle = "w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors";
-  const buttonStyle = "bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors";
-  const cardStyle = "bg-white p-6 rounded-xl shadow-lg";
+  // Estilos mejorados con diferenciación visual
+  const primaryButtonStyle = "group relative w-full bg-blue-600 text-white py-4 px-4 sm:py-6 sm:px-8 rounded-lg text-base sm:text-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 overflow-hidden";
+  
+  const secondaryButtonStyle = "group relative w-full bg-gray-100 text-gray-800 border-2 border-gray-300 py-4 px-4 sm:py-6 sm:px-8 rounded-lg text-base sm:text-lg font-semibold hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 overflow-hidden";
 
-  // Simular carga de usuarios
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        // En producción, esto sería una llamada a tu API
-        const mockUsers = [
-          { id: 1, firstName: 'María', lastName: 'González', email: 'maria@email.com', role: 'member', status: 'active' },
-          { id: 2, firstName: 'Carlos', lastName: 'Rodríguez', email: 'carlos@email.com', role: 'member', status: 'active' },
-          { id: 3, firstName: 'Ana', lastName: 'Martínez', email: 'ana@email.com', role: 'member', status: 'pending' }
-        ];
-        setUsers(mockUsers);
-    } catch {
-        setStatus({ type: 'error', message: 'Error al cargar usuarios' });
-      }
-      setLoading(false);
-    };
-
-    fetchUsers();
-  }, []);
-
-  const generateIDCard = async (userId) => {
-    setLoading(true);
-    try {
-      // Simular generación de carnet
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setStatus({ type: 'success', message: 'Carnet generado exitosamente' });
-      console.log('Generando carnet para usuario ID:', userId);
-    } catch {
-      setStatus({ type: 'error', message: 'Error al generar carnet' });
-    }
-    setLoading(false);
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
   };
 
-  const generateCertificate = async (userId, type) => {
-    setLoading(true);
-    try {
-      // Simular generación de certificado
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setStatus({ type: 'success', message: `Certificado ${type} generado exitosamente` });
-      console.log('Generando certificado', type, 'para usuario ID:', userId);
-    } catch {
-      setStatus({ type: 'error', message: 'Error al generar certificado' });
-    }
-    setLoading(false);
+  const iconVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.4, delay: 0.3 } }
   };
 
-  const filteredUsers = users.filter(user =>
-    `${user.firstName} ${user.lastName} ${user.email}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  const statsVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.4 } }
+  };
+
+  const handleSelection = (path) => {
+    navigate(path);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-6xl mx-auto"
-      >
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-900">
-            Panel de Administración
-          </h1>
-          <p className="mt-2 text-lg text-gray-600">
-            Gestiona carnets y certificados de miembros
-          </p>
-        </div>
-
-        {/* Búsqueda */}
-        <div className={cardStyle + " mb-6"}>
-          <label htmlFor="search" className={labelStyle}>
-            Buscar miembros
-          </label>
-          <input
-            id="search"
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={inputStyle}
-            placeholder="Buscar por nombre, apellido o email..."
-          />
-        </div>
-
-        {/* Lista de usuarios */}
-        <div className={cardStyle}>
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Lista de Miembros ({filteredUsers.length})
-          </h2>
-
-          {loading ? (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="mt-2 text-gray-600">Cargando miembros...</p>
+    <div className="min-h-screen bg-gray-50 py-8 px-2 sm:px-6 lg:px-8">
+      <div className="w-full space-y-4 sm:space-y-6">
+        
+        {/* Contenedor principal del panel con los estilos de la tarjeta */}
+        <div className="bg-white rounded-xl border border-gray-200 p-4 sm:p-8 w-full space-y-4 sm:space-y-6">
+          
+          {/* Header del Panel */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
+          >
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Panel de Administración</h1>
+                  <p className="text-xs sm:text-sm text-gray-600">Sistema de gestión institucional</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 text-xs sm:text-sm text-gray-500 mt-2 sm:mt-0">
+                <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span>Conectado</span>
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              </div>
             </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredUsers.map((user) => (
-                <motion.div
-                  key={user.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
-                >
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium text-gray-900">
-                        {user.firstName} {user.lastName}
-                      </h3>
-                      <p className="text-sm text-gray-600">{user.email}</p>
-                      <span className={`inline-block mt-1 px-2 py-1 text-xs rounded-full ${
-                        user.status === 'active' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-yellow-100 text-yellow-800'
-                      }`}>
-                        {user.status === 'active' ? 'Activo' : 'Pendiente'}
-                      </span>
+          </motion.div>
+
+          {/* Estadísticas Rápidas */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={statsVariants}
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4"
+          >
+            <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">Gestores</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900">1</p>
+                </div>
+                <UserCheck className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">Miembros</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900">32</p>
+                </div>
+                <Users className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs sm:text-sm text-gray-600">Sistema</p>
+                  <p className="text-base sm:text-lg font-semibold text-green-600">Operativo</p>
+                </div>
+                <Activity className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Panel Principal de Selección */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
+          >
+            <div className="text-center mb-4 sm:mb-8">
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={iconVariants}
+                className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-4"
+              >
+                <Settings className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
+              </motion.div>
+              <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
+                Acceso Administrativo
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600">
+                Selecciona el tipo de panel al que deseas acceder
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-8">
+              {/* Botón Primario - Panel de Gestor */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={primaryButtonStyle}
+                onClick={() => handleSelection('/panel-gestor')}
+              >
+                <div className="flex items-center justify-between relative z-10">
+                  <div className="flex items-center space-x-2 sm:space-x-4">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <UserCheck className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                     </div>
-
-                    <div className="flex space-x-2">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => generateIDCard(user.id)}
-                        disabled={loading}
-                        className={`${buttonStyle} text-sm ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                      >
-                        Generar Carnet
-                      </motion.button>
-
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => generateCertificate(user.id, 'afiliación')}
-                        disabled={loading}
-                        className={`${buttonStyle} bg-green-600 hover:bg-green-700 text-sm ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                      >
-                        Cert. Afiliación
-                      </motion.button>
-
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => generateCertificate(user.id, 'participación')}
-                        disabled={loading}
-                        className={`${buttonStyle} bg-purple-600 hover:bg-purple-700 text-sm ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                      >
-                        Cert. Participación
-                      </motion.button>
+                    <div className="text-left">
+                      <div className="font-semibold text-sm sm:text-base">Panel de Gestor</div>
+                      <div className="text-xs sm:text-sm text-blue-100">Administración avanzada</div>
                     </div>
                   </div>
-                </motion.div>
-              ))}
-
-              {filteredUsers.length === 0 && (
-                <div className="text-center py-8 text-gray-500">
-                  No se encontraron miembros
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" />
                 </div>
-              )}
-            </div>
-          )}
-        </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              </motion.button>
 
-        {/* Mensajes de estado */}
-        {status.message && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`fixed top-4 right-4 rounded-md p-4 ${
-              status.type === 'success' 
-                ? 'bg-green-50 text-green-800 border border-green-200' 
-                : 'bg-red-50 text-red-800 border border-red-200'
-            }`}
-          >
-            <p className="text-sm">{status.message}</p>
+              {/* Botón Secundario - Panel de Miembro */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={secondaryButtonStyle}
+                onClick={() => handleSelection('/panel-miembro')}
+              >
+                <div className="flex items-center justify-between relative z-10">
+                  <div className="flex items-center space-x-2 sm:space-x-4">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <User className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-semibold text-sm sm:text-base">Panel de Miembro</div>
+                      <div className="text-xs sm:text-sm text-gray-500">Gestión básica</div>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" />
+                </div>
+              </motion.button>
+            </div>
+
+            {/* Información Adicional */}
+            <div className="bg-gray-50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+              <div className="flex items-start space-x-2 sm:space-x-3">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 bg-blue-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-600 rounded-full"></div>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Acceso seguro</p>
+                  <p className="text-xs sm:text-sm text-gray-600 mt-0.5 sm:mt-1">
+                    Tu sesión está protegida con autenticación de dos factores y cifrado de extremo a extremo.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Botón de navegación a la página principal */}
+            <div className="text-center">
+              <button
+                onClick={() => navigate('/')}
+                className="inline-flex items-center space-x-2 text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors"
+              >
+                <Home className="w-4 h-4" />
+                <span>Volver a la página Principal</span>
+              </button>
+            </div>
           </motion.div>
-        )}
-      </motion.div>
+
+          {/* Footer del Panel */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
+          >
+            <div className="flex flex-wrap justify-center text-xs sm:text-sm text-gray-500 space-x-2 md:space-x-6">
+              <span>Admin Panel v3.2.1</span>
+              <div className="w-1 h-1 bg-gray-300 rounded-full mt-2 sm:mt-0"></div>
+              <span>Última actualización: Hoy</span>
+              <div className="w-1 h-1 bg-gray-300 rounded-full mt-2 sm:mt-0"></div>
+              <span>Uptime: 99.9%</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 };

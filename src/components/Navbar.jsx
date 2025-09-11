@@ -8,9 +8,8 @@ import {
   ChevronDown,
   Newspaper,
   UserPlus,
-  Rocket // Nuevo ícono para el botón "¡AFÍLIATE YA!"
-} from 'lucide-react';
-import { 
+  Rocket,
+  Settings,
   BookOpen, 
   FileText, 
   GraduationCap, 
@@ -117,7 +116,7 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation - Diseño limpio y profesional */}
-          <div className="hidden xl:flex items-center space-x-4 2xl:space-x-6">
+          <div className="hidden xl:flex items-center space-x-3 2xl:space-x-5">
             <a 
               href="/" 
               className={`${textColor} ${hoverTextColor} transition-all duration-300 font-medium relative group text-sm 2xl:text-base`}
@@ -236,6 +235,16 @@ const Navbar = () => {
               <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full`} />
             </a>
 
+            {/* Nuevo elemento "Administración" */}
+            <a 
+              href="/panel-administracion" 
+              className={`${textColor} ${hoverTextColor} transition-all duration-300 font-medium relative group text-sm 2xl:text-base flex items-center space-x-1`}
+            >
+              <Settings className="w-3 h-3 2xl:w-4 2xl:h-4" />
+              <span>Administración</span>
+              <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full`} />
+            </a>
+
             {/* Botón de Afiliación con efecto de borde y color azul claro */}
             <a
               href="/suscription"
@@ -268,7 +277,7 @@ const Navbar = () => {
           </div>
 
           {/* Tablet Navigation (lg to xl) */}
-          <div className="hidden lg:flex xl:hidden items-center space-x-3">
+          <div className="hidden lg:flex xl:hidden items-center space-x-2">
             <a 
               href="/" 
               className={`${textColor} ${hoverTextColor} transition-colors duration-300 font-medium text-sm`}
@@ -362,6 +371,15 @@ const Navbar = () => {
 
             <a href="https://relaticpanama.org/_blog/" className={`${textColor} ${hoverTextColor} transition-colors duration-300 font-medium text-sm`}>
               Blog
+            </a>
+            
+            {/* Administración para Tablet */}
+            <a 
+              href="/panel-administracion" 
+              className={`${textColor} ${hoverTextColor} transition-colors duration-300 font-medium text-sm flex items-center space-x-1`}
+            >
+              <Settings className="w-3 h-3" />
+              <span>Admin</span>
             </a>
 
             {/* Botón de Afiliación para Tablet */}
@@ -486,6 +504,18 @@ const Navbar = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Blog
+              </a>
+
+              {/* Administración Móvil */}
+              <a 
+                href="/panel-administracion" 
+                className={`flex items-center space-x-3 px-3 py-2 sm:px-4 sm:py-3 ${dropdownItemTextColor} ${dropdownHoverBg} rounded-md transition-all duration-300 font-medium text-sm sm:text-base`}
+                onClick={() => setIsOpen(false)}
+              >
+                <Settings className={`w-4 h-4 ${
+                  isScrolled ? 'text-blue-600' : 'text-blue-200'
+                } flex-shrink-0`} />
+                <span>Administración</span>
               </a>
 
               {/* Botón de Afiliación Móvil */}
