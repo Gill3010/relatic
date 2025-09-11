@@ -1,12 +1,14 @@
 import { useState, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw, Award } from 'lucide-react';
 
-const GenerateCertificates = () => {
+const GenerateCertificates = ({ events, isLoading }) => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [excelFile, setExcelFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState('');
 
   const handleFile = useCallback((file) => {
     if (file) {
@@ -14,7 +16,6 @@ const GenerateCertificates = () => {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'application/vnd.ms-excel'
       ];
-
       if (!validTypes.includes(file.type)) {
         setSubmitStatus({
           type: 'error',
@@ -23,7 +24,6 @@ const GenerateCertificates = () => {
         setExcelFile(null);
         return;
       }
-
       if (file.size > 5 * 1024 * 1024) {
         setSubmitStatus({
           type: 'error',
@@ -32,7 +32,6 @@ const GenerateCertificates = () => {
         setExcelFile(null);
         return;
       }
-
       setExcelFile(file);
       setSubmitStatus(null);
     }
@@ -63,7 +62,6 @@ const GenerateCertificates = () => {
 
   const handleFileUpload = useCallback(async (e) => {
     e.preventDefault();
-
     if (!excelFile) {
       setSubmitStatus({
         type: 'error',
@@ -71,12 +69,20 @@ const GenerateCertificates = () => {
       });
       return;
     }
+    if (!selectedEventId) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Por favor, seleccione un evento.'
+      });
+      return;
+    }
 
-    setIsLoading(true);
+    setIsUploading(true);
     setSubmitStatus(null);
 
     const formData = new FormData();
     formData.append('excel_file', excelFile);
+    formData.append('event_id', selectedEventId);
 
     try {
       const response = await fetch('https://relaticpanama.org/api/process_excel.php', {
@@ -89,12 +95,10 @@ const GenerateCertificates = () => {
       }
 
       const result = await response.json();
-
       setSubmitStatus({
         type: result.success ? 'success' : 'error',
         message: result.message || (result.success ? 'Certificados generados correctamente.' : 'Error al procesar el archivo.')
       });
-
     } catch (error) {
       setSubmitStatus({
         type: 'error',
@@ -102,14 +106,15 @@ const GenerateCertificates = () => {
       });
       console.error('Error:', error);
     } finally {
-      setIsLoading(false);
+      setIsUploading(false);
     }
-  }, [excelFile]);
+  }, [excelFile, selectedEventId]);
 
   const resetForm = useCallback(() => {
     setSubmitStatus(null);
     setExcelFile(null);
-    setIsLoading(false);
+    setIsUploading(false);
+    setSelectedEventId('');
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -151,6 +156,26 @@ const GenerateCertificates = () => {
 
       <div className="space-y-6">
         <div className="space-y-2">
+          <label htmlFor="event-select" className="block text-sm font-medium text-slate-700">
+            Seleccionar Evento
+          </label>
+          <select
+            id="event-select"
+            value={selectedEventId}
+            onChange={(e) => setSelectedEventId(e.target.value)}
+            disabled={isUploading || isLoading}
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2"
+          >
+            <option value="">-- Seleccione un Evento --</option>
+            {events.map((event) => (
+              <option key={event.id} value={event.id}>
+                {event.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-2">
           <label htmlFor="excel-file-certificates" className="block text-sm font-medium text-slate-700">
             Archivo de Excel
           </label>
@@ -161,14 +186,14 @@ const GenerateCertificates = () => {
               ref={fileInputRef}
               onChange={handleFileChange}
               accept=".xlsx,.xls"
-              disabled={isLoading}
+              disabled={isUploading || isLoading}
               className="sr-only"
             />
             <label
               htmlFor="excel-file-certificates"
               className={`
                 relative block w-full rounded-lg border-2 border-dashed border-slate-300 p-8 text-center transition-colors duration-200
-                ${isLoading ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
+                ${isUploading || isLoading ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
                 ${isDragOver ? 'border-blue-500 bg-blue-50' : 'hover:border-slate-400'}
               `}
               onDragOver={handleDragOver}
@@ -189,16 +214,16 @@ const GenerateCertificates = () => {
         <button
           type="submit"
           onClick={handleFileUpload}
-          disabled={!excelFile || isLoading}
+          disabled={!excelFile || isUploading || !selectedEventId || isLoading}
           className={`
             w-full flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200
-            ${!excelFile || isLoading
+            ${!excelFile || isUploading || !selectedEventId || isLoading
               ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
               : 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800'
             }
           `}
         >
-          {isLoading ? (
+          {isUploading ? (
             <>
               <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
               Procesando...
@@ -214,7 +239,7 @@ const GenerateCertificates = () => {
         <button
           type="button"
           onClick={resetForm}
-          disabled={isLoading}
+          disabled={isUploading || isLoading}
           className="w-full px-6 py-3 border border-slate-300 text-sm font-medium text-slate-700 bg-white rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
         >
           Limpiar Formulario
@@ -226,6 +251,7 @@ const GenerateCertificates = () => {
           Instrucciones de uso:
         </h3>
         <ul className="text-sm text-slate-600 space-y-1">
+          <li>• Seleccione el evento al que pertenecen los certificados.</li>
           <li>• El archivo Excel debe contener las columnas necesarias para generar los certificados.</li>
           <li>• Asegúrese de que los datos estén correctamente formateados.</li>
           <li>• El tamaño máximo del archivo es de 5MB.</li>
@@ -234,6 +260,17 @@ const GenerateCertificates = () => {
       </div>
     </div>
   );
+};
+
+// Añade la validación de propTypes para evitar las advertencias de ESLint
+GenerateCertificates.propTypes = {
+  events: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default GenerateCertificates;

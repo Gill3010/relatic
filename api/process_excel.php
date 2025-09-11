@@ -6,13 +6,12 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 // Asegúrate de que esta ruta sea correcta para tu servidor
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once "config.php"; 
+require_once "config.php";
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 $response = ["success" => false, "message" => ""];
 
-// Manejo de la solicitud OPTIONS
 if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
     http_response_code(200);
     exit;
@@ -32,7 +31,16 @@ if (!isset($_FILES['excel_file']) || $_FILES['excel_file']['error'] !== UPLOAD_E
     exit;
 }
 
+// Nuevo: Validar que se ha recibido el ID del evento
+if (!isset($_POST['event_id']) || empty($_POST['event_id'])) {
+    $response["message"] = "ID de evento no proporcionado.";
+    http_response_code(400);
+    echo json_encode($response);
+    exit;
+}
+
 $uploadedFile = $_FILES['excel_file']['tmp_name'];
+$eventId = $_POST['event_id'];
 
 // Define la URL base de tu sitio para el QR
 $baseUrl = "https://relaticpanama.org/verify_certificate.php";
@@ -41,7 +49,7 @@ try {
     $spreadsheet = IOFactory::load($uploadedFile);
     $worksheet = $spreadsheet->getActiveSheet();
     $data = $worksheet->toArray(null, true, true, true);
-    
+
     if (empty($data) || count($data) < 2) {
         $response["message"] = "El archivo de Excel está vacío o no tiene datos.";
         http_response_code(400);
@@ -72,7 +80,6 @@ try {
         }
     }
     
-    // Carpeta donde se guardarán los códigos QR
     $qrDir = __DIR__ . '/qrcodes/';
     if (!is_dir($qrDir)) {
         mkdir($qrDir, 0755, true);
@@ -81,7 +88,8 @@ try {
     $certificatesGenerated = 0;
     $failedRows = [];
 
-    $sql = "INSERT INTO certificates (nombre_estudiante, id_estudiante, concepto, tipo_documento, horas_academicas, creditos, fecha_inicio, fecha_fin, fecha_emision, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+    // Nuevo: La sentencia SQL ahora incluye la columna event_id
+    $sql = "INSERT INTO certificates (nombre_estudiante, id_estudiante, concepto, tipo_documento, horas_academicas, creditos, fecha_inicio, fecha_fin, fecha_emision, created_at, event_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
     $stmt = $pdo->prepare($sql);
 
     for ($i = 2; $i <= count($data); $i++) {
@@ -97,6 +105,7 @@ try {
             'fecha_inicio' => $row[$columnMapping['fecha_inicio']] ?? null,
             'fecha_fin' => $row[$columnMapping['fecha_fin']] ?? null,
             'fecha_emision' => $row[$columnMapping['fecha_emision']] ?? null,
+            'event_id' => $eventId, // Nuevo: Agregamos el ID del evento al array de datos
         ];
 
         if (empty($rowData['nombre_estudiante']) || empty($rowData['id_estudiante'])) {
@@ -105,23 +114,18 @@ try {
         }
 
         try {
+            // Ejecutamos la sentencia con el array de valores actualizado
             $stmt->execute(array_values($rowData));
             $lastId = $pdo->lastInsertId();
 
-            // Generar la URL única del certificado
             $qrUrl = urlencode($baseUrl . "?id=" . $lastId);
-
-            // ✅ URL de la API de GoQR.me para generar el QR
             $qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" . $qrUrl;
-
-            // Obtener el contenido de la imagen del QR
             $imageData = file_get_contents($qrApiUrl);
 
             if ($imageData === false) {
                 throw new Exception("No se pudo obtener la imagen del QR desde la API.");
             }
 
-            // Guardar la imagen del QR en el servidor
             $qrPath = $qrDir . $lastId . '.png';
             file_put_contents($qrPath, $imageData);
 

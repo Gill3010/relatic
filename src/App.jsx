@@ -26,7 +26,7 @@ const JournalMetrics = lazy(() => import('./components/JournalMetrics'));
 const PostersMetrics = lazy(() => import('./components/PostersMetrics'));
 const BooksMetrics = lazy(() => import('./components/BooksMetrics'));
 const CoursesMetrics = lazy(() => import('./components/CoursesMetrics'));
-const GenerateCertificates = lazy(() => import('./components/GenerateCertificates'));
+// const GenerateCertificates = lazy(() => import('./components/GenerateCertificates'));
 const GenerateCarnet = lazy(() => import('./components/GenerateCarnet'));
 const UserRegistration = lazy(() => import('./components/UserRegistration'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
@@ -36,7 +36,12 @@ const GestorSelection = lazy(() => import('./components/GestorSelection'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
 const Unauthorized = lazy(() => import('./components/Unauthorized'));
 const TermsAndConditions = lazy(() => import('./components/TermsAndConditions'));
-const ManageEvents = lazy(() => import('./components/ManageEvents')); // Importación del nuevo componente
+// const GenerateEvents = lazy(() => import('./components/GenerateEvents')); // Ya no es necesario importarlo aquí
+// const EventUploadForm = lazy(() => import('./components/EventUploadForm')); // Ya no es necesario importarlo aquí
+
+// Importación del nuevo componente dashboard que contiene a los otros
+const MainDashboard = lazy(() => import('./components/MainDashboard'));
+
 
 // Componente de envoltura para páginas que no son el Home, incluye el botón
 const PageLayout = ({ children }) => (
@@ -133,15 +138,17 @@ const App = () => (
         <Route path="/detalles-propiedad-intelectual" element={<PageLayout><IntellectualPropertyDetails /></PageLayout>} />
         <Route path='terminos-condiciones' element={<PageLayout><TermsAndConditions /></PageLayout>} />
 
-        {/* Ruta protegida que ahora muestra ambos componentes juntos */}
+        {/* Ruta protegida para generar certificados.
+          Ahora solo se renderiza el MainDashboard que contiene el resto de componentes.
+        */}
         <Route
           path="/generar-certificado"
           element={
             <PageLayout>
               <ProtectedRoute requiredRoles={['gestor', 'admin']}>
                 <div className='space-y-8'>
-                  <ManageEvents />
-                  <GenerateCertificates />
+                  <MainDashboard />
+                  
                 </div>
               </ProtectedRoute>
             </PageLayout>

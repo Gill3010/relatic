@@ -52,11 +52,12 @@ if (!empty($errors)) {
 }
 
 // Lógica de Conexión y Búsqueda de Usuario en la Base de Datos
-// Incluir el archivo de configuración
-require_once 'config.php';
+$servername = "localhost";
+$dbusername = "Forms25";
+$dbpassword = "Forms.2025";
+$dbname = "Forms";
 
-// Crear conexión
-$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
 if ($conn->connect_error) {
     http_response_code(500);

@@ -12,8 +12,20 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $id = $_GET['id'];
 
 try {
-    // Obtiene los datos del certificado desde la base de datos
-    $sql = "SELECT * FROM certificates WHERE id = ?";
+    // Obtiene los datos del certificado y del evento en una sola consulta
+    $sql = "
+    SELECT 
+        c.*, 
+        e.name AS event_name, 
+        e.logo_url, 
+        e.signature_url
+    FROM 
+        certificates c
+    JOIN 
+        events e ON c.event_id = e.id
+    WHERE 
+        c.id = ?
+    ";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$id]);
     $certificate = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,7 +35,6 @@ try {
     }
 
     // Crear una nueva instancia de TCPDF con dimensiones personalizadas (11 x 8.5 pulgadas)
-    // 11 pulgadas = 279.4 mm, 8.5 pulgadas = 215.9 mm
     $pdf = new TCPDF('L', 'mm', array(279.4, 215.9), true, 'UTF-8', false);
 
     // Configurar el PDF (metadatos y estilos)
@@ -48,13 +59,26 @@ try {
 
     // --- Añadir los datos del certificado sobre la imagen ---
 
-    // Texto "Certificado" - SUBIDO de Y=75 a Y=65
+    // Nuevo: Agregar el nombre del evento
+    $pdf->SetFont('helvetica', 'B', 18);
+    $pdf->SetTextColor(26, 54, 93);
+    $pdf->SetXY(20, 45); 
+    $pdf->Cell(239.4, 10, htmlspecialchars($certificate['event_name']), 0, 1, 'C');
+
+    // Nuevo: Agregar el logo del evento
+    $logo_path = $certificate['logo_url'];
+    if (file_exists($logo_path)) {
+        // Ajusta las coordenadas y el tamaño según tu plantilla
+        $pdf->Image($logo_path, 13, 10, 30, 0);
+    }
+    
+    // Texto "Certificado"
     $pdf->SetFont('helvetica', '', 12);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->SetXY(20, 65);
     $pdf->Cell(239.4, 10, 'Certificado', 0, 1, 'C');
     
-    // Texto de culminación - SUBIDO de Y=83 a Y=73
+    // Texto de culminación
     $pdf->SetFont('helvetica', '', 12);
     $pdf->SetXY(20, 73);
     $pdf->Cell(239.4, 10, 'por haber culminado satisfactoriamente los requisitos a:', 0, 1, 'C');
@@ -101,7 +125,14 @@ try {
     $pdf->SetXY(20, 175);
     $pdf->Cell(239.4, 10, 'Emitido el: ' . htmlspecialchars($certificate['fecha_emision']), 0, 1, 'C');
     
-    // QR Code (posición sin cambios)
+    // Nuevo: Agregar la firma del evento
+    $signature_path = $certificate['signature_url'];
+    if (file_exists($signature_path)) {
+        // Ajusta las coordenadas y el tamaño según tu plantilla
+        $pdf->Image($signature_path, 210, 180, 50, 0);
+    }
+    
+    // QR Code
     $qr_code_path = 'api/qrcodes/' . $certificate['id'] . '.png';
     if (file_exists($qr_code_path)) {
         // La posición del QR se ajusta para la esquina inferior derecha
