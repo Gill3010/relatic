@@ -59,86 +59,101 @@ try {
 
     // --- Añadir los datos del certificado sobre la imagen ---
 
-    // Nuevo: Agregar el nombre del evento
-    $pdf->SetFont('helvetica', 'B', 18);
-    $pdf->SetTextColor(26, 54, 93);
-    $pdf->SetXY(20, 45); 
-    $pdf->Cell(239.4, 10, htmlspecialchars($certificate['event_name']), 0, 1, 'C');
-
-    // Nuevo: Agregar el logo del evento
+    // Logo del evento (esquina superior izquierda)
     $logo_path = $certificate['logo_url'];
     if (file_exists($logo_path)) {
-        // Ajusta las coordenadas y el tamaño según tu plantilla
-        $pdf->Image($logo_path, 13, 10, 30, 0);
+        $pdf->Image($logo_path, 20, 25, 35, 0);
     }
     
-    // Texto "Certificado"
+    // === ENCABEZADO SEGÚN PLANTILLA ===
+    
+    // Nombre del evento (parte superior central)
+    $pdf->SetFont('helvetica', 'B', 16);
+    $pdf->SetTextColor(26, 54, 93);
+    $pdf->SetXY(20, 45);
+    $pdf->Cell(239.4, 8, htmlspecialchars($certificate['event_name']), 0, 1, 'C');
+
+    // Texto "Otorga el presente" (debajo del nombre del evento)
     $pdf->SetFont('helvetica', '', 12);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->SetXY(20, 65);
-    $pdf->Cell(239.4, 10, 'Certificado', 0, 1, 'C');
+    $pdf->SetXY(20, 55);
+    $pdf->Cell(239.4, 8, 'Otorga el presente', 0, 1, 'C');
     
-    // Texto de culminación
-    $pdf->SetFont('helvetica', '', 12);
-    $pdf->SetXY(20, 73);
-    $pdf->Cell(239.4, 10, 'por haber culminado satisfactoriamente los requisitos a:', 0, 1, 'C');
-
-    // Nombre del estudiante (ajustado para flotar sobre la línea dorada)
-    $pdf->SetFont('helvetica', 'B', 25);
+    // La palabra "CERTIFICADO" (después de "Otorga el presente", con mayor jerarquía)
+    $pdf->SetFont('helvetica', 'B', 32);
     $pdf->SetTextColor(26, 54, 93);
-    $pdf->SetXY(20, 87);
+    $pdf->SetXY(20, 68);
+    $pdf->Cell(239.4, 12, 'CERTIFICADO', 0, 1, 'C');
+    
+    // === CUERPO DEL CERTIFICADO ===
+    
+    // Nombre del estudiante (centrado y resaltado)
+    $pdf->SetFont('helvetica', 'B', 24);
+    $pdf->SetTextColor(26, 54, 93);
+    $pdf->SetXY(20, 85);
     $pdf->Cell(239.4, 10, htmlspecialchars($certificate['nombre_estudiante']), 0, 1, 'C');
-
-    // ID del estudiante (ajustado para flotar sobre la línea dorada)
-    $pdf->SetFont('helvetica', '', 11);
+    
+    // ID del estudiante (justo encima de la línea dorada)
+    $pdf->SetFont('helvetica', '', 10);
     $pdf->SetTextColor(74, 85, 104);
     $pdf->SetXY(20, 95);
-    $pdf->Cell(239.4, 10, 'ID: ' . htmlspecialchars($certificate['id_estudiante']), 0, 1, 'C');
+    $pdf->Cell(239.4, 8, htmlspecialchars($certificate['id_estudiante']), 0, 1, 'C');
     
-    // En concepto de
-    $pdf->SetFont('helvetica', '', 13);
+    // Texto principal del certificado (siguiendo la estructura de la plantilla)
+    $pdf->SetFont('helvetica', '', 12);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->SetXY(20, 120);
-    $pdf->Cell(239.4, 10, 'En concepto de', 0, 1, 'C');
-
+    $pdf->SetXY(20, 115);
+    $pdf->Cell(239.4, 8, "Por haber culminado satisfactoriamente los requisitos del", 0, 1, 'C');
+    
     // Concepto del curso
-    $pdf->SetFont('helvetica', 'B', 16);
-    $pdf->SetTextColor(45, 55, 72);
-    $pdf->SetXY(20, 130);
-    $pdf->Cell(239.4, 10, htmlspecialchars($certificate['concepto']), 0, 1, 'C');
-
+    $pdf->SetFont('helvetica', 'B', 12);
+    $pdf->SetTextColor(26, 54, 93);
+    $pdf->SetXY(20, 125);
+    $pdf->Cell(239.4, 8, htmlspecialchars($certificate['concepto']), 0, 1, 'C');
+    
     // Horas y créditos
     $pdf->SetFont('helvetica', '', 11);
     $pdf->SetTextColor(74, 85, 104);
-    $pdf->SetXY(20, 148);
-    $pdf->Cell(239.4, 10, 'Con una duración total de ' . htmlspecialchars($certificate['horas_academicas']) . ' horas académicas, equivalente a ' . htmlspecialchars($certificate['creditos']) . ' créditos.', 0, 1, 'C');
-
-    // Fechas
-    $pdf->SetFont('helvetica', '', 10);
+    $pdf->SetXY(20, 135);
+    $pdf->Cell(239.4, 8, "con una duración equivalente a " . htmlspecialchars($certificate['horas_academicas']) . " horas académicas y " . htmlspecialchars($certificate['creditos']) . " créditos.", 0, 1, 'C');
+    
+    // Fechas del curso
+    $pdf->SetFont('helvetica', '', 11);
     $pdf->SetTextColor(74, 85, 104);
-    $pdf->SetXY(20, 156);
-    $pdf->Cell(239.4, 10, 'De ' . htmlspecialchars($certificate['fecha_inicio']) . ' hasta ' . htmlspecialchars($certificate['fecha_fin']), 0, 1, 'C');
+    $pdf->SetXY(20, 145);
+    $pdf->Cell(239.4, 8, 'Desarrollado del ' . htmlspecialchars($certificate['fecha_inicio']) . ' al ' . htmlspecialchars($certificate['fecha_fin']), 0, 1, 'C');
 
-    // Fecha de emisión
+    // === SECCIÓN INFERIOR ===
+    
+    // Fecha de emisión (centrada en la parte inferior)
     $pdf->SetFont('helvetica', '', 9);
     $pdf->SetTextColor(113, 128, 150);
-    $pdf->SetXY(20, 175);
-    $pdf->Cell(239.4, 10, 'Emitido el: ' . htmlspecialchars($certificate['fecha_emision']), 0, 1, 'C');
+    $pdf->SetXY(20, 170);
+    $pdf->Cell(239.4, 8, 'Emitido el: ' . htmlspecialchars($certificate['fecha_emision']), 0, 1, 'C');
     
-    // Nuevo: Agregar la firma del evento
+    // === ÁREA DE FIRMAS (según plantilla) ===
+    
+    // Firma principal (centro) - Director o autoridad principal
     $signature_path = $certificate['signature_url'];
     if (file_exists($signature_path)) {
-        // Ajusta las coordenadas y el tamaño según tu plantilla
-        $pdf->Image($signature_path, 210, 180, 50, 0);
+        $pdf->Image($signature_path, 125, 185, 40, 0);
+        
+        // Línea para la firma central
+        $pdf->Line(110, 200, 160, 200);
+        
+        // Texto bajo la firma central
+        $pdf->SetFont('helvetica', '', 8);
+        $pdf->SetTextColor(0, 0, 0);
+        $pdf->SetXY(110, 202);
+        $pdf->Cell(50, 5, 'Director Académico', 0, 1, 'C');
     }
     
-    // QR Code
+    // QR Code (esquina inferior derecha)
     $qr_code_path = 'api/qrcodes/' . $certificate['id'] . '.png';
     if (file_exists($qr_code_path)) {
-        // La posición del QR se ajusta para la esquina inferior derecha
-        $x = 279.4 - 40;
-        $y = 215.9 - 40;
-        $pdf->Image($qr_code_path, $x, $y, 30, 30);
+        $x = 279.4 - 45; // Ajustado para mejor posicionamiento
+        $y = 215.9 - 45; // Ajustado para mejor posicionamiento
+        $pdf->Image($qr_code_path, $x, $y, 35, 35);
     }
 
     // Enviar el PDF al navegador con la cabecera 'D' para forzar la descarga

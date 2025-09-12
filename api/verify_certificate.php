@@ -41,174 +41,188 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificación de Certificado</title>
     <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 20px;
-        background-color: #f0f0f0;
-    }
-    .certificate-container {
-        position: relative;
-        width: 95%;
-        max-width: 900px;
-        margin: auto;
-        background-image: url('assets/certificates/certificate.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        /* Proporción 11 x 8.5 pulgadas en landscape: 11/8.5 = 1.294 */
-        aspect-ratio: 1.294 / 1;
-        box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    }
-    .text-overlay {
-        position: absolute;
-        color: #000;
-        font-weight: normal;
-        text-align: center;
-        line-height: 1.2;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80%; /* Ancho general para los textos centrados */
-        color: #4a5568;
-    }
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .certificate-container {
+            position: relative;
+            width: 95%;
+            max-width: 1000px;
+            margin: 20px auto;
+            background-image: url('assets/certificates/certificate.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            aspect-ratio: 1.294 / 1;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        .text-overlay {
+            position: absolute;
+            color: #000;
+            font-weight: normal;
+            text-align: center;
+            line-height: 1.2;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            color: #4a5568;
+            z-index: 10;
+        }
+        
+        /* Posiciones y estilos específicos para cada elemento */
 
-    /* Posiciones ajustadas para no superponer */
-    /* Posición del logo del evento (arriba a la izquierda) */
-    .event-logo-overlay {
-        position: absolute;
-        top: 2%;
-        left: 3%;
-        width: 15%;
-        max-width: 100px;
-        height: auto;
-    }
-    
-    /* Posición del nombre del evento (justo debajo del logo y centrado) */
-    .event-name-overlay {
-        position: absolute;
-        top: 10%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60%;
-        font-size: 1.5vw;
-        font-weight: bold;
-        color: #1a365d;
-        text-align: center;
-    }
+        /* Logo del evento (a la izquierda, alineado con los otros logos) */
+        .event-logo-overlay {
+            position: absolute;
+            top: 10.5%; /* Ajuste final para bajar el logo un poco más */
+            left: 17%;
+            width: 12%;
+            height: auto;
+            max-width: 150px;
+        }
 
-    /* Reposición del texto "Certificado" para evitar superposición */
-    .tipo-documento { top: 23%; font-size: 1.2vw; font-weight: 500; color: #4a5568; }
-    .texto-culminado { top: 27%; font-size: 1.2vw; font-weight: 500; color: #4a5568; }
+        /* Título del evento */
+        .event-name-overlay {
+            position: absolute;
+            top: 21%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            font-size: 1.6vw;
+            font-weight: bold;
+            color: #00285a;
+            text-align: center;
+            text-transform: uppercase;
+        }
 
-    /* Posición de los datos del estudiante */
-    .nombre-estudiante { top: 35.5%; font-size: 2.5vw; font-weight: bold; color: #1a365d; }
-    .id-estudiante { top: 44%; font-size: 1.1vw; color: #4a5568; }
-    
-    /* Posición de los datos del curso */
-    .concepto-label { top: 55%; font-size: 1.3vw; font-weight: 500; }
-    .concepto-value { top: 60%; font-size: 1.6vw; font-weight: 600; color: #2d3748; }
-    .horas-creditos { top: 69%; font-size: 1.1vw; color: #4a5568; }
-    .fechas-periodo { top: 72%; font-size: 1vw; color: #4a5568; }
-    .fecha-emision { top: 81%; font-size: 0.9vw; color: #718096; }
+        /* Texto "Otorga el presente" */
+        .texto-otorgado {
+            top: 33%;
+            font-size: 1.2vw;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        /* Tipo de documento "Certificado" */
+        .tipo-documento {
+            top: 36%;
+            font-size: 1.4vw;
+            font-weight: bold;
+            color: #00285a;
+            text-transform: uppercase;
+        }
+        
+        /* Nombre del estudiante (flotando encima de la línea dorada) */
+        .nombre-estudiante {
+            top: 40%;
+            font-size: 2.2vw;
+            font-weight: bold;
+            color: #00285a;
+            text-transform: uppercase;
+        }
 
-    /* Reposición de la firma del evento para no superponerse con el texto */
-    .event-signature-overlay {
-        position: absolute;
-        bottom: 8%;
-        right: 15%;
-        width: 18%;
-        max-width: 150px;
-        height: auto;
-    }
+        /* ID del estudiante (flotando encima de la línea dorada) */
+        .id-estudiante {
+            top: 45%;
+            font-size: 1.2vw;
+            color: #4a5568;
+        }
 
-    /* Posición del QR Code */
-    .qr-code-overlay {
-        position: absolute;
-        bottom: 2%;
-        right: 2%;
-        width: 10%;
-        max-width: 90px;
-        height: auto;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    
-    /* Media Queries - Mantenemos la coherencia en la adaptación */
-    @media (max-width: 1024px) and (min-width: 769px) {
-        .event-logo-overlay { top: 3%; left: 3%; width: 18%; max-width: 80px; }
-        .event-name-overlay { top: 12%; font-size: 2.5vw; width: 65%; }
-        .tipo-documento { font-size: 2vw; }
-        .texto-culminado { font-size: 2vw; }
-        .nombre-estudiante { font-size: 4vw; }
-        .id-estudiante { font-size: 1.8vw; }
-        .concepto-label { font-size: 2.2vw; }
-        .concepto-value { font-size: 2.8vw; }
-        .horas-creditos { font-size: 1.8vw; }
-        .fechas-periodo { font-size: 1.6vw; }
-        .fecha-emision { font-size: 1.4vw; }
-        .event-signature-overlay { bottom: 10%; right: 15%; width: 22%; max-width: 120px; }
-        .qr-code-overlay { width: 11%; max-width: 70px; }
-    }
-    @media (max-width: 768px) {
-        .certificate-container { width: 98%; margin: 10px auto; }
-        .event-logo-overlay { top: 4%; left: 3%; width: 22%; max-width: 60px; }
-        .event-name-overlay { top: 15%; font-size: 3.5vw; width: 70%; }
-        .tipo-documento { font-size: 2.5vw; }
-        .texto-culminado { font-size: 2.5vw; }
-        .nombre-estudiante { font-size: 5.5vw; top: 34.5%; }
-        .id-estudiante { font-size: 2.2vw; }
-        .concepto-label { font-size: 2.8vw; }
-        .concepto-value { font-size: 3.5vw; }
-        .horas-creditos { font-size: 2.2vw; }
-        .fechas-periodo { font-size: 2vw; }
-        .fecha-emision { font-size: 1.8vw; }
-        .event-signature-overlay { bottom: 12%; right: 10%; width: 28%; max-width: 100px; }
-        .qr-code-overlay { width: 12%; max-width: 50px; bottom: 3%; right: 3%; }
-    }
-    @media (max-width: 480px) {
-        .certificate-container { width: 100%; margin: 5px auto; }
-        .event-logo-overlay { top: 5%; left: 2%; width: 28%; max-width: 45px; }
-        .event-name-overlay { top: 17%; font-size: 4.5vw; width: 75%; }
-        .tipo-documento { font-size: 3vw; }
-        .texto-culminado { font-size: 3vw; }
-        .nombre-estudiante { font-size: 6.5vw; top: 33.5%; }
-        .id-estudiante { font-size: 2.5vw; }
-        .concepto-label { font-size: 3.2vw; }
-        .concepto-value { font-size: 4vw; }
-        .horas-creditos { font-size: 2.5vw; }
-        .fechas-periodo { font-size: 2.3vw; }
-        .fecha-emision { font-size: 2vw; }
-        .event-signature-overlay { bottom: 14%; right: 8%; width: 35%; max-width: 80px; }
-        .qr-code-overlay { width: 14%; max-width: 45px; bottom: 2%; right: 2%; }
-    }
-    .message-box {
-        background-color: #fff;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        max-width: 600px;
-        margin: 20px auto;
-        text-align: center;
-    }
-    .success-message { color: #28a745; }
-    .error-message { color: #dc3545; }
-    .download-button {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #fff;
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    .download-button:hover {
-        background-color: #0056b3;
-    }
-</style>
+        /* Texto "por haber culminado..." */
+        .texto-culminado {
+            top: 55%;
+            font-size: 1.2vw;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        /* Concepto (nombre del curso/evento) */
+        .concepto-value {
+            top: 61%;
+            font-size: 1.8vw;
+            font-weight: bold;
+            color: #2d3748;
+            text-transform: uppercase;
+        }
+
+        /* Detalles (horas, créditos, fechas) */
+        .detalles-curso {
+            top: 67%;
+            font-size: 1vw;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        /* Fechas de periodo */
+        .fechas-periodo {
+            top: 72%;
+            font-size: 1vw;
+            color: #4a5568;
+        }
+
+        /* Fecha de emisión */
+        .fecha-emision {
+            top: 81%;
+            font-size: 0.9vw;
+            color: #718096;
+        }
+
+        /* Firma del evento (en el centro, más abajo) */
+        .event-signature-overlay {
+            position: absolute;
+            bottom: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20%;
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* QR Code (esquina inferior derecha) */
+        .qr-code-overlay {
+            position: absolute;
+            bottom: 2%;
+            right: 2%;
+            width: 8%;
+            max-width: 80px;
+            height: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Mensajes de verificación */
+        .message-box {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .success-message { color: #28a745; }
+        .error-message { color: #dc3545; }
+        .download-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .download-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
@@ -225,18 +239,26 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <img src="<?php echo htmlspecialchars($certificate['logo_url']); ?>" alt="Logo del Evento" class="event-logo-overlay">
             <?php endif; ?>
             
-            <div class="event-name-overlay"><?php echo htmlspecialchars($certificate['event_name']); ?></div>
+            <div class="text-overlay event-name-overlay">Cuarto Congreso de Investigaciones Cualitativas</div>
             
-            <div class="text-overlay tipo-documento"><?php echo htmlspecialchars($certificate['tipo_documento']); ?></div>
-            <div class="text-overlay texto-culminado">por haber culminado satisfactoriamente los requisitos a:</div>
-            
-            <div class="text-overlay nombre-estudiante"><?php echo htmlspecialchars($certificate['nombre_estudiante']); ?></div>
+            <div class="text-overlay texto-otorgado">Otorga el presente</div>
+
+            <div class="text-overlay tipo-documento">
+                <?php echo htmlspecialchars($certificate['tipo_documento']); ?>
+            </div>
+
+            <div class="text-overlay nombre-estudiante">
+                <?php echo htmlspecialchars($certificate['nombre_estudiante']); ?>
+            </div>
             <div class="text-overlay id-estudiante">ID: <?php echo htmlspecialchars($certificate['id_estudiante']); ?></div>
             
-            <div class="text-overlay concepto-label">En concepto de</div>
+            <div class="text-overlay texto-culminado">por haber culminado satisfactoriamente los requisitos del</div>
+            
             <div class="text-overlay concepto-value"><?php echo htmlspecialchars($certificate['concepto']); ?></div>
             
-            <div class="text-overlay horas-creditos">Con una duración total de <?php echo htmlspecialchars($certificate['horas_academicas']); ?> horas académicas, equivalente a <?php echo htmlspecialchars($certificate['creditos']); ?> créditos.</div>
+            <div class="text-overlay detalles-curso">
+                Con una duración total de <?php echo htmlspecialchars($certificate['horas_academicas']); ?> horas académicas, equivalente a <?php echo htmlspecialchars($certificate['creditos']); ?> créditos.
+            </div>
             
             <div class="text-overlay fechas-periodo">De <?php echo htmlspecialchars($certificate['fecha_inicio']); ?> hasta <?php echo htmlspecialchars($certificate['fecha_fin']); ?></div>
             <div class="text-overlay fecha-emision">Emitido el: <?php echo htmlspecialchars($certificate['fecha_emision']); ?></div>

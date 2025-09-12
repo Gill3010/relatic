@@ -430,7 +430,10 @@ const Navbar = () => {
             ? 'max-h-screen opacity-100 pb-4 sm:pb-6' 
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}>
-          <div className={`${dropdownBg} border border-slate-200 rounded-lg mt-4 overflow-hidden shadow-lg`}>
+          <div className={`${dropdownBg} border border-slate-200 rounded-lg mt-4 shadow-lg ${
+            // Ajuste para móviles en horizontal: limita la altura y permite el scroll
+            'h-auto max-h-[80vh] overflow-y-auto'
+          }`}>
             <div className="p-3 sm:p-4 space-y-2">
               <a 
                 href="/" 
