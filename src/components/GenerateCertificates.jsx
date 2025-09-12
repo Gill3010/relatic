@@ -85,7 +85,7 @@ const GenerateCertificates = ({ events, isLoading }) => {
     formData.append('event_id', selectedEventId);
 
     try {
-      const response = await fetch('https://relaticpanama.org/api/process_excel.php', {
+      const response = await fetch('https://relaticpanama.org/api/process_excel_certificates.php', {
         method: 'POST',
         body: formData,
       });
@@ -156,24 +156,24 @@ const GenerateCertificates = ({ events, isLoading }) => {
 
       <div className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="event-select" className="block text-sm font-medium text-slate-700">
-            Seleccionar Evento
-          </label>
-          <select
-            id="event-select"
-            value={selectedEventId}
-            onChange={(e) => setSelectedEventId(e.target.value)}
-            disabled={isUploading || isLoading}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2"
-          >
-            <option value="">-- Seleccione un Evento --</option>
-            {events.map((event) => (
-              <option key={event.id} value={event.id}>
-                {event.name}
-              </option>
-            ))}
-          </select>
-        </div>
+  <label htmlFor="event-select" className="block text-sm font-medium text-slate-700">
+    Seleccionar Evento
+  </label>
+  <select
+    id="event-select"
+    value={selectedEventId}
+    onChange={(e) => setSelectedEventId(e.target.value)}
+    disabled={isUploading || isLoading}
+    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="">-- Seleccione un Evento --</option>
+    {events.map((event) => (
+      <option key={event.id} value={event.id}>
+        {event.name}
+      </option>
+    ))}
+  </select>
+</div>
 
         <div className="space-y-2">
           <label htmlFor="excel-file-certificates" className="block text-sm font-medium text-slate-700">

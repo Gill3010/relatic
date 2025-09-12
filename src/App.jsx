@@ -26,7 +26,6 @@ const JournalMetrics = lazy(() => import('./components/JournalMetrics'));
 const PostersMetrics = lazy(() => import('./components/PostersMetrics'));
 const BooksMetrics = lazy(() => import('./components/BooksMetrics'));
 const CoursesMetrics = lazy(() => import('./components/CoursesMetrics'));
-// const GenerateCertificates = lazy(() => import('./components/GenerateCertificates'));
 const GenerateCarnet = lazy(() => import('./components/GenerateCarnet'));
 const UserRegistration = lazy(() => import('./components/UserRegistration'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
@@ -36,8 +35,8 @@ const GestorSelection = lazy(() => import('./components/GestorSelection'));
 const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
 const Unauthorized = lazy(() => import('./components/Unauthorized'));
 const TermsAndConditions = lazy(() => import('./components/TermsAndConditions'));
-// const GenerateEvents = lazy(() => import('./components/GenerateEvents')); // Ya no es necesario importarlo aquí
-// const EventUploadForm = lazy(() => import('./components/EventUploadForm')); // Ya no es necesario importarlo aquí
+// const UploadPhoto = lazy(() => import('./components/UploadPhoto'));
+
 
 // Importación del nuevo componente dashboard que contiene a los otros
 const MainDashboard = lazy(() => import('./components/MainDashboard'));
@@ -161,6 +160,7 @@ const App = () => (
             <PageLayout>
               <ProtectedRoute requiredRoles={['gestor', 'admin']}>
                 <GenerateCarnet />
+                {/* <UploadPhoto /> */}
               </ProtectedRoute>
             </PageLayout>
           }
