@@ -4,10 +4,10 @@ import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw, Award } from 'lu
 const GenerateCarnet = () => {
     const [submitStatus, setSubmitStatus] = useState(null);
     const [excelFile, setExcelFile] = useState(null);
-    const [photosZipFile, setPhotosZipFile] = useState(null); // Nuevo estado para el archivo ZIP
+    const [photosZipFile, setPhotosZipFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef(null);
-    const photosInputRef = useRef(null); // Nueva referencia para el input del ZIP
+    const photosInputRef = useRef(null);
     const [isExcelDragOver, setIsExcelDragOver] = useState(false);
     const [isPhotosDragOver, setIsPhotosDragOver] = useState(false);
 
@@ -47,7 +47,7 @@ const GenerateCarnet = () => {
                 setPhotosZipFile(null);
                 return;
             }
-            if (file.size > 20 * 1024 * 1024) { // Límite más grande para fotos
+            if (file.size > 20 * 1024 * 1024) {
                 setSubmitStatus({
                     type: 'error',
                     message: 'El archivo ZIP es demasiado grande. Máximo 20MB permitido.'
@@ -58,6 +58,19 @@ const GenerateCarnet = () => {
             setPhotosZipFile(file);
         }
         setSubmitStatus(null);
+    }, []);
+
+    const resetForm = useCallback(() => {
+        setSubmitStatus(null);
+        setExcelFile(null);
+        setPhotosZipFile(null);
+        setIsUploading(false);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
+        if (photosInputRef.current) {
+            photosInputRef.current.value = '';
+        }
     }, []);
 
     const handleFileUpload = useCallback(async (e) => {
@@ -75,7 +88,7 @@ const GenerateCarnet = () => {
 
         const formData = new FormData();
         formData.append('excel_file', excelFile);
-        formData.append('photos_zip', photosZipFile); // Se agrega el archivo ZIP
+        formData.append('photos_zip', photosZipFile);
 
         try {
             const response = await fetch('https://relaticpanama.org/api/process_excel_carnets_photos.php', {
@@ -92,6 +105,15 @@ const GenerateCarnet = () => {
                 type: result.success ? 'success' : 'error',
                 message: result.message || (result.success ? 'Carnets generados correctamente.' : 'Error al procesar los archivos.')
             });
+
+            // **ÚNICA MODIFICACIÓN SOLICITADA:**
+            // Retrasar la limpieza del formulario para que el mensaje de éxito sea visible.
+            if (result.success) {
+                setTimeout(() => {
+                    resetForm();
+                }, 3000); // Espera 3 segundos antes de limpiar
+            }
+
         } catch (error) {
             setSubmitStatus({
                 type: 'error',
@@ -101,20 +123,7 @@ const GenerateCarnet = () => {
         } finally {
             setIsUploading(false);
         }
-    }, [excelFile, photosZipFile]);
-
-    const resetForm = useCallback(() => {
-        setSubmitStatus(null);
-        setExcelFile(null);
-        setPhotosZipFile(null);
-        setIsUploading(false);
-        if (fileInputRef.current) {
-            fileInputRef.current.value = '';
-        }
-        if (photosInputRef.current) {
-            photosInputRef.current.value = '';
-        }
-    }, []);
+    }, [excelFile, photosZipFile, resetForm]);
 
     const getStatusIcon = () => {
         if (!submitStatus) return null;

@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import PropTypes from 'prop-types'; // Importa PropTypes para la validación de props
+import PropTypes from 'prop-types';
 import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw, List } from 'lucide-react';
 
 const ManageEvents = ({ onEventsCreated }) => {
@@ -68,6 +68,15 @@ const ManageEvents = ({ onEventsCreated }) => {
     setIsDragOver(false);
   }, []);
 
+  const resetForm = useCallback(() => {
+    setSubmitStatus(null);
+    setExcelFile(null);
+    setIsLoading(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, []);
+
   const handleFileUpload = useCallback(async (e) => {
     e.preventDefault();
     
@@ -98,8 +107,15 @@ const ManageEvents = ({ onEventsCreated }) => {
         message: result.message || (result.success ? 'Eventos cargados correctamente.' : 'Error al procesar el archivo.')
       });
       
-      if (result.success && onEventsCreated) {
-        onEventsCreated();
+      if (result.success) {
+        // **ÚNICA MODIFICACIÓN SOLICITADA:**
+        // Retrasar la limpieza del formulario para que el mensaje de éxito sea visible.
+        setTimeout(() => {
+          resetForm();
+          if (onEventsCreated) {
+            onEventsCreated();
+          }
+        }, 3000); // Espera 3 segundos antes de limpiar y ejecutar el callback
       }
       
     } catch (error) {
@@ -111,16 +127,7 @@ const ManageEvents = ({ onEventsCreated }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [excelFile, onEventsCreated]);
-
-  const resetForm = useCallback(() => {
-    setSubmitStatus(null);
-    setExcelFile(null);
-    setIsLoading(false);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  }, []);
+  }, [excelFile, onEventsCreated, resetForm]);
 
   const getStatusIcon = () => {
     if (!submitStatus) return null;
@@ -245,7 +252,6 @@ const ManageEvents = ({ onEventsCreated }) => {
   );
 };
 
-// Añade la validación de propTypes para evitar las advertencias de ESLint
 ManageEvents.propTypes = {
   onEventsCreated: PropTypes.func.isRequired,
 };

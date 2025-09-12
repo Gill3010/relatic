@@ -60,6 +60,16 @@ const GenerateCertificates = ({ events, isLoading }) => {
     }
   }, [handleFile]);
 
+  const resetForm = useCallback(() => {
+    setSubmitStatus(null);
+    setExcelFile(null);
+    setIsUploading(false);
+    setSelectedEventId('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, []);
+
   const handleFileUpload = useCallback(async (e) => {
     e.preventDefault();
     if (!excelFile) {
@@ -99,6 +109,14 @@ const GenerateCertificates = ({ events, isLoading }) => {
         type: result.success ? 'success' : 'error',
         message: result.message || (result.success ? 'Certificados generados correctamente.' : 'Error al procesar el archivo.')
       });
+
+      // **ÚNICA MODIFICACIÓN SOLICITADA:**
+      // Retrasar la limpieza del formulario para que el mensaje de éxito sea visible.
+      if (result.success) {
+        setTimeout(() => {
+          resetForm();
+        }, 3000); // Espera 3 segundos antes de limpiar
+      }
     } catch (error) {
       setSubmitStatus({
         type: 'error',
@@ -108,17 +126,7 @@ const GenerateCertificates = ({ events, isLoading }) => {
     } finally {
       setIsUploading(false);
     }
-  }, [excelFile, selectedEventId]);
-
-  const resetForm = useCallback(() => {
-    setSubmitStatus(null);
-    setExcelFile(null);
-    setIsUploading(false);
-    setSelectedEventId('');
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  }, []);
+  }, [excelFile, selectedEventId, resetForm]);
 
   const getStatusIcon = () => {
     if (!submitStatus) return null;
@@ -156,24 +164,24 @@ const GenerateCertificates = ({ events, isLoading }) => {
 
       <div className="space-y-6">
         <div className="space-y-2">
-  <label htmlFor="event-select" className="block text-sm font-medium text-slate-700">
-    Seleccionar Evento
-  </label>
-  <select
-    id="event-select"
-    value={selectedEventId}
-    onChange={(e) => setSelectedEventId(e.target.value)}
-    disabled={isUploading || isLoading}
-    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-  >
-    <option value="">-- Seleccione un Evento --</option>
-    {events.map((event) => (
-      <option key={event.id} value={event.id}>
-        {event.name}
-      </option>
-    ))}
-  </select>
-</div>
+          <label htmlFor="event-select" className="block text-sm font-medium text-slate-700">
+            Seleccionar Evento
+          </label>
+          <select
+            id="event-select"
+            value={selectedEventId}
+            onChange={(e) => setSelectedEventId(e.target.value)}
+            disabled={isUploading || isLoading}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">-- Seleccione un Evento --</option>
+            {events.map((event) => (
+              <option key={event.id} value={event.id}>
+                {event.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div className="space-y-2">
           <label htmlFor="excel-file-certificates" className="block text-sm font-medium text-slate-700">
@@ -262,7 +270,6 @@ const GenerateCertificates = ({ events, isLoading }) => {
   );
 };
 
-// Añade la validación de propTypes para evitar las advertencias de ESLint
 GenerateCertificates.propTypes = {
   events: PropTypes.arrayOf(
     PropTypes.shape({

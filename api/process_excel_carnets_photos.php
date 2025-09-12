@@ -56,8 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Preparar la consulta SQL
         $pdo->beginTransaction();
-        // A帽ado todas las columnas de tu tabla, asumiendo el mismo orden que en el Excel
-        $sql = "INSERT INTO carnets (nombre_completo, cedula_dni, cargo_rol, departamentofea_ingreso, fecha_vencimiento, fecha_generacion, titulo_academico, afiliacion, numero_expediente, fecha_admision, orcid, tipo_membresia, foto_ruta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // **ACTUALIZADO**: Alineación de los campos de la tabla de la base de datos
+        $sql = "INSERT INTO carnets (nombre_completo, cedula_dni, cargo_rol, departamento, fecha_ingreso, fecha_vencimiento, titulo_academico, afiliacion, numero_expediente, fecha_admision, orcid, tipo_membresia, foto_ruta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         
         $processedCount = 0;
@@ -65,14 +65,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $carnetLinks = [];
 
         foreach ($data as $row) {
-            // Asumiendo el orden de las columnas del Excel
-            $cedulaDni = isset($row[0]) ? $row[0] : null;
-            $nombreCompleto = isset($row[1]) ? $row[1] : null;
+            // **ACTUALIZADO**: Se ajustó el orden de las variables para que coincida con la tabla
+            // Asumiendo que el Excel tiene el siguiente orden de columnas:
+            // Col 0: nombre_completo
+            // Col 1: cedula_dni
+            // Col 2: cargo_rol
+            // Col 3: departamento
+            // Col 4: fecha_ingreso
+            // Col 5: fecha_vencimiento
+            // Col 6: titulo_academico
+            // Col 7: afiliacion
+            // Col 8: numero_expediente
+            // Col 9: fecha_admision
+            // Col 10: orcid
+            // Col 11: tipo_membresia
+            
+            $nombreCompleto = isset($row[0]) ? $row[0] : null;
+            $cedulaDni = isset($row[1]) ? $row[1] : null;
             $cargoRol = isset($row[2]) ? $row[2] : null;
             $departamento = isset($row[3]) ? $row[3] : null;
             $fechaIngreso = isset($row[4]) ? $row[4] : null;
             $fechaVencimiento = isset($row[5]) ? $row[5] : null;
-            $fechaGeneracion = date('Y-m-d H:i:s'); // Fecha y hora actual
             $tituloAcademico = isset($row[6]) ? $row[6] : null;
             $afiliacion = isset($row[7]) ? $row[7] : null;
             $numeroExpediente = isset($row[8]) ? $row[8] : null;
@@ -80,13 +93,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $orcid = isset($row[10]) ? $row[10] : null;
             $tipoMembresia = isset($row[11]) ? $row[11] : null;
             
-            // 4. Buscar la foto correspondiente en la carpeta temporal
+            // Los campos que se autogeneran o no vienen del Excel
+            $fechaGeneracion = date('Y-m-d H:i:s');
             $fotoRuta = null;
-            // Busca la foto usando el DNI y cualquier extensi贸n de imagen
+
+            // 4. Buscar la foto correspondiente en la carpeta temporal
             $fotoPath = glob($zipTempDir . '/' . $cedulaDni . '.*');
 
             if (!empty($fotoPath)) {
-                // Mover la foto a su destino final
                 $finalPhotoDir = __DIR__ . '/fotos_carnets/';
                 if (!is_dir($finalPhotoDir)) {
                     mkdir($finalPhotoDir, 0777, true);
@@ -105,7 +119,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $departamento,
                     $fechaIngreso,
                     $fechaVencimiento,
-                    $fechaGeneracion,
                     $tituloAcademico,
                     $afiliacion,
                     $numeroExpediente,
@@ -122,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ];
                 $processedCount++;
             } catch (PDOException $e) {
-                error_log("Error de inserci贸n para " . $cedulaDni . ": " . $e->getMessage());
+                error_log("Error de inserción para " . $cedulaDni . ": " . $e->getMessage());
                 $failedCount++;
             }
         }
@@ -139,12 +152,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         http_response_code(500);
     } finally {
         // 6. Limpiar el directorio temporal
-        array_map('unlink', glob("$zipTempDir/*.*"));
-        rmdir($zipTempDir);
+        if (is_dir($zipTempDir)) {
+            array_map('unlink', glob("$zipTempDir/*.*"));
+            rmdir($zipTempDir);
+        }
     }
 
 } else {
-    $response["message"] = "M茅todo no permitido.";
+    $response["message"] = "Método no permitido.";
     http_response_code(405);
 }
 

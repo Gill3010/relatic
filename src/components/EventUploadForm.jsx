@@ -35,6 +35,16 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
         setSubmitStatus(null);
     }, []);
 
+    const resetForm = useCallback(() => {
+        setSubmitStatus(null);
+        setLogoFile(null);
+        setSignatureFile(null);
+        setSelectedEventId('');
+        setIsUploading(false);
+        if (logoInputRef.current) logoInputRef.current.value = '';
+        if (signatureInputRef.current) signatureInputRef.current.value = '';
+    }, []);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -67,8 +77,15 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                 message: result.message || (result.success ? 'Archivos subidos correctamente.' : 'Error al subir los archivos.')
             });
             
-            if (result.success && onAssetsUploaded) {
-              onAssetsUploaded();
+            // **ÚNICA MODIFICACIÓN SOLICITADA:**
+            // Retrasar la limpieza del formulario para que el mensaje de éxito sea visible.
+            if (result.success) {
+                setTimeout(() => {
+                    resetForm();
+                    if (onAssetsUploaded) {
+                        onAssetsUploaded();
+                    }
+                }, 3000); // Espera 3 segundos antes de limpiar y ejecutar el callback
             }
             
         } catch (error) {
@@ -81,16 +98,6 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
             setIsUploading(false);
         }
     };
-
-    const resetForm = useCallback(() => {
-        setSubmitStatus(null);
-        setLogoFile(null);
-        setSignatureFile(null);
-        setSelectedEventId('');
-        setIsUploading(false);
-        if (logoInputRef.current) logoInputRef.current.value = '';
-        if (signatureInputRef.current) signatureInputRef.current.value = '';
-    }, []);
 
     const getStatusIcon = () => {
         if (!submitStatus) return null;
