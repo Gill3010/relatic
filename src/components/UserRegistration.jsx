@@ -43,47 +43,49 @@ const UserRegistration = () => {
 
   // Diccionario de errores tipográficos comunes y sus correcciones
   const commonTypos = {
-    // Gmail errores
-    'gnail.com': 'gmail.com',
-    'gmai.com': 'gmail.com',
-    'gmial.com': 'gmail.com',
-    'gmail.con': 'gmail.com',
-    'gmail.co': 'gmail.com',
-    'gmaill.com': 'gmail.com',
-    'gamil.com': 'gmail.com',
-    'gmeil.com': 'gmail.com',
-    
-    // Hotmail errores
-    'hotmial.com': 'hotmail.com',
-    'hotmai.com': 'hotmail.com',
-    'hotmail.con': 'hotmail.com',
-    'hotmail.co': 'hotmail.com',
-    'hotmil.com': 'hotmail.com',
-    'hotmeil.com': 'hotmail.com',
-    'htomail.com': 'hotmail.com',
-    
-    // Yahoo errores
-    'yaho.com': 'yahoo.com',
-    'yahoo.con': 'yahoo.com',
-    'yahoo.co': 'yahoo.com',
-    'yahooo.com': 'yahoo.com',
-    'yhoo.com': 'yahoo.com',
-    
-    // Outlook errores
-    'outlook.con': 'outlook.com',
-    'outlook.co': 'outlook.com',
-    'outlok.com': 'outlook.com',
-    'outloook.com': 'outlook.com',
-    
-    // Errores genéricos de extensiones
-    '.con': '.com',
-    '.co': '.com',
-    '.comm': '.com',
-    '.om': '.com',
-    '.ogr': '.org',
-    '.or': '.org',
-    '.orgg': '.org'
-  };
+  // Gmail errores
+  'gnail.com': 'gmail.com',
+  'gmai.com': 'gmail.com',
+  'gmial.com': 'gmail.com',
+  'gmail.con': 'gmail.com',
+  'gmail.co': 'gmail.com',
+  'gmaill.com': 'gmail.com',
+  'gamil.com': 'gmail.com',
+  'gmeil.com': 'gmail.com',
+  'gmal.com': 'gmail.com',
+  
+  // Hotmail errores
+  'hotmial.com': 'hotmail.com',
+  'hotmai.com': 'hotmail.com',
+  'hotmail.con': 'hotmail.com',
+  'hotmail.co': 'hotmail.com',
+  'hotmil.com': 'hotmail.com',
+  'hotmeil.com': 'hotmail.com',
+  'htomail.com': 'hotmail.com',
+  
+  // Yahoo errores
+  'yaho.com': 'yahoo.com',
+  'yahoo.con': 'yahoo.com',
+  'yahoo.co': 'yahoo.com',
+  'yahooo.com': 'yahoo.com',
+  'yhoo.com': 'yahoo.com',
+  
+  // Outlook errores
+  'outlook.con': 'outlook.com',
+  'outlook.co': 'outlook.com',
+  'outlok.com': 'outlook.com',
+  'outloook.com': 'outlook.com',
+  
+  // Errores genéricos de extensiones
+  '.con': '.com',
+  '.co': '.com',
+  '.comm': '.com',
+  '.om': '.com',
+  '.ogr': '.org',
+  '.or': '.org',
+  '.orgg': '.org',
+  '.ccom': '.com' // Esta es la corrección que faltaba
+};
 
   // Estilos reutilizables
   const labelStyle = "block text-sm font-medium text-gray-700 mb-1";
@@ -118,7 +120,7 @@ const UserRegistration = () => {
   };
 
   // Función para detectar y sugerir correcciones de errores tipográficos
-  const detectTyposAndSuggest = (email) => {
+const detectTyposAndSuggest = (email) => {
     const domain = email.split('@')[1]?.toLowerCase();
     if (!domain) return null;
 
@@ -134,7 +136,7 @@ const UserRegistration = () => {
 
     // Verificar errores en la extensión solamente
     for (const typo in commonTypos) {
-      if (typo.startsWith('.') && domain.endsWith(typo.substring(1))) {
+      if (typo.startsWith('.') && domain.endsWith(typo)) {
         const correctedExtension = commonTypos[typo];
         const correctedDomain = domain.replace(new RegExp(typo.substring(1) + '$'), correctedExtension.substring(1));
         return {
