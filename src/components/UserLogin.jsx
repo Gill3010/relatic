@@ -45,7 +45,7 @@ const UserLogin = () => {
     if (!formData.password) {
       newErrors.password = 'La contraseña es obligatoria';
     } else if (formData.password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+      newErrors.password = 'La contraseña debe tener al menos 6 caracteres.';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -75,23 +75,24 @@ const UserLogin = () => {
       if (response.ok && data.success) {
         setSubmitStatus({ type: 'success', message: data.message || '¡Inicio de sesión exitoso! Redirigiendo...' });
         
-        const token = data.token;
         const userRole = data.user?.role?.trim().toLowerCase();
+        const userId = data.user?.id;
         
-        // CORRECCIÓN CLAVE: Se ajusta el array para reconocer el rol 'member'
-        const validRoles = ['gestor', 'admin', 'member'];
-        const roleToUse = validRoles.includes(userRole) ? userRole : 'usuario';
-        
-        // Llamada a la función de login del contexto con el rol y el token
-        login(roleToUse, token);
+        if (!userId) {
+          // Si el ID del usuario no se recibe, maneja el error aquí
+          setSubmitStatus({ type: 'error', message: 'Error: ID de usuario no proporcionado por el servidor.' });
+          setIsSubmitting(false);
+          return;
+        }
+
+        login({ role: userRole, id: userId, email: formData.email });
         
         setTimeout(() => {
-          if (roleToUse === 'gestor' || roleToUse === 'admin') {
-            navigate('/panel-gestor');
-          } else if (roleToUse === 'member') {
+          if (userRole === 'gestor' || userRole === 'admin') {
+            navigate(`/panel-gestor/${userId}`);
+          } else if (userRole === 'member') {
             navigate('/panel-miembro');
           } else {
-            // Si el rol es 'usuario' u otro no reconocido, redirige al inicio
             navigate('/');
           }
         }, 1500);
@@ -113,12 +114,12 @@ const UserLogin = () => {
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     if (!resetEmail.trim()) {
-      setErrors({ resetEmail: 'El email es obligatorio' });
+      setErrors({ resetEmail: 'El email es obligatorio.' });
       return;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(resetEmail)) {
-      setErrors({ resetEmail: 'El email no tiene un formato válido' });
+      setErrors({ resetEmail: 'El email no tiene un formato válido.' });
       return;
     }
     
@@ -240,7 +241,6 @@ const UserLogin = () => {
                 <input type="text" id="honeypot" name="honeypot" />
               </div>
 
-              {/* Mensajes de estado */}
               {submitStatus.message && (
                 <div className={`rounded-md p-4 ${
                   submitStatus.type === 'success' 

@@ -1,29 +1,30 @@
-
-
-import { useAuth } from './AuthContext'; 
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 import PropTypes from 'prop-types';
 
-const ProtectedRoute = ({ children, requiredRoles }) => {
-  const { isAuthenticated, userRole } = useAuth();
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { isAuthenticated, user } = useAuth();
+  const location = useLocation();
 
-  // Si no está autenticado, lo redirige al login
+  console.log('ProtectedRoute - User:', user, 'Authenticated:', isAuthenticated);
+
+  // Si no está autenticado, lo redirigimos al login
   if (!isAuthenticated) {
-    return <Navigate to="/login-usuario" replace />;
+    return <Navigate to="/login-usuario" state={{ from: location }} replace />;
   }
 
-  // Si no tiene el rol correcto, lo redirige a la página de no autorizado
-  if (requiredRoles && !requiredRoles.includes(userRole)) {
-    return <Navigate to="/unauthorized" replace />;
+  // Si no tiene el rol correcto, lo redirigimos a la página de no autorizado
+  if (allowedRoles && user && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/unauthorized" state={{ from: location }} replace />;
   }
 
-  // Si todo está bien, muestra el componente solicitado
+  // Si todo está bien, muestra el componente hijo
   return children;
 };
 
 ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
-  requiredRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default ProtectedRoute;

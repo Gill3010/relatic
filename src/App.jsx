@@ -1,9 +1,10 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-// Importa el AuthProvider desde la carpeta de componentes
+// Importa el AuthProvider
 import { AuthProvider } from './components/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute'; // ✅ Importa ProtectedRoute
 
 // Lazy imports para todos los componentes
 const Navbar = lazy(() => import('./components/Navbar'));
@@ -31,16 +32,10 @@ const UserRegistration = lazy(() => import('./components/UserRegistration'));
 const AdminPanel = lazy(() => import('./components/AdminPanel'));
 const MemberPanel = lazy(() => import('./components/MemberPanel'));
 const UserLogin = lazy(() => import('./components/UserLogin'));
-const GestorSelection = lazy(() => import('./components/GestorSelection'));
-const ProtectedRoute = lazy(() => import('./components/ProtectedRoute'));
 const Unauthorized = lazy(() => import('./components/Unauthorized'));
 const TermsAndConditions = lazy(() => import('./components/TermsAndConditions'));
-// const UploadPhoto = lazy(() => import('./components/UploadPhoto'));
-
-
-// Importación del nuevo componente dashboard que contiene a los otros
 const MainDashboard = lazy(() => import('./components/MainDashboard'));
-
+const GestorDashboard = lazy(() => import('./components/GestorDashboard'));
 
 // Componente de envoltura para páginas que no son el Home, incluye el botón
 const PageLayout = ({ children }) => (
@@ -54,7 +49,6 @@ const PageLayout = ({ children }) => (
   </Suspense>
 );
 
-// Agrega la validación de propTypes aquí
 PageLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
@@ -71,13 +65,27 @@ const HomeLayout = () => (
   </Suspense>
 );
 
+// ✅ ProtectedPageLayout DEFINIDO en App.jsx (NO en archivo separado)
+const ProtectedPageLayout = ({ allowedRoles }) => (
+  <ProtectedRoute allowedRoles={allowedRoles}>
+    <PageLayout>
+      <Outlet />
+    </PageLayout>
+  </ProtectedRoute>
+);
+
+ProtectedPageLayout.propTypes = {
+  allowedRoles: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
 const App = () => (
   <Router>
     <AuthProvider>
       <Routes>
+        {/* Rutas Públicas */}
         <Route path="/" element={<HomeLayout />} />
-
-        {/* Rutas con el layout de PageLayout */}
+        <Route path="/unauthorized" element={<PageLayout><Unauthorized /></PageLayout>} />
+        <Route path="/terminos-condiciones" element={<PageLayout><TermsAndConditions /></PageLayout>} />
         <Route path="/nosotros" element={<PageLayout><AboutUs /></PageLayout>} />
         <Route path="/actividades/proximas" element={<PageLayout><UpcomingActivities /></PageLayout>} />
         <Route path="/actividades/anteriores" element={<PageLayout><PreviousActivities /></PageLayout>} />
@@ -85,86 +93,27 @@ const App = () => (
         <Route path="/crear-orcid" element={<PageLayout><CreateOrcidGguide /></PageLayout>} />
         <Route path="/registro-usuario" element={<PageLayout><UserRegistration /></PageLayout>} />
         <Route path="/login-usuario" element={<PageLayout><UserLogin /></PageLayout>} />
+        <Route path="/detalles-revistas" element={<PageLayout><div className='space-y-8'><JournalMetrics /><JournalsDetails /></div></PageLayout>} />
+        <Route path="/detalles-carteles" element={<PageLayout><div className='space-y-8'><PostersMetrics /><PostersDetails /></div></PageLayout>} />
+        <Route path="/detalles-libros" element={<PageLayout><div className='space-y-8'><BooksMetrics /><BooksDetails /></div></PageLayout>} />
+        <Route path="/detalles-aprendizaje" element={<PageLayout><div className='space-y-8'><CoursesMetrics /><LearningDetails /></div></PageLayout>} />
+        <Route path="/detalles-propiedad-intelectual" element={<PageLayout><IntellectualPropertyDetails /></PageLayout>} />
         <Route path="/panel-administracion" element={<PageLayout><AdminPanel /></PageLayout>} />
         
-        {/*
-          Nueva ruta protegida para el panel de miembro.
-          Verifica si el usuario tiene el rol 'miembro' o 'admin'.
-        */}
-        <Route 
-          path="/panel-miembro" 
-          element={
-            <PageLayout>
-              <ProtectedRoute requiredRoles={['member', 'admin']}>
-                <MemberPanel />
-              </ProtectedRoute>
-            </PageLayout>
-          } 
-        />
-        
-        {/* Ruta protegida para la selección de tareas */}
-        <Route
-          path="/panel-gestor"
-          element={
-            <PageLayout>
-              <ProtectedRoute requiredRoles={['gestor', 'admin']}>
-                <GestorSelection />
-              </ProtectedRoute>
-            </PageLayout>
-          }
-        />
-        
-        <Route path="/unauthorized" element={<PageLayout><Unauthorized /></PageLayout>} />
-        <Route path="/terminos-condiciones" element={<PageLayout><TermsAndConditions /></PageLayout>} />
+        {/* ✅ Rutas Protegidas de Gestor/Admin - SIN PageLayout DUPLICADO */}
+        <Route element={<ProtectedPageLayout allowedRoles={['gestor', 'admin']} />}>
+          <Route path="/panel-gestor/:id" element={<GestorDashboard />} />
+          <Route path="/generar-certificado" element={<MainDashboard />} />
+          <Route path="/generar-carnet" element={<GenerateCarnet />} />
+        </Route>
 
-        {/* Rutas con detalles y métricas que usan el mismo PageLayout */}
-        <Route
-          path="/detalles-revistas"
-          element={<PageLayout><div className='space-y-8'><JournalMetrics /><JournalsDetails /></div></PageLayout>}
-        />
-        <Route
-          path="/detalles-carteles"
-          element={<PageLayout><div className='space-y-8'><PostersMetrics /><PostersDetails /></div></PageLayout>}
-        />
-        <Route
-          path="/detalles-libros"
-          element={<PageLayout><div className='space-y-8'><BooksMetrics /><BooksDetails /></div></PageLayout>}
-        />
-        <Route
-          path="/detalles-aprendizaje"
-          element={<PageLayout><div className='space-y-8'><CoursesMetrics /><LearningDetails /></div></PageLayout>}
-        />
-        <Route path="/detalles-propiedad-intelectual" element={<PageLayout><IntellectualPropertyDetails /></PageLayout>} />
-        <Route path='terminos-condiciones' element={<PageLayout><TermsAndConditions /></PageLayout>} />
+        {/* ✅ Rutas Protegidas de Miembro - SIN PageLayout DUPLICADO */}
+        <Route element={<ProtectedPageLayout allowedRoles={['member']} />}>
+          <Route path="/panel-miembro" element={<MemberPanel />} />
+        </Route>
 
-        {/* Ruta protegida para generar certificados.
-          Ahora solo se renderiza el MainDashboard que contiene el resto de componentes.
-        */}
-        <Route
-          path="/generar-certificado"
-          element={
-            <PageLayout>
-              <ProtectedRoute requiredRoles={['gestor', 'admin']}>
-                <div className='space-y-8'>
-                  <MainDashboard />
-                  
-                </div>
-              </ProtectedRoute>
-            </PageLayout>
-          }
-        />
-        
-        <Route
-          path="/generar-carnet"
-          element={
-            <PageLayout>
-              <ProtectedRoute requiredRoles={['gestor', 'admin']}>
-                <GenerateCarnet />
-                {/* <UploadPhoto /> */}
-              </ProtectedRoute>
-            </PageLayout>
-          }
-        />
+        {/* Catch-all para rutas no encontradas */}
+        <Route path="*" element={<PageLayout><div className="text-center py-10">Ruta no encontrada</div></PageLayout>} />
       </Routes>
     </AuthProvider>
   </Router>

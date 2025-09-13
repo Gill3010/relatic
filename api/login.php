@@ -56,11 +56,12 @@ if (!empty($errors)) {
     exit;
 }
 
-// Incluir el archivo de configuración
-require_once 'config.php';
+$servername = "localhost";
+$dbusername = "Forms25";
+$dbpassword = "Forms.2025";
+$dbname = "Forms";
 
-// Crear conexión
-$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
 if ($conn->connect_error) {
     http_response_code(500);
@@ -69,7 +70,7 @@ if ($conn->connect_error) {
     exit;
 }
 
-// **CAMBIO CLAVE: Se selecciona la columna 'role' de la base de datos**
+// CORRECCIÓN: Se elimina 'full_name' de la consulta SQL porque la columna no existe en la base de datos
 $sql = "SELECT id, email, password_hash, password_salt, role FROM users WHERE email = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $email);
@@ -82,7 +83,6 @@ if ($result->num_rows === 1) {
     $providedPasswordHash = hash('sha256', $password . $user['password_salt']);
 
     if ($providedPasswordHash === $user['password_hash']) {
-        // Autenticación exitosa
         $_SESSION['user_id'] = $user['id'];
         
         if ($rememberMe) {
@@ -92,8 +92,10 @@ if ($result->num_rows === 1) {
         $response['success'] = true;
         $response['message'] = '¡Inicio de sesión exitoso! Redirigiendo...';
         
-        // **INCLUSIÓN DEL ROL EN LA RESPUESTA JSON**
-        $response['user'] = ['role' => $user['role']];
+        $response['user'] = [
+            'id' => $user['id'],
+            'role' => $user['role']
+        ];
         
         http_response_code(200);
     } else {
