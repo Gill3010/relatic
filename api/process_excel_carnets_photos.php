@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Preparar la consulta SQL
         $pdo->beginTransaction();
-        // **ACTUALIZADO**: Alineación de los campos de la tabla de la base de datos
+        // **ACTUALIZADO**: Alineaci車n de los campos de la tabla de la base de datos
         $sql = "INSERT INTO carnets (nombre_completo, cedula_dni, cargo_rol, departamento, fecha_ingreso, fecha_vencimiento, titulo_academico, afiliacion, numero_expediente, fecha_admision, orcid, tipo_membresia, foto_ruta) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $carnetLinks = [];
 
         foreach ($data as $row) {
-            // **ACTUALIZADO**: Se ajustó el orden de las variables para que coincida con la tabla
+            // **ACTUALIZADO**: Se ajust車 el orden de las variables para que coincida con la tabla
             // Asumiendo que el Excel tiene el siguiente orden de columnas:
             // Col 0: nombre_completo
             // Col 1: cedula_dni
@@ -135,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ];
                 $processedCount++;
             } catch (PDOException $e) {
-                error_log("Error de inserción para " . $cedulaDni . ": " . $e->getMessage());
+                error_log("Error de inserci車n para " . $cedulaDni . ": " . $e->getMessage());
                 $failedCount++;
             }
         }
@@ -159,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
 } else {
-    $response["message"] = "Método no permitido.";
+    $response["message"] = "M谷todo no permitido.";
     http_response_code(405);
 }
 

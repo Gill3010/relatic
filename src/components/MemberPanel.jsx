@@ -1,88 +1,295 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import {
+  Search,
+  Download,
+  CreditCard,
+  Award,
+  User,
+  Calendar,
+  Clock,
+  FileText,
+  Loader,
+  Edit3,
+  Save,
+  X
+} from 'lucide-react';
+import { useAuth } from './AuthContext';
 
-const MemberPanel = () => {
-  const [userData, setUserData] = useState(null);
-  const [documents, setDocuments] = useState({ idCards: [], certificates: [] });
+const MemberDashboard = () => {
+  const { id } = useParams();
+  const { user } = useAuth();
+
+  // Estados del dashboard
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [status, setStatus] = useState({ type: '', message: '' });
+  const [error, setError] = useState(null);
 
-  const buttonStyle = "bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors";
-  const cardStyle = "bg-white p-8 rounded-xl shadow-lg";
+  // Estados del perfil de usuario
+  const [profileData, setProfileData] = useState(null);
+  const [cedulaInput, setCedulaInput] = useState('');
+  const [isEditingCedula, setIsEditingCedula] = useState(false);
+  const [tempCedula, setTempCedula] = useState('');
 
-  // Obtener datos del usuario y documentos
+  // Estilos y animaciones
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+  const iconVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.4, delay: 0.3 } },
+  };
+  const statsVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.4 } },
+  };
+
+  // Obtener el perfil del usuario
   useEffect(() => {
-    const fetchUserData = async () => {
-      setLoading(true);
+    if (!id) {
+      setError('Error: ID de usuario no proporcionado en la URL.');
+      setLoading(false);
+      return;
+    }
+
+    if (!user || parseInt(user.id) !== parseInt(id)) {
+      setError('Acceso no autorizado o ID de perfil incorrecto.');
+      setLoading(false);
+      return;
+    }
+
+    const fetchProfile = async () => {
       try {
-        // Obtener ID del usuario desde la autenticación (en producción)
-        const userId = 1; // Esto vendría de tu sistema de auth
-        
-        const response = await fetch('https://relaticpanama.org/api/get-user-documents.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId: userId })
-        });
+        const response = await fetch(
+          `https://relaticpanama.org/api/get-member-profile.php?userId=${id}`
+        );
+        if (!response.ok) {
+          throw new Error('No se pudo encontrar el perfil del miembro.');
+        }
 
         const data = await response.json();
-        
         if (data.success) {
-          setUserData(data.user);
-          setDocuments(data.documents);
+          setProfileData(data.profile);
+          // Prellenar campos con la cédula existente
+          if (data.profile?.cedula_dni) {
+            setSearchTerm(data.profile.cedula_dni);
+            setCedulaInput(data.profile.cedula_dni);
+            setTempCedula(data.profile.cedula_dni);
+          }
         } else {
-          // Error message can be handled here if needed
-          // setStatus({ type: 'error', message: data.message });
+          setError(data.message || 'Error al obtener el perfil.');
         }
-      } catch (error) {
-        console.error('Error loading user data:', error);
-        // setStatus({ type: 'error', message: 'Error de conexión' });
-        // Error message can be handled here if needed
+      } catch (err) {
+        console.error('Error al obtener el perfil:', err);
+        setError('No se pudo conectar al servidor. Inténtelo de nuevo más tarde.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserData();
-  }, []);
+    fetchProfile();
+  }, [id, user]);
 
-  const downloadDocument = async (documentId) => {
+  // Función para buscar documentos por cédula
+  const searchByCedula = async (cedula) => {
+    if (!cedula) {
+      setStatus({ type: 'error', message: 'Por favor, introduce tu Cédula o ID de Estudiante.' });
+      return;
+    }
+
     setLoading(true);
+    setStatus({ type: '', message: '' });
+    setSearchResults(null);
+
     try {
-      const response = await fetch('https://relaticpanama.org/api/download-document.php', {
+      const response = await fetch('https://relaticpanama.org/api/member_search.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
-          userId: userData.id, 
-          documentId: documentId 
-        })
+        body: JSON.stringify({ cedula_dni: cedula }),
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
-        // Aquí implementarías la descarga real del archivo
-        console.log('Descargando:', data.downloadUrl);
+        setSearchResults(data);
+        if ((data.carnets?.length || 0) === 0 && (data.certificates?.length || 0) === 0) {
+          setStatus({ type: 'info', message: 'No se encontraron documentos para la búsqueda.' });
+        } else {
+          setStatus({ type: 'success', message: 'Documentos encontrados.' });
+        }
       } else {
-        // Error message can be handled here if needed
-        // setStatus({ type: 'error', message: 'Error al descargar' });
+        setStatus({ type: 'error', message: data.message || 'Error al realizar la búsqueda.' });
       }
     } catch (error) {
-      console.error('Error downloading document:', error);
-      // setStatus({ type: 'error', message: 'Error al descargar' });
+      console.error('Error searching for documents:', error);
+      setStatus({ type: 'error', message: 'Error de conexión. Inténtalo de nuevo.' });
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading && !userData) {
+  // Buscar documentos
+  const handleSearch = async () => {
+    const cedulaToSearch = profileData?.cedula_dni || searchTerm;
+    await searchByCedula(cedulaToSearch);
+  };
+
+  // Registrar/actualizar cédula (para usuarios sin cédula registrada)
+  const handleRegisterCedula = async () => {
+    if (!cedulaInput.trim()) {
+      setStatus({ type: 'error', message: 'Por favor, introduce tu número de cédula.' });
+      return;
+    }
+
+    setLoading(true);
+    setStatus({ type: '', message: '' });
+
+    try {
+      const response = await fetch('https://relaticpanama.org/api/update-member-cedula.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ userId: Number(id), cedula: cedulaInput.trim() }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setProfileData((prev) => ({
+          ...(prev || {}),
+          cedula_dni: cedulaInput.trim(),
+        }));
+
+        setSearchTerm(cedulaInput.trim());
+        setTempCedula(cedulaInput.trim());
+        setStatus({ type: 'success', message: 'Cédula registrada correctamente.' });
+
+        // Buscar automáticamente
+        await searchByCedula(cedulaInput.trim());
+      } else {
+        setStatus({ type: 'error', message: data.message || 'No se pudo registrar la cédula.' });
+      }
+    } catch (error) {
+      console.error('Error registrando cédula:', error);
+      setStatus({ type: 'error', message: 'Error de conexión con el servidor.' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Actualizar cédula existente
+  const handleUpdateCedula = async () => {
+    if (!tempCedula.trim()) {
+      setStatus({ type: 'error', message: 'Por favor, introduce un número de cédula válido.' });
+      return;
+    }
+
+    if (tempCedula.trim() === profileData?.cedula_dni) {
+      setIsEditingCedula(false);
+      setStatus({ type: 'info', message: 'No hay cambios que guardar.' });
+      return;
+    }
+
+    setLoading(true);
+    setStatus({ type: '', message: '' });
+
+    try {
+      const response = await fetch('https://relaticpanama.org/api/update-member-cedula.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ userId: Number(id), cedula: tempCedula.trim() }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setProfileData((prev) => ({
+          ...(prev || {}),
+          cedula_dni: tempCedula.trim(),
+        }));
+
+        setSearchTerm(tempCedula.trim());
+        setCedulaInput(tempCedula.trim());
+        setIsEditingCedula(false);
+        setStatus({ type: 'success', message: 'Cédula actualizada correctamente.' });
+
+        // Buscar automáticamente con la nueva cédula
+        await searchByCedula(tempCedula.trim());
+      } else {
+        setStatus({ type: 'error', message: data.message || 'No se pudo actualizar la cédula.' });
+        setTempCedula(profileData?.cedula_dni || ''); // Revertir cambios
+      }
+    } catch (error) {
+      console.error('Error actualizando cédula:', error);
+      setStatus({ type: 'error', message: 'Error de conexión con el servidor.' });
+      setTempCedula(profileData?.cedula_dni || ''); // Revertir cambios
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Cancelar edición
+  const handleCancelEdit = () => {
+    setTempCedula(profileData?.cedula_dni || '');
+    setIsEditingCedula(false);
+    setStatus({ type: '', message: '' });
+  };
+
+  // Descargar documento
+  const downloadDocument = (documentId, documentType) => {
+    setLoading(true);
+    let downloadUrl = '';
+
+    if (documentType === 'carnet') {
+      downloadUrl = `https://relaticpanama.org/verify_carnet.php?id=${documentId}`;
+    } else if (documentType === 'certificado') {
+      downloadUrl = `https://relaticpanama.org/verify_certificate.php?id=${documentId}`;
+    } else {
+      setStatus({ type: 'error', message: 'Tipo de documento no válido.' });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      window.open(downloadUrl, '_blank');
+      setStatus({ type: 'info', message: 'La descarga debería comenzar en una nueva pestaña.' });
+    } catch (error) {
+      console.error('Error al iniciar la descarga:', error);
+      setStatus({ type: 'error', message: 'Error al iniciar la descarga del documento.' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Loading inicial
+  if (loading && !profileData) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-2 text-gray-600">Cargando información...</p>
+      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <Loader className="w-8 h-8 text-blue-600 animate-spin" />
+          <p className="text-gray-700 mt-2">Cargando perfil...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          role="alert"
+        >
+          <strong className="font-bold">Error:</strong>
+          <span className="block sm:inline ml-2">{error}</span>
         </div>
       </div>
     );
@@ -90,101 +297,423 @@ const MemberPanel = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
-      >
-        {/* Header e información del usuario (igual que antes) */}
-
-        {/* Documentos dinámicos */}
-        <div className={cardStyle}>
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">
-            Mis Documentos
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Carnets */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
-            >
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z" />
-                </svg>
-              </div>
-              
-              <h3 className="font-medium text-gray-900 mb-2 text-center">Carnets de Miembro</h3>
-              
-              {documents.idCards.length > 0 ? (
-                <div className="space-y-3">
-                  {documents.idCards.map((card) => (
-                    <div key={card.id} className="bg-gray-50 p-3 rounded-md">
-                      <p className="text-sm font-medium">{card.document_name}</p>
-                      <p className="text-xs text-gray-600">
-                        Emitido: {new Date(card.issue_date).toLocaleDateString()}
-                      </p>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => downloadDocument(card.id, 'carnet')}
-                        disabled={loading}
-                        className={`${buttonStyle} w-full mt-2 text-sm py-2`}
-                      >
-                        Descargar
-                      </motion.button>
-                    </div>
-                  ))}
+      <div className="w-full space-y-6 mx-auto">
+        <div className="bg-white rounded-xl border border-gray-200 p-4 md:p-8 w-full space-y-6 shadow-md">
+          {/* Sección de Bienvenida */}
+          <motion.div initial="hidden" animate="visible" variants={cardVariants}>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-center space-x-3 md:space-x-4">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <User className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
                 </div>
-              ) : (
-                <p className="text-center text-gray-500 text-sm">No hay carnets disponibles</p>
+                <div>
+                  <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+                    Te damos la bienvenida {profileData?.full_name || 'Miembro'}
+                  </h1>
+                  <p className="text-sm md:text-base text-gray-600">
+                    Al sistema de gestión de documentos
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2 text-xs md:text-sm text-gray-500">
+                <Clock className="w-3 h-3 md:w-4 md:h-4" />
+                <span>Conectado</span>
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-400 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Registro inicial de cédula (solo si no tiene cédula) */}
+          {!profileData?.cedula_dni ? (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={cardVariants}
+              className="border-t pt-4 mt-4"
+            >
+              <div className="text-center mb-6 md:mb-8">
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={iconVariants}
+                  className="w-12 h-12 md:w-16 md:h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4"
+                >
+                  <CreditCard className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
+                </motion.div>
+                <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">Registrar Cédula</h2>
+                <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
+                  Ingresa tu número de cédula para vincularlo a tu perfil. Esto solo debes hacerlo una vez.
+                </p>
+              </div>
+
+              <div className="max-w-2xl mx-auto mb-6 md:mb-8">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={cedulaInput}
+                      onChange={(e) => setCedulaInput(e.target.value)}
+                      placeholder="Ej. 8-123-456"
+                      className="w-full p-3 md:p-4 text-base md:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+                      disabled={loading}
+                    />
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleRegisterCedula}
+                    disabled={loading || !cedulaInput.trim()}
+                    className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all font-semibold text-base md:text-lg flex items-center justify-center min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <div className="flex items-center">
+                        <Loader className="w-4 h-4 md:w-5 md:h-5 animate-spin mr-2" />
+                        Guardando...
+                      </div>
+                    ) : (
+                      <>
+                        <CreditCard className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                        Guardar
+                      </>
+                    )}
+                  </motion.button>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+                <div className="flex items-start space-x-2 md:space-x-3">
+                  <div className="w-4 h-4 md:w-5 md:h-5 bg-blue-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full"></div>
+                  </div>
+                  <div>
+                    <p className="text-xs md:text-sm font-medium text-gray-900">Información importante</p>
+                    <p className="text-xs md:text-sm text-gray-600 mt-1">
+                      Asegúrate de introducir correctamente tu número de cédula para que solo tú puedas acceder a tus documentos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
+            /* Sección de búsqueda de documentos (cuando ya tiene cédula) */
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={cardVariants}
+              className="border-t pt-4 mt-4"
+            >
+              <div className="text-center mb-6 md:mb-8">
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={iconVariants}
+                  className="w-12 h-12 md:w-16 md:h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4"
+                >
+                  <Search className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
+                </motion.div>
+                <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">Búsqueda de Documentos</h2>
+                <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
+                  Busca todos tus documentos disponibles con tu número de cédula registrado
+                </p>
+              </div>
+
+              <div className="max-w-2xl mx-auto mb-6 md:mb-8">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex-1">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={isEditingCedula ? tempCedula : (profileData?.cedula_dni || '')}
+                        onChange={(e) => {
+                          if (isEditingCedula) {
+                            setTempCedula(e.target.value);
+                          }
+                        }}
+                        placeholder="Ej. 8-123-456"
+                        className="w-full p-3 md:p-4 text-base md:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors pr-12"
+                        disabled={loading || !isEditingCedula}
+                      />
+                      {!isEditingCedula && (
+                        <button
+                          onClick={() => {
+                            setIsEditingCedula(true);
+                            setTempCedula(profileData?.cedula_dni || '');
+                          }}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors"
+                          title="Editar cédula"
+                        >
+                          <Edit3 className="w-5 h-5" />
+                        </button>
+                      )}
+                    </div>
+                    
+                    {/* Botones de edición */}
+                    {isEditingCedula && (
+                      <div className="flex gap-2 mt-3">
+                        <button
+                          onClick={handleUpdateCedula}
+                          disabled={loading}
+                          className="flex items-center px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4 mr-1" />
+                          Guardar
+                        </button>
+                        <button
+                          onClick={handleCancelEdit}
+                          disabled={loading}
+                          className="flex items-center px-3 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm font-medium disabled:opacity-50"
+                        >
+                          <X className="w-4 h-4 mr-1" />
+                          Cancelar
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {!isEditingCedula && (
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleSearch}
+                      disabled={loading}
+                      className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all font-semibold text-base md:text-lg flex items-center justify-center min-w-[140px]"
+                    >
+                      {loading ? (
+                        <div className="flex items-center">
+                          <Loader className="w-4 h-4 md:w-5 md:h-5 animate-spin mr-2" />
+                          Buscando...
+                        </div>
+                      ) : (
+                        <>
+                          <Search className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                          Buscar
+                        </>
+                      )}
+                    </motion.button>
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+                <div className="flex items-start space-x-2 md:space-x-3">
+                  <div className="w-4 h-4 md:w-5 md:h-5 bg-blue-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full"></div>
+                  </div>
+                  <div>
+                    <p className="text-xs md:text-sm font-medium text-gray-900">Información importante</p>
+                    <p className="text-xs md:text-sm text-gray-600 mt-1">
+  {`Tu cédula está registrada. Puedes editarla haciendo clic en el ícono de lápiz y buscar documentos con el botón "Buscar".`}
+</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Resultados de búsqueda */}
+              {searchResults && (
+                <>
+                  <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={statsVariants}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 border-t pt-4 mt-4"
+                  >
+                    <div className="bg-white rounded-lg border border-gray-200 p-3 md:p-4 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs md:text-sm text-gray-600">Total Documentos</p>
+                          <p className="text-xl md:text-2xl font-bold text-gray-900">
+                            {(searchResults.carnets?.length || 0) + (searchResults.certificates?.length || 0)}
+                          </p>
+                        </div>
+                        <FileText className="w-6 h-6 md:w-8 md:h-8 text-blue-500" />
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-lg border border-gray-200 p-3 md:p-4 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs md:text-sm text-gray-600">Carnets</p>
+                          <p className="text-xl md:text-2xl font-bold text-gray-900">
+                            {searchResults.carnets?.length || 0}
+                          </p>
+                        </div>
+                        <CreditCard className="w-6 h-6 md:w-8 md:h-8 text-green-500" />
+                      </div>
+                    </div>
+                    <div className="bg-white rounded-lg border border-gray-200 p-3 md:p-4 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs md:text-sm text-gray-600">Certificados</p>
+                          <p className="text-xl md:text-2xl font-bold text-gray-900">
+                            {searchResults.certificates?.length || 0}
+                          </p>
+                        </div>
+                        <Award className="w-6 h-6 md:w-8 md:h-8 text-purple-500" />
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div initial="hidden" animate="visible" variants={cardVariants} className="border-t pt-4 mt-4">
+                    <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6">Documentos Disponibles</h2>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                      {/* Carnets */}
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-3 mb-4">
+                          <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <CreditCard className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+                          </div>
+                          <h3 className="text-lg md:text-xl font-bold text-gray-900">Carnets Disponibles</h3>
+                        </div>
+
+                        {searchResults.carnets?.length > 0 ? (
+                          <div className="space-y-3 md:space-y-4">
+                            {searchResults.carnets.map((card, index) => (
+                              <motion.div
+                                key={card.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+                                className="bg-gray-50 rounded-lg p-4 md:p-6"
+                              >
+                                <div className="flex items-start justify-between mb-4">
+                                  <div className="flex-1">
+                                    <div className="flex items-center mb-2">
+                                      <User className="w-4 h-4 text-gray-500 mr-2 flex-shrink-0" />
+                                      <p className="font-semibold text-sm md:text-base text-gray-900">
+                                        {card.nombre_completo}
+                                      </p>
+                                    </div>
+                                    <p className="text-xs md:text-sm text-gray-600">Cédula: {card.cedula_dni}</p>
+                                  </div>
+                                </div>
+
+                                <motion.button
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  onClick={() => downloadDocument(card.id, 'carnet')}
+                                  disabled={loading}
+                                  className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all font-medium flex items-center justify-center text-sm md:text-base"
+                                >
+                                  <Download className="w-4 h-4 mr-2" />
+                                  Descargar Carnet
+                                </motion.button>
+                              </motion.div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-8 md:py-12">
+                            <div className="bg-gray-100 rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                              <CreditCard className="w-6 h-6 md:w-8 md:h-8 text-gray-400" />
+                            </div>
+                            <p className="text-gray-500 text-sm md:text-base">No hay carnets disponibles</p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Certificados */}
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-3 mb-4">
+                          <div className="w-8 h-8 md:w-10 md:h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                            <Award className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
+                          </div>
+                          <h3 className="text-lg md:text-xl font-bold text-gray-900">Certificados Disponibles</h3>
+                        </div>
+
+                        {searchResults.certificates?.length > 0 ? (
+                          <div className="space-y-3 md:space-y-4">
+                            {searchResults.certificates.map((cert, index) => (
+                              <motion.div
+                                key={cert.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                                className="bg-gray-50 rounded-lg p-4 md:p-6"
+                              >
+                                <div className="mb-4">
+                                  <p className="font-semibold text-sm md:text-base text-gray-900 mb-2">
+                                    {cert.concepto}
+                                  </p>
+                                  <div className="flex flex-col sm:flex-row sm:items-center text-xs md:text-sm text-gray-600 gap-1 sm:gap-4">
+                                    <div className="flex items-center">
+                                      <User className="w-4 h-4 mr-1 flex-shrink-0" />
+                                      <span>ID: {cert.id_estudiante}</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                      <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
+                                      <span>
+                                        {new Date(cert.fecha_emision).toLocaleDateString('es-ES', {
+                                          year: 'numeric',
+                                          month: 'long',
+                                          day: 'numeric',
+                                        })}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <motion.button
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  onClick={() => downloadDocument(cert.id, 'certificado')}
+                                  disabled={loading}
+                                  className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all font-medium flex items-center justify-center text-sm md:text-base"
+                                >
+                                  <Download className="w-4 h-4 mr-2" />
+                                  Descargar Certificado
+                                </motion.button>
+                              </motion.div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-8 md:py-12">
+                            <div className="bg-gray-100 rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                              <Award className="w-6 h-6 md:w-8 md:h-8 text-gray-400" />
+                            </div>
+                            <p className="text-gray-500 text-sm md:text-base">No hay certificados disponibles</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                </>
               )}
             </motion.div>
+          )}
 
-            {/* Certificados */}
+          {/* Mensajes de estado */}
+          {status.message && (
             <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`p-3 md:p-4 rounded-lg text-center font-medium ${
+                status.type === 'error'
+                  ? 'bg-red-50 text-red-700 border border-red-200'
+                  : status.type === 'success'
+                  ? 'bg-green-50 text-green-700 border border-green-200'
+                  : 'bg-blue-50 text-blue-700 border border-blue-200'
+              }`}
             >
-              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-                </svg>
-              </div>
-              
-              <h3 className="font-medium text-gray-900 mb-2 text-center">Certificados</h3>
-              
-              {documents.certificates.length > 0 ? (
-                <div className="space-y-3">
-                  {documents.certificates.map((cert) => (
-                    <div key={cert.id} className="bg-gray-50 p-3 rounded-md">
-                      <p className="text-sm font-medium">{cert.document_name}</p>
-                      <p className="text-xs text-gray-600">
-                        {cert.certificate_type} • {new Date(cert.issue_date).toLocaleDateString()}
-                      </p>
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => downloadDocument(cert.id, 'certificado')}
-                        disabled={loading}
-                        className={`${buttonStyle} bg-green-600 hover:bg-green-700 w-full mt-2 text-sm py-2`}
-                      >
-                        Descargar
-                      </motion.button>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center text-gray-500 text-sm">No hay certificados disponibles</p>
-              )}
+              {status.message}
             </motion.div>
-          </div>
+          )}
+
+          {/* Footer */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
+            className="border-t pt-4"
+          >
+            <div className="flex flex-col md:flex-row items-center justify-center text-xs md:text-sm text-gray-500 gap-2 md:gap-6">
+              <span>Portal de Documentos v1.0</span>
+              <div className="hidden md:block w-1 h-1 bg-gray-300 rounded-full"></div>
+              <span>Última actualización: Hoy</span>
+              <div className="hidden md:block w-1 h-1 bg-gray-300 rounded-full"></div>
+              <span>Servicio: Activo</span>
+            </div>
+          </motion.div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
 
-export default MemberPanel;
+export default MemberDashboard; 

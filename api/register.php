@@ -93,7 +93,7 @@ echo json_encode($response);
 exit;
 
 // -----------------------------------------------------------------------------------------------------
-// Funciones de validación y procesamiento (sin cambios, para referencia)
+// Funciones de validación y procesamiento (sin cambios)
 // -----------------------------------------------------------------------------------------------------
 
 function validateRegistrationData($data) {
@@ -202,8 +202,8 @@ function logRegistrationAttempt($ipAddress, $email) {
 // -----------------------------------------------------------------------------------------------------
 
 /**
- * Crea un nuevo usuario en la base de datos y, si el rol es 'gestor',
- * crea automáticamente un perfil de gestor asociado.
+ * Crea un nuevo usuario en la base de datos y, si el rol es 'gestor' o 'member',
+ * crea automáticamente un perfil asociado.
  */
 function createUser($data) {
     global $pdo;
@@ -239,9 +239,12 @@ function createUser($data) {
         
         $userId = $pdo->lastInsertId();
         
-        // 2. Comprobar si el rol es 'gestor' y crear un perfil asociado
+        // 2. Comprobar el rol y crear el perfil asociado
         if ($data['role'] === 'gestor') {
             createGestorProfile($userId);
+        } elseif ($data['role'] === 'member') {
+            // NUEVA LÓGICA: CREAR PERFIL DE MIEMBRO
+            createMemberProfile($userId);
         }
         
         $stmtHistory = $pdo->prepare("
@@ -287,7 +290,24 @@ function createGestorProfile($userId) {
         error_log("Perfil de gestor creado para el usuario ID: $userId");
     } catch (PDOException $e) {
         error_log('Error creating gestor profile: ' . $e->getMessage());
-        // El `try-catch` de la función `createUser` manejará el rollback de la transacción principal.
+    }
+}
+
+/**
+ * Crea una nueva entrada en la tabla `member_profiles` para el usuario especificado.
+ * @param int $userId El ID del usuario recién creado.
+ */
+function createMemberProfile($userId) {
+    global $pdo;
+    try {
+        $stmt = $pdo->prepare("
+            INSERT INTO member_profiles (user_id) 
+            VALUES (?)
+        ");
+        $stmt->execute([$userId]);
+        error_log("Perfil de miembro creado para el usuario ID: $userId");
+    } catch (PDOException $e) {
+        error_log('Error creating member profile: ' . $e->getMessage());
     }
 }
 

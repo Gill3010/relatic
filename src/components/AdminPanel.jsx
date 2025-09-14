@@ -48,7 +48,7 @@ const AdminPanel = () => {
     } 
     // Si el usuario es un miembro y el botón presionado es para miembros
     else if (user.role === 'member' && targetRole === 'member') {
-        navigate('/panel-miembro');
+        navigate(`/panel-miembro/${user.id}`); // ← ID REAL del usuario
     } 
     // Si el rol no coincide con el botón, muestra un error o lo redirige a una página de no autorizado.
     else {

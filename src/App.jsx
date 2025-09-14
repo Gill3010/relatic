@@ -109,7 +109,7 @@ const App = () => (
 
         {/* ✅ Rutas Protegidas de Miembro - SIN PageLayout DUPLICADO */}
         <Route element={<ProtectedPageLayout allowedRoles={['member']} />}>
-          <Route path="/panel-miembro" element={<MemberPanel />} />
+          <Route path="/panel-miembro/:id" element={<MemberPanel />} />
         </Route>
 
         {/* Catch-all para rutas no encontradas */}

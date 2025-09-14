@@ -91,7 +91,7 @@ const UserLogin = () => {
           if (userRole === 'gestor' || userRole === 'admin') {
             navigate(`/panel-gestor/${userId}`);
           } else if (userRole === 'member') {
-            navigate('/panel-miembro');
+            navigate(`/panel-miembro/${userId}`);
           } else {
             navigate('/');
           }
