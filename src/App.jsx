@@ -37,6 +37,7 @@ const TermsAndConditions = lazy(() => import('./components/TermsAndConditions'))
 const MainDashboard = lazy(() => import('./components/MainDashboard'));
 const GestorDashboard = lazy(() => import('./components/GestorDashboard'));
 
+
 // Componente de envoltura para páginas que no son el Home, incluye el botón
 const PageLayout = ({ children }) => (
   <Suspense fallback={<div className="text-center py-10">Cargando...</div>}>
@@ -105,6 +106,7 @@ const App = () => (
           <Route path="/panel-gestor/:id" element={<GestorDashboard />} />
           <Route path="/generar-certificado" element={<MainDashboard />} />
           <Route path="/generar-carnet" element={<GenerateCarnet />} />
+          <Route path="/generar-carta" element={<MainDashboard />} /> {/* ✅ Vuelve a MainDashboard */}
         </Route>
 
         {/* ✅ Rutas Protegidas de Miembro - SIN PageLayout DUPLICADO */}

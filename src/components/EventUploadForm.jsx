@@ -65,7 +65,7 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
         formData.append('event_signature', signatureFile);
 
         try {
-            const response = await fetch('https://relaticpanama.org/api/upload_event.php', {
+            const response = await fetch('https://relaticpanama.org/api/process_excel_upload_event.php', {
                 method: 'POST',
                 body: formData,
             });

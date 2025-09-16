@@ -95,7 +95,7 @@ const ManageEvents = ({ onEventsCreated }) => {
     formData.append('excel_file', excelFile);
     
     try {
-      const response = await fetch('https://relaticpanama.org/api/generate_events.php', {
+      const response = await fetch('https://relaticpanama.org/api/process_excel_events.php', {
         method: 'POST',
         body: formData,
       });

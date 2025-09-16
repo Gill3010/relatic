@@ -13,7 +13,9 @@ import {
   Loader,
   Edit3,
   Save,
-  X
+  X,
+  Mail,
+  Phone
 } from 'lucide-react';
 import { useAuth } from './AuthContext';
 
@@ -323,6 +325,44 @@ const MemberDashboard = () => {
             </div>
           </motion.div>
 
+          {/* Nueva Sección de Perfil - Solo se muestra si hay datos de perfil */}
+          {profileData && (profileData.email || profileData.created_at) && (
+            <motion.div initial="hidden" animate="visible" variants={cardVariants} className="border-t pt-4">
+              <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">Mi Perfil</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                {profileData.email && (
+                  <div className="flex items-center space-x-3 p-3 md:p-4 bg-gray-50 rounded-lg">
+                    <Mail className="w-5 h-5 md:w-6 md:h-6 text-gray-500 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-xs md:text-sm font-medium text-gray-600">Correo Electrónico</p>
+                      <p className="text-sm md:text-base text-gray-900 font-semibold truncate">{profileData.email}</p>
+                    </div>
+                  </div>
+                )}
+                
+                {profileData.phone && (
+                  <div className="flex items-center space-x-3 p-3 md:p-4 bg-gray-50 rounded-lg">
+                    <Phone className="w-5 h-5 md:w-6 md:h-6 text-gray-500 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs md:text-sm font-medium text-gray-600">Teléfono</p>
+                      <p className="text-sm md:text-base text-gray-900 font-semibold">{profileData.phone}</p>
+                    </div>
+                  </div>
+                )}
+                
+                {profileData.created_at && (
+                  <div className="flex items-center space-x-3 p-3 md:p-4 bg-gray-50 rounded-lg">
+                    <Calendar className="w-5 h-5 md:w-6 md:h-6 text-gray-500 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs md:text-sm font-medium text-gray-600">Miembro desde</p>
+                      <p className="text-sm md:text-base text-gray-900 font-semibold">{profileData.created_at}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          )}
+
           {/* Registro inicial de cédula (solo si no tiene cédula) */}
           {!profileData?.cedula_dni ? (
             <motion.div
@@ -501,8 +541,8 @@ const MemberDashboard = () => {
                   </div>
                   <div>
                     <p className="text-xs md:text-sm font-medium text-gray-900">Información importante</p>
-                    <p className="text-xs md:text-sm text-gray-600 mt-1">
-  {`Tu cédula está registrada. Puedes editarla haciendo clic en el ícono de lápiz y buscar documentos con el botón "Buscar".`}
+                   <p className="text-xs md:text-sm text-gray-600 mt-1">
+  Tu cédula está registrada. Puedes editarla haciendo clic en el ícono de lápiz y buscar documentos con el botón &quot;Buscar&quot;.
 </p>
                   </div>
                 </div>
@@ -716,4 +756,4 @@ const MemberDashboard = () => {
   );
 };
 
-export default MemberDashboard; 
+export default MemberDashboard;

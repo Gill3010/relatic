@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FileText, CreditCard, User, Clock, ChevronRight, Activity, Mail, Phone, Calendar, Loader } from 'lucide-react';
+import { FileText, CreditCard, User, Clock, ChevronRight, Activity, Mail, Phone, Calendar, Loader, FileCheck } from 'lucide-react';
 import { useAuth } from './AuthContext';
 
 const GestorDashboard = () => {
@@ -14,7 +14,8 @@ const GestorDashboard = () => {
 
   // Estilos y animaciones
   const primaryButtonStyle = "group relative w-full bg-blue-600 text-white py-4 md:py-6 px-4 md:px-8 rounded-lg text-base md:text-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 overflow-hidden";
-  const secondaryButtonStyle = "group relative w-full bg-gray-100 text-gray-800 border-2 border-gray-300 py-4 md:py-6 px-4 md:px-8 rounded-lg text-base md:text-lg font-semibold hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 overflow-hidden";
+  const secondaryButtonStyle = "group relative w-full bg-emerald-600 text-white py-4 md:py-6 px-4 md:px-8 rounded-lg text-base md:text-lg font-semibold hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all duration-200 overflow-hidden";
+  const tertiaryButtonStyle = "group relative w-full bg-gray-100 text-gray-800 border-2 border-gray-300 py-4 md:py-6 px-4 md:px-8 rounded-lg text-base md:text-lg font-semibold hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition-all duration-200 overflow-hidden";
   
   const cardVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -228,7 +229,7 @@ const GestorDashboard = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -258,17 +259,49 @@ const GestorDashboard = () => {
               >
                 <div className="flex items-center justify-between relative z-10">
                   <div className="flex items-center space-x-3 md:space-x-4">
-                    <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <CreditCard className="w-4 h-4 md:w-5 md:h-5 text-gray-600" />
+                    <div className="w-8 h-8 md:w-10 md:h-10 bg-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <CreditCard className="w-4 h-4 md:w-5 md:h-5 text-white" />
                     </div>
                     <div className="text-left">
                       <div className="font-semibold text-sm md:text-base">Generar Carnet</div>
-                      <div className="text-xs md:text-sm text-gray-500">Identificaciones</div>
+                      <div className="text-xs md:text-sm text-emerald-100">Identificaciones</div>
                     </div>
                   </div>
                   <ChevronRight className="w-4 h-4 md:w-5 md:h-5 transform group-hover:translate-x-1 transition-transform flex-shrink-0" />
                 </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </motion.button>
+            </div>
+
+            {/* Botón para generar cartas - Centrado y con el mismo ancho que cada botón individual de arriba */}
+            <div className="flex justify-center mb-6 md:mb-8">
+              <div className="w-full md:w-1/2 md:pr-2">
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={cardVariants}
+                >
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={tertiaryButtonStyle}
+                    onClick={() => handleSelection('/generar-carta')}
+                  >
+                    <div className="flex items-center justify-between relative z-10">
+                      <div className="flex items-center space-x-3 md:space-x-4">
+                        <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <FileCheck className="w-4 h-4 md:w-5 md:h-5 text-gray-600" />
+                        </div>
+                        <div className="text-left">
+                          <div className="font-semibold text-sm md:text-base">Generar Carta</div>
+                          <div className="text-xs md:text-sm text-gray-500">Constancias y cartas oficiales</div>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-4 h-4 md:w-5 md:h-5 transform group-hover:translate-x-1 transition-transform flex-shrink-0" />
+                    </div>
+                  </motion.button>
+                </motion.div>
+              </div>
             </div>
 
             <div className="bg-gray-50 rounded-lg p-3 md:p-4 mb-4 md:mb-6">
