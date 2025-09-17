@@ -2,7 +2,6 @@
 // get-member-profile.php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *'); // Considera usar un origen específico si es posible
-
 require_once 'config.php';
 
 $response = ['success' => false, 'message' => '', 'profile' => null];
@@ -33,9 +32,10 @@ try {
         WHERE
             u.id = ?
     ");
+    
     $stmt->execute([$userId]);
     $profile = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
     if ($profile) {
         $profile['full_name'] = $profile['first_name'] . ' ' . $profile['last_name'];
         unset($profile['first_name']);
@@ -43,7 +43,13 @@ try {
         
         // Manejar el caso si la cédula es NULL o vacía en la base de datos
         $profile['cedula_dni'] = $profile['cedula_dni'] ?? 'N/A';
-
+        
+        // Formatear la fecha de creación para mostrar de manera amigable (igual que el gestor)
+        if ($profile['created_at']) {
+            $date = new DateTime($profile['created_at']);
+            $profile['created_at'] = $date->format('d/m/Y');
+        }
+        
         $response['success'] = true;
         $response['message'] = 'Perfil de miembro encontrado.';
         $response['profile'] = $profile;
@@ -52,6 +58,7 @@ try {
         $response['message'] = 'Perfil de miembro no encontrado para este usuario.';
         http_response_code(404);
     }
+    
 } catch (PDOException $e) {
     $response['message'] = 'Error interno del servidor.';
     error_log('Error fetching member profile: ' . $e->getMessage());

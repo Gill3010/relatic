@@ -3,7 +3,8 @@ import { useLocation } from 'react-router-dom';
 import GenerateEvents from './GenerateEvents'; 
 import EventUploadForm from './EventUploadForm';
 import GenerateCertificates from './GenerateCertificates'; 
-import GenerateLetters from './GenerateLetters'; // Importa GenerateLetters (actualizado)
+import GenerateLetters from './GenerateLetters'; 
+import LetterUploadForm from './LetterUploadForm';
 
 const MainDashboard = () => {
     const [events, setEvents] = useState([]);
@@ -46,6 +47,7 @@ const MainDashboard = () => {
                     <GenerateEvents onEventsCreated={fetchEvents} /> 
                     <EventUploadForm events={events} isLoading={isLoadingEvents} onAssetsUploaded={fetchEvents} />
                     <GenerateCertificates events={events} isLoading={isLoadingEvents} />
+                   
                 </>
             )}
 
@@ -57,6 +59,7 @@ const MainDashboard = () => {
                     onLettersCreated={handleLettersCreated}
                 />
             )}
+            {isLettersPage && <LetterUploadForm events={events} isLoading={isLoadingEvents} />}
         </div>
     );
 };

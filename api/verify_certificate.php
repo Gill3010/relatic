@@ -2,6 +2,62 @@
 // Incluye el archivo de configuración de la base de datos
 require_once "api/config.php";
 
+// Función para determinar el artículo definido según el género del nombre del evento
+function obtenerArticuloDefinido($nombreEvento) {
+    $nombreEvento = strtolower(trim($nombreEvento));
+    
+    // Lista de palabras que típicamente son femeninas
+    $terminacionesFemeninas = [
+        'a', 'ión', 'ad', 'ud', 'ez', 'ie', 'umbre', 'sis'
+    ];
+    
+    // Lista de palabras específicas femeninas (sustantivos que terminan diferente pero son femeninos)
+    $palabrasFemeninas = [
+        'capacitación', 'formación', 'certificación', 'especialización',
+        'diplomatura', 'maestría', 'licenciatura', 'ingeniería',
+        'conferencia', 'jornada', 'feria', 'exposición', 'muestra',
+        'clase', 'sesión', 'charla', 'ponencia', 'presentación',
+        'actividad', 'práctica', 'experiencia', 'oportunidad',
+        'carrera', 'profesión', 'disciplina', 'materia', 'asignatura'
+    ];
+    
+    // Lista de palabras específicas masculinas
+    $palabrasMasculinas = [
+        'curso', 'taller', 'seminario', 'diplomado', 'programa',
+        'entrenamiento', 'adiestramiento', 'aprendizaje',
+        'congreso', 'simposio', 'foro', 'encuentro', 'evento',
+        'workshop', 'bootcamp', 'masterclass', 'webinar',
+        'proyecto', 'trabajo', 'estudio', 'análisis',
+        'bachillerato', 'doctorado', 'posgrado', 'postgrado'
+    ];
+    
+    // Extraer las palabras del nombre del evento
+    $palabras = explode(' ', $nombreEvento);
+    
+    // Buscar en palabras específicas primero
+    foreach ($palabras as $palabra) {
+        if (in_array($palabra, $palabrasFemeninas)) {
+            return 'la';
+        }
+        if (in_array($palabra, $palabrasMasculinas)) {
+            return 'el';
+        }
+    }
+    
+    // Verificar terminaciones en la primera palabra sustantiva (generalmente la más importante)
+    $palabraPrincipal = $palabras[0];
+    
+    // Verificar terminaciones femeninas
+    foreach ($terminacionesFemeninas as $terminacion) {
+        if (substr($palabraPrincipal, -strlen($terminacion)) === $terminacion) {
+            return 'la';
+        }
+    }
+    
+    // Si no se encuentra ninguna regla específica, usar "el" como predeterminado
+    return 'el';
+}
+
 // Define un mensaje de error por defecto
 $message = "Certificado no encontrado.";
 $certificate = null;
@@ -29,6 +85,10 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 
     if ($certificate) {
         $message = "Certificado verificado exitosamente.";
+        // Determinar el artículo correcto para el nombre del evento
+        $articuloEvento = obtenerArticuloDefinido($certificate['event_name']);
+        // Determinar el artículo correcto para el tipo de documento
+        $articuloTipoDocumento = obtenerArticuloDefinido($certificate['tipo_documento']);
     } else {
         $message = "El certificado con ID " . htmlspecialchars($id) . " no existe.";
     }
@@ -239,12 +299,15 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <img src="<?php echo htmlspecialchars($certificate['logo_url']); ?>" alt="Logo del Evento" class="event-logo-overlay">
             <?php endif; ?>
             
-            <div class="text-overlay event-name-overlay">Cuarto Congreso de Investigaciones Cualitativas</div>
+            <div class="text-overlay event-name-overlay">
+                <?php echo htmlspecialchars($articuloEvento . ' ' . $certificate['event_name']); ?>
+            </div>
+
             
-            <div class="text-overlay texto-otorgado">Otorga el presente</div>
+            <div class="text-overlay texto-otorgado">Otorga <?php echo $articuloTipoDocumento; ?> presente</div>
 
             <div class="text-overlay tipo-documento">
-                <?php echo htmlspecialchars($certificate['tipo_documento']); ?>
+                <?php echo htmlspecialchars($certificate['tipo_documento']) . ' A'; ?>
             </div>
 
             <div class="text-overlay nombre-estudiante">
@@ -252,7 +315,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             </div>
             <div class="text-overlay id-estudiante">ID: <?php echo htmlspecialchars($certificate['id_estudiante']); ?></div>
             
-            <div class="text-overlay texto-culminado">por haber culminado satisfactoriamente los requisitos del</div>
+            <div class="text-overlay texto-culminado">por haber culminado satisfactoriamente los requisitos de <?php echo $articuloEvento; ?></div>
             
             <div class="text-overlay concepto-value"><?php echo htmlspecialchars($certificate['concepto']); ?></div>
             
