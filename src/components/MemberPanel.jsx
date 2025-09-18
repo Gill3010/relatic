@@ -15,7 +15,8 @@ import {
   Save,
   X,
   Mail,
-  Phone
+  Phone,
+  MessageSquare
 } from 'lucide-react';
 import { useAuth } from './AuthContext';
 
@@ -120,7 +121,8 @@ const MemberDashboard = () => {
 
       if (data.success) {
         setSearchResults(data);
-        if ((data.carnets?.length || 0) === 0 && (data.certificates?.length || 0) === 0) {
+        const totalDocuments = (data.carnets?.length || 0) + (data.certificates?.length || 0) + (data.letters?.length || 0);
+        if (totalDocuments === 0) {
           setStatus({ type: 'info', message: 'No se encontraron documentos para la búsqueda.' });
         } else {
           setStatus({ type: 'success', message: 'Documentos encontrados.' });
@@ -159,6 +161,7 @@ const MemberDashboard = () => {
         credentials: 'include',
         body: JSON.stringify({ userId: Number(id), cedula: cedulaInput.trim() }),
       });
+      
 
       const data = await response.json();
 
@@ -253,6 +256,8 @@ const MemberDashboard = () => {
       downloadUrl = `https://relaticpanama.org/verify_carnet.php?id=${documentId}`;
     } else if (documentType === 'certificado') {
       downloadUrl = `https://relaticpanama.org/verify_certificate.php?id=${documentId}`;
+    } else if (documentType === 'carta') {
+      downloadUrl = `https://relaticpanama.org/verify_letter.php?id=${documentId}`;
     } else {
       setStatus({ type: 'error', message: 'Tipo de documento no válido.' });
       setLoading(false);
@@ -365,76 +370,86 @@ const MemberDashboard = () => {
 
           {/* Registro inicial de cédula (solo si no tiene cédula) */}
           {!profileData?.cedula_dni ? (
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={cardVariants}
-              className="border-t pt-4 mt-4"
-            >
-              <div className="text-center mb-6 md:mb-8">
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={iconVariants}
-                  className="w-12 h-12 md:w-16 md:h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4"
-                >
-                  <CreditCard className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
-                </motion.div>
-                <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">Registrar Cédula</h2>
-                <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
-                  Ingresa tu número de cédula para vincularlo a tu perfil. Esto solo debes hacerlo una vez.
-                </p>
-              </div>
+  <motion.div
+    initial="hidden"
+    animate="visible"
+    variants={cardVariants}
+    className="border-t pt-4 mt-4"
+  >
+    <div className="text-center mb-6 md:mb-8">
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={iconVariants}
+        className="w-12 h-12 md:w-16 md:h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4"
+      >
+        <CreditCard className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
+      </motion.div>
+      <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">Registrar Cédula</h2>
+      <p className="text-sm md:text-base text-gray-600 max-w-2xl mx-auto">
+        Ingresa tu número de cédula para vincularlo a tu perfil. Esto solo debes hacerlo una vez.
+      </p>
+    </div>
 
-              <div className="max-w-2xl mx-auto mb-6 md:mb-8">
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      value={cedulaInput}
-                      onChange={(e) => setCedulaInput(e.target.value)}
-                      placeholder="Ej. 8-123-456"
-                      className="w-full p-3 md:p-4 text-base md:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
-                      disabled={loading}
-                    />
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleRegisterCedula}
-                    disabled={loading || !cedulaInput.trim()}
-                    className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all font-semibold text-base md:text-lg flex items-center justify-center min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {loading ? (
-                      <div className="flex items-center">
-                        <Loader className="w-4 h-4 md:w-5 md:h-5 animate-spin mr-2" />
-                        Guardando...
-                      </div>
-                    ) : (
-                      <>
-                        <CreditCard className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                        Guardar
-                      </>
-                    )}
-                  </motion.button>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-lg p-3 md:p-4 mb-4 md:mb-6">
-                <div className="flex items-start space-x-2 md:space-x-3">
-                  <div className="w-4 h-4 md:w-5 md:h-5 bg-blue-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full"></div>
-                  </div>
-                  <div>
-                    <p className="text-xs md:text-sm font-medium text-gray-900">Información importante</p>
-                    <p className="text-xs md:text-sm text-gray-600 mt-1">
-                      Asegúrate de introducir correctamente tu número de cédula para que solo tú puedas acceder a tus documentos.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+    <div className="max-w-2xl mx-auto mb-6 md:mb-8">
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex-1">
+          <input
+            type="text"
+            value={cedulaInput}
+            onChange={(e) => setCedulaInput(e.target.value)}
+            placeholder='Ej. 8-123-456'
+            className="w-full p-3 md:p-4 text-base md:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
+            disabled={loading}
+          />
+        </div>
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={handleRegisterCedula}
+          disabled={loading || !cedulaInput.trim()}
+          className="bg-blue-600 text-white px-6 md:px-8 py-3 md:py-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all font-semibold text-base md:text-lg flex items-center justify-center min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {loading ? (
+            <div className="flex items-center">
+              <Loader className="w-4 h-4 md:w-5 md:h-5 animate-spin mr-2" />
+              Guardando...
+            </div>
           ) : (
+            <>
+              <CreditCard className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+              Guardar
+            </>
+          )}
+        </motion.button>
+      </div>
+    </div>
+
+    {status.message && (
+      <div className={`p-4 rounded-lg text-center font-medium my-4 ${
+        status.type === 'success' ? 'bg-green-100 text-green-700' :
+        status.type === 'error' ? 'bg-red-100 text-red-700' :
+        'bg-gray-100 text-gray-700'
+      }`}>
+        {status.message}
+      </div>
+    )}
+
+    <div className="bg-gray-50 rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+      <div className="flex items-start space-x-2 md:space-x-3">
+        <div className="w-4 h-4 md:w-5 md:h-5 bg-blue-100 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
+          <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-600 rounded-full"></div>
+        </div>
+        <div>
+          <p className="text-xs md:text-sm font-medium text-gray-900">Información importante</p>
+          <p className="text-xs md:text-sm text-gray-600 mt-1">
+            Asegúrate de introducir correctamente tu número de cédula para que solo tú puedas acceder a tus documentos.
+          </p>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+) : (
             /* Sección de búsqueda de documentos (cuando ya tiene cédula) */
             <motion.div
               initial="hidden"
@@ -541,9 +556,10 @@ const MemberDashboard = () => {
                   </div>
                   <div>
                     <p className="text-xs md:text-sm font-medium text-gray-900">Información importante</p>
-                   <p className="text-xs md:text-sm text-gray-600 mt-1">
-  Tu cédula está registrada. Puedes editarla haciendo clic en el ícono de lápiz y buscar documentos con el botón &quot;Buscar&quot;.
+                    <p className="text-xs md:text-sm text-gray-600 mt-1">
+  Tu cédula está registrada. Puedes editarla haciendo clic en el ícono de lápiz y buscar documentos con el botón &#39;Buscar&#39;.
 </p>
+
                   </div>
                 </div>
               </div>
@@ -555,14 +571,14 @@ const MemberDashboard = () => {
                     initial="hidden"
                     animate="visible"
                     variants={statsVariants}
-                    className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 border-t pt-4 mt-4"
+                    className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 border-t pt-4 mt-4"
                   >
                     <div className="bg-white rounded-lg border border-gray-200 p-3 md:p-4 shadow-sm">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-xs md:text-sm text-gray-600">Total Documentos</p>
                           <p className="text-xl md:text-2xl font-bold text-gray-900">
-                            {(searchResults.carnets?.length || 0) + (searchResults.certificates?.length || 0)}
+                            {(searchResults.carnets?.length || 0) + (searchResults.certificates?.length || 0) + (searchResults.letters?.length || 0)}
                           </p>
                         </div>
                         <FileText className="w-6 h-6 md:w-8 md:h-8 text-blue-500" />
@@ -590,11 +606,22 @@ const MemberDashboard = () => {
                         <Award className="w-6 h-6 md:w-8 md:h-8 text-purple-500" />
                       </div>
                     </div>
+                    <div className="bg-white rounded-lg border border-gray-200 p-3 md:p-4 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-xs md:text-sm text-gray-600">Cartas</p>
+                          <p className="text-xl md:text-2xl font-bold text-gray-900">
+                            {searchResults.letters?.length || 0}
+                          </p>
+                        </div>
+                        <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-orange-500" />
+                      </div>
+                    </div>
                   </motion.div>
-
+                  
                   <motion.div initial="hidden" animate="visible" variants={cardVariants} className="border-t pt-4 mt-4">
                     <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6">Documentos Disponibles</h2>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
                       {/* Carnets */}
                       <div className="space-y-4">
                         <div className="flex items-center space-x-3 mb-4">
@@ -603,7 +630,6 @@ const MemberDashboard = () => {
                           </div>
                           <h3 className="text-lg md:text-xl font-bold text-gray-900">Carnets Disponibles</h3>
                         </div>
-
                         {searchResults.carnets?.length > 0 ? (
                           <div className="space-y-3 md:space-y-4">
                             {searchResults.carnets.map((card, index) => (
@@ -625,7 +651,6 @@ const MemberDashboard = () => {
                                     <p className="text-xs md:text-sm text-gray-600">Cédula: {card.cedula_dni}</p>
                                   </div>
                                 </div>
-
                                 <motion.button
                                   whileHover={{ scale: 1.02 }}
                                   whileTap={{ scale: 0.98 }}
@@ -648,7 +673,7 @@ const MemberDashboard = () => {
                           </div>
                         )}
                       </div>
-
+                      
                       {/* Certificados */}
                       <div className="space-y-4">
                         <div className="flex items-center space-x-3 mb-4">
@@ -657,7 +682,6 @@ const MemberDashboard = () => {
                           </div>
                           <h3 className="text-lg md:text-xl font-bold text-gray-900">Certificados Disponibles</h3>
                         </div>
-
                         {searchResults.certificates?.length > 0 ? (
                           <div className="space-y-3 md:space-y-4">
                             {searchResults.certificates.map((cert, index) => (
@@ -674,18 +698,8 @@ const MemberDashboard = () => {
                                   </p>
                                   <div className="flex flex-col sm:flex-row sm:items-center text-xs md:text-sm text-gray-600 gap-1 sm:gap-4">
                                     <div className="flex items-center">
-                                      <User className="w-4 h-4 mr-1 flex-shrink-0" />
-                                      <span>ID: {cert.id_estudiante}</span>
-                                    </div>
-                                    <div className="flex items-center">
-                                      <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
-                                      <span>
-                                        {new Date(cert.fecha_emision).toLocaleDateString('es-ES', {
-                                          year: 'numeric',
-                                          month: 'long',
-                                          day: 'numeric',
-                                        })}
-                                      </span>
+                                      <Calendar className="w-3 h-3 md:w-4 md:h-4 text-gray-500 mr-1" />
+                                      <span>Fecha: {cert.fecha_emision || 'No disponible'}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -711,45 +725,65 @@ const MemberDashboard = () => {
                           </div>
                         )}
                       </div>
+                      
+                      {/* Cartas */}
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-3 mb-4">
+                          <div className="w-8 h-8 md:w-10 md:h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <MessageSquare className="w-4 h-4 md:w-5 md:h-5 text-orange-600" />
+                          </div>
+                          <h3 className="text-lg md:text-xl font-bold text-gray-900">Cartas Disponibles</h3>
+                        </div>
+                        {searchResults.letters?.length > 0 ? (
+                          <div className="space-y-3 md:space-y-4">
+                            {searchResults.letters.map((letter, index) => (
+                              <motion.div
+                                key={letter.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                                className="bg-gray-50 rounded-lg p-4 md:p-6"
+                              >
+                                <div className="flex items-start justify-between mb-4">
+                                  <div className="flex-1">
+                                    <div className="flex items-center mb-2">
+                                      <User className="w-4 h-4 text-gray-500 mr-2 flex-shrink-0" />
+                                      <p className="font-semibold text-sm md:text-base text-gray-900">
+                                        {letter.nombre_completo}
+                                      </p>
+                                    </div>
+                                    <p className="text-xs md:text-sm text-gray-600">Cédula: {letter.dni_cedula || 'No disponible'}</p>
+                                    <p className="text-xs md:text-sm text-gray-600">Fecha: {letter.fecha_expedicion || 'No disponible'}</p>
+                                  </div>
+                                </div>
+                                <motion.button
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
+                                  onClick={() => downloadDocument(letter.id, 'carta')}
+                                  disabled={loading}
+                                  className="w-full bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all font-medium flex items-center justify-center text-sm md:text-base"
+                                >
+                                  <Download className="w-4 h-4 mr-2" />
+                                  Descargar Carta
+                                </motion.button>
+                              </motion.div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-center py-8 md:py-12">
+                            <div className="bg-gray-100 rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center mx-auto mb-3 md:mb-4">
+                              <MessageSquare className="w-6 h-6 md:w-8 md:h-8 text-gray-400" />
+                            </div>
+                            <p className="text-gray-500 text-sm md:text-base">No hay cartas disponibles</p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </motion.div>
                 </>
               )}
             </motion.div>
           )}
-
-          {/* Mensajes de estado */}
-          {status.message && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`p-3 md:p-4 rounded-lg text-center font-medium ${
-                status.type === 'error'
-                  ? 'bg-red-50 text-red-700 border border-red-200'
-                  : status.type === 'success'
-                  ? 'bg-green-50 text-green-700 border border-green-200'
-                  : 'bg-blue-50 text-blue-700 border border-blue-200'
-              }`}
-            >
-              {status.message}
-            </motion.div>
-          )}
-
-          {/* Footer */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={cardVariants}
-            className="border-t pt-4"
-          >
-            <div className="flex flex-col md:flex-row items-center justify-center text-xs md:text-sm text-gray-500 gap-2 md:gap-6">
-              <span>Portal de Documentos v1.0</span>
-              <div className="hidden md:block w-1 h-1 bg-gray-300 rounded-full"></div>
-              <span>Última actualización: Hoy</span>
-              <div className="hidden md:block w-1 h-1 bg-gray-300 rounded-full"></div>
-              <span>Servicio: Activo</span>
-            </div>
-          </motion.div>
         </div>
       </div>
     </div>

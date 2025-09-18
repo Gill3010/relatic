@@ -96,8 +96,9 @@ body {
 .text-overlay {
     position: absolute;
     color: #000;
+    font-family: 'Georgia', 'Times New Roman', serif;
     font-weight: normal;
-    line-height: 1.4;
+    line-height: 1.5;
     padding: 0;
     margin: 0;
     letter-spacing: 0.4px;
@@ -113,6 +114,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 1.2px;
     word-spacing: 2px;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 .nombre-principal {
@@ -125,7 +127,8 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.8px;
     word-spacing: 3px;
-    line-height: 1.3;
+    line-height: 1.4;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 .dni-principal {
@@ -137,6 +140,7 @@ body {
     font-weight: 500;
     letter-spacing: 0.5px;
     word-spacing: 1px;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 .event-name-overlay {
@@ -148,15 +152,16 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     width: 80%;
-    line-height: 1.4;
+    line-height: 1.5;
     letter-spacing: 0.6px;
     word-spacing: 2px;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
-/* Logos e imágenes */
+/* Logos e imágenes con mejor espaciado */
 .event-logo-overlay {
     position: absolute;
-    top: 5%;
+    top: 3%;
     left: 5%;
     max-width: 120px;
     max-height: 80px;
@@ -165,7 +170,7 @@ body {
 
 .event-signature-overlay {
     position: absolute;
-    bottom: 15%;
+    bottom: 12%;
     left: 20%;
     max-width: 200px;
     max-height: 80px;
@@ -182,6 +187,7 @@ body {
     margin: 20px auto;
     text-align: center;
     border: 1px solid #e0e0e0;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 .success-message { 
@@ -189,6 +195,7 @@ body {
     margin: 0 0 15px 0; 
     font-size: 1.3em;
     font-weight: 600;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 .error-message { 
@@ -196,6 +203,7 @@ body {
     margin: 0 0 15px 0; 
     font-size: 1.3em;
     font-weight: 600;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 .download-button {
@@ -211,10 +219,11 @@ body {
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: 'Georgia', 'Times New Roman', serif;
 }
 .download-button:hover { background-color: #0056b3; }
 
-/* Responsive adjustments */
+/* Responsive adjustments mejorados */
 @media (max-width: 768px) {
     .event-name-overlay { font-size: 1.2vw; }
     .nombre-principal { font-size: 1.8vw; }
@@ -232,11 +241,13 @@ body {
     .event-logo-overlay {
         max-width: 80px;
         max-height: 60px;
+        top: 2%;
     }
     
     .event-signature-overlay {
         max-width: 150px;
         max-height: 60px;
+        bottom: 10%;
     }
 }
 </style>
@@ -264,70 +275,113 @@ body {
         <img src="<?php echo safeOutput($letter['logo_url']); ?>" alt="Logo de la Carta" class="event-logo-overlay">
     <?php endif; ?>
 
-    <!-- Encabezado con fecha en línea -->
-    <div style="position: absolute; top: 8%; right: 8%; font-size: 0.78vw; color: #000; font-weight: 500; text-align: right; white-space: nowrap; letter-spacing: 0.3px;">
+    <!-- Encabezado con fecha mejorado - movido más abajo -->
+    <div style="position: absolute; top: 10%; right: 8%; font-size: 0.78vw; color: #000; font-weight: 500; text-align: right; white-space: nowrap; letter-spacing: 0.3px; font-family: 'Georgia', 'Times New Roman', serif;">
         <?php echo safeOutput($letter['lugar']); ?>, <?php echo safeOutput($letter['fecha_expedicion']); ?>
     </div>
 
-    <!-- Línea del firmante centrada horizontalmente -->
-    <div style="position: absolute; top: 30%; left: 50%; transform: translateX(-50%); font-size: 0.78vw; color: #000; font-weight: 600; text-align: center; white-space: nowrap; letter-spacing: 0.4px; word-spacing: 1px;">
-        EL SUSCRITO, <?php echo safeOutput($letter['firmante']); ?>, <?php echo safeOutput($letter['cargo']); ?> de <?php echo safeOutput($letter['institucion']); ?>
-    </div>
+    <!-- Línea del firmante centrada horizontalmente con mejor espaciado -->
+    <?php
+// Convertimos el string de firmantes en un array separado por comas
+$lista_firmantes = array_map('trim', explode(",", $letter['firmante']));
+
+// Contamos cuántos firmantes hay
+$cantidad = count($lista_firmantes);
+
+// Definimos si es singular o plural
+if ($cantidad === 1) {
+    $articulo = "El suscrito";
+    $texto_firmantes = $lista_firmantes[0];
+} else {
+    $articulo = "Los suscritos";
+    // Unimos todos los firmantes con comas y "y" antes del último
+    $ultimo = array_pop($lista_firmantes);
+    $texto_firmantes = implode(", ", $lista_firmantes) . " y " . $ultimo;
+}
+?>
+
+<!-- Línea del firmante con mejor espaciado -->
+<div style="position: absolute; top: 32%; left: 50%; transform: translateX(-50%); font-size: 0.78vw; color: #000; font-weight: 600; text-align: center; white-space: nowrap; letter-spacing: 0.4px; word-spacing: 1px; font-family: 'Georgia', 'Times New Roman', serif; line-height: 1.5;">
+    <?php echo $articulo; ?>, <?php echo safeOutput($texto_firmantes); ?>, <?php echo safeOutput($letter['cargo']); ?> de <?php echo safeOutput($letter['institucion']); ?>
+</div>
+
     
-    <div style="position: absolute; top: 35%; left: 50%; transform: translateX(-50%); font-size: 0.95vw; color: #000; font-weight: bold; text-align: center; letter-spacing: 1px; word-spacing: 2px;">EMITE CONSTANCIA QUE:</div>
+<div style="position: absolute; top: 37%; left: 50%; transform: translateX(-50%); font-size: 0.95vw; color: #000; font-weight: bold; text-align: center; letter-spacing: 1px; word-spacing: 2px; font-family: 'Georgia', 'Times New Roman', serif; line-height: 1.5;">
+    <?php 
+        // Determinar singular o plural para EMITE/EMITEN según la cantidad de firmantes
+        $verbo_emite = ($cantidad === 1) ? "EMITE" : "EMITEN";
+        echo $verbo_emite . " " . mb_strtoupper(safeOutput($letter['tipo_constancia']), 'UTF-8') . " QUE:";
+    ?>
+</div>
+
+
     
-    <!-- Datos del participante -->
-    <div style="position: absolute; top: 42%; left: 50%; transform: translateX(-50%); font-size: 1.15vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 0.8px; word-spacing: 3px; line-height: 1.3;">
+    <!-- Datos del participante con mejor espaciado -->
+    <div style="position: absolute; top: 42%; left: 50%; transform: translateX(-50%); font-size: 1.15vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 0.8px; word-spacing: 3px; line-height: 1.4; font-family: 'Georgia', 'Times New Roman', serif;">
         <?php echo safeOutput($letter['participante']); ?>
     </div>
     
-    <div style="position: absolute; top: 45%; left: 50%; transform: translateX(-50%); font-size: 0.85vw; color: #000; text-align: center; letter-spacing: 0.5px; word-spacing: 1px;">
+    <div style="position: absolute; top: 45.5%; left: 50%; transform: translateX(-50%); font-size: 0.85vw; color: #000; text-align: center; letter-spacing: 0.5px; word-spacing: 1px; font-family: 'Georgia', 'Times New Roman', serif; line-height: 1.4;">
         No. Cédula/DNI <?php echo safeOutput($letter['dni_cedula']); ?>
     </div>
     
-    <div style="position: absolute; top: 47.5%; left: 50%; transform: translateX(-50%); font-size: 0.78vw; color: #000; text-align: center; letter-spacing: 0.3px;">
-        se encuentra inscrito en el
-    </div>
+    <div style="position: absolute; top: 48%; left: 50%; transform: translateX(-50%); font-size: 0.78vw; color: #000; text-align: center; letter-spacing: 0.3px; line-height: 1.6; font-family: 'Georgia', 'Times New Roman', serif;">
+    <?php echo safeOutput($letter['inscripcion_texto']); ?>
+</div>
+
     
-    <!-- Nombre del evento -->
+    <!-- Nombre del evento con mejor espaciado -->
     <?php if (!empty($letter['event_name'])): ?>
-        <div style="position: absolute; top: 50%; left: 50%; transform: translateX(-50%); font-size: 0.85vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; width: 80%; line-height: 1.4; letter-spacing: 0.6px; word-spacing: 2px;">
+        <div style="position: absolute; top: 54%; left: 50%; transform: translateX(-50%); font-size: 0.85vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; width: 80%; line-height: 1.5; letter-spacing: 0.6px; word-spacing: 2px; font-family: 'Georgia', 'Times New Roman', serif;">
             <?php echo safeOutput($letter['event_name']); ?>
         </div>
     <?php endif; ?>
     
     <!-- Tipo de constancia -->
-    <div style="position: absolute; top: 19%; left: 50%; transform: translateX(-50%); font-size: 0.95vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 1.2px; word-spacing: 2px;">
+    <div style="position: absolute; top: 19%; left: 50%; transform: translateX(-50%); font-size: 0.95vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 1.2px; word-spacing: 2px; font-family: 'Georgia', 'Times New Roman', serif;">
         <?php echo safeOutput($letter['tipo_constancia']); ?>
     </div>
     
-    <!-- Información de fechas en línea continua -->
-    <div style="position: absolute; top: 55%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.5; letter-spacing: 0.2px; word-spacing: 0.5px;">
-        El cual se estará desarrollando a partir del <?php echo safeOutput($letter['fecha_inicio']); ?> y culminará el <?php echo safeOutput($letter['fecha_final']); ?>  <?php echo safeOutput($letter['ano']); ?>.
-    </div>
+    <!-- Información de fechas con mejor espaciado y tipografía -->
+   <?php
+// Determinar texto dinámico según el estado del evento
+$hoy = date('Y-m-d');
+$fechaInicio = $letter['fecha_inicio'];
+$fechaFinal = $letter['fecha_final'];
+
+if ($fechaInicio > $hoy) {
+    // Evento futuro
+    $texto_inicio_evento = "El evento comenzará el";
+    $texto_fin_evento = "y finalizará el";
+} elseif ($fechaFinal < $hoy) {
+    // Evento ya finalizado
+    $texto_inicio_evento = "El evento se desarrolló desde el";
+    $texto_fin_evento = "hasta el";
+} else {
+    // Evento en curso
+    $texto_inicio_evento = "El evento se está desarrollando desde el";
+    $texto_fin_evento = "y culminará el";
+}
+?>
+<div style="position: absolute; top: 57%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.6; letter-spacing: 0.2px; word-spacing: 0.5px; font-family: 'Georgia', 'Times New Roman', serif; margin-bottom: 1em;">
+    <?php echo $texto_inicio_evento; ?> <?php echo safeOutput($letter['fecha_inicio']); ?> 
+    <?php echo $texto_fin_evento; ?> <?php echo safeOutput($letter['fecha_final']); ?> <?php echo safeOutput($letter['ano']); ?>.
+</div>
+
     
-    <!-- Información del correo -->
-    <div style="position: absolute; top: 62%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.5; letter-spacing: 0.2px; word-spacing: 0.5px;">
+    <!-- Información del correo con mejor espaciado -->
+    <div style="position: absolute; top: 64%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.6; letter-spacing: 0.2px; word-spacing: 0.5px; font-family: 'Georgia', 'Times New Roman', serif; margin-bottom: 1em;">
         Para acreditar la veracidad de este documento, realice su solicitud al correo: <span style="font-style: italic; color: #2c5aa0;"><?php echo safeOutput($letter['correo']); ?></span>
     </div>
     
-    <!-- Texto de expedición completo con "(días)" -->
-    <div style="position: absolute; top: 70%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.5; letter-spacing: 0.2px; word-spacing: 0.5px;">
-        Se expide el presente certificado a los <?php echo agregarDias($letter['fecha_expedicion']); ?>, para los fines que estime conveniente.
+    <!-- Texto de expedición con mejor espaciado -->
+    <div style="position: absolute; top: 71%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.6; letter-spacing: 0.2px; word-spacing: 0.5px; font-family: 'Georgia', 'Times New Roman', serif; margin-bottom: 1em;">
+        Se expide el presente documento a los <?php echo agregarDias($letter['fecha_expedicion']); ?>, para los fines que estime conveniente.
     </div>
     
-    <div style="position: absolute; top: 76%; left: 8%; font-size: 0.78vw; color: #000; font-weight: 500; letter-spacing: 0.3px;">Atentamente,</div>
+    <div style="position: absolute; top: 78%; left: 8%; font-size: 0.78vw; color: #000; font-weight: 500; letter-spacing: 0.3px; font-family: 'Georgia', 'Times New Roman', serif; line-height: 1.5;">Atentamente,</div>
 
-    <!-- Solo variables dinámicas esenciales -->
-    <div class="text-overlay tipo-principal"><?php echo safeOutput($letter['tipo_constancia']); ?></div>
-    <div class="text-overlay nombre-principal"><?php echo safeOutput($letter['participante']); ?></div>
-    <div class="text-overlay dni-principal">No. Cédula/DNI <?php echo safeOutput($letter['dni_cedula']); ?></div>
-    
-    <?php if (!empty($letter['event_name'])): ?>
-        <div class="text-overlay event-name-overlay">
-            <?php echo safeOutput($letter['event_name']); ?>
-        </div>
-    <?php endif; ?>
+
 
     <?php if (!empty($letter['signature_url'])): ?>
         <img src="<?php echo safeOutput($letter['signature_url']); ?>" alt="Firma de la Carta" class="event-signature-overlay">
