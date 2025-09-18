@@ -1,29 +1,31 @@
 <?php
-// Forzar UTF-8
+// Forzar UTF-8 - MEJORADO
+ini_set('default_charset', 'UTF-8');
+mb_internal_encoding('UTF-8');
 header("Content-Type: text/html; charset=UTF-8");
 
 // Asegurarse de que la conexión PDO use UTF-8
 require_once "api/config.php";
 
+// Verificar que la conexión PDO tenga UTF-8 configurado
+$pdo->exec("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci");
+
 $id = $_GET['id'] ?? null;
 $letter = null;
 $message = "Carta no encontrada.";
 
-// Ruta de la imagen de la carta
+// Ruta de la imagen de fondo de la carta
 $imagePath = 'assets/cartas/carta.jpg';
 $imageFullPath = __DIR__ . '/' . $imagePath;
 $imageExists = file_exists($imageFullPath);
 $imageMessage = $imageExists ? "" : "Imagen NO encontrada en {$imagePath}.";
 
 if ($id && is_numeric($id)) {
-    // Nueva consulta: Busca la carta y une la tabla 'events' para obtener los datos del evento
-    // Usando LEFT JOIN para mantener compatibilidad con cartas que no tengan event_id
+    // Nueva consulta: traemos la carta y el nombre del evento
     $sql = "
     SELECT 
         l.*, 
-        e.name AS event_name, 
-        e.logo_url, 
-        e.signature_url
+        e.name AS event_name
     FROM 
         letters l
     LEFT JOIN 
@@ -34,23 +36,47 @@ if ($id && is_numeric($id)) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$id]);
     $letter = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
     if ($letter) {
-        $message = "Carta verificada exitosamente.";
+        $message = "Carta verificada.";
+        
+        // Asegurar UTF-8 en todos los campos de texto
+        foreach ($letter as $key => $value) {
+            if (is_string($value)) {
+                $letter[$key] = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+            }
+        }
     }
+}
+
+// Función helper para salida segura de texto UTF-8
+function safeOutput($text, $fallback = '') {
+    if (empty($text)) return htmlspecialchars($fallback, ENT_QUOTES, 'UTF-8');
+    
+    // Asegurar que el texto esté en UTF-8
+    $cleanText = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+    return htmlspecialchars($cleanText, ENT_QUOTES, 'UTF-8');
+}
+
+// Función para agregar "(días)" después del número del día
+function agregarDias($fecha) {
+    return preg_replace('/^(\d{1,2})/', '$1 (días)', $fecha);
 }
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Verificación de Carta</title>
 <style>
 body { 
-    font-family: 'Times New Roman', serif; 
-    background: #f0f0f0; 
+    font-family: 'Georgia', 'Times New Roman', serif; 
+    background: #f5f5f5; 
     margin: 0; 
     padding: 0;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
 }
 
 .carta-container {
@@ -64,119 +90,114 @@ body {
     background-position: center;
     aspect-ratio: 0.773;
     min-height: 600px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .text-overlay {
     position: absolute;
     color: #000;
     font-weight: normal;
-    line-height: 1.2;
+    line-height: 1.4;
+    padding: 0;
+    margin: 0;
+    letter-spacing: 0.4px;
 }
 
-/* Logo del evento (similar posición que en certificados) */
+.tipo-principal {
+    top: 19%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.95vw;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    word-spacing: 2px;
+}
+
+.nombre-principal {
+    top: 42%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.15vw;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    word-spacing: 3px;
+    line-height: 1.3;
+}
+
+.dni-principal {
+    top: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85vw;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    word-spacing: 1px;
+}
+
+.event-name-overlay {
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.85vw;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 80%;
+    line-height: 1.4;
+    letter-spacing: 0.6px;
+    word-spacing: 2px;
+}
+
+/* Logos e imágenes */
 .event-logo-overlay {
     position: absolute;
     top: 5%;
     left: 5%;
-    width: 8%;
-    height: auto;
-    max-width: 100px;
+    max-width: 120px;
+    max-height: 80px;
+    object-fit: contain;
 }
 
-/* Nombre del evento (parte superior) */
-.event-name-overlay {
-    position: absolute;
-    top: 6%;
-    left: 15%;
-    font-size: 1.2vw;
-    font-weight: bold;
-    color: #00285a;
-    width: 40%;
-}
-
-/* Ajustes de posicionamiento precisos */
-.fecha-top {
-    top: 12.5%;
-    left: 63%;
-    font-size: 1.8vw;
-    width: 25%;
-}
-
-.nombre-principal {
-    top: 38.2%;
-    left: 18.5%;
-    font-size: 1.8vw;
-    width: 25%;
-}
-
-.dni-principal {
-    top: 38.2%;
-    left: 62.5%;
-    font-size: 1.8vw;
-    width: 15%;
-}
-
-.tipo-principal {
-    top: 41.2%;
-    left: 37%;
-    font-size: 1.8vw;
-    width: 25%;
-}
-
-.fecha-inicio-principal {
-    top: 44.5%;
-    left: 19%;
-    font-size: 1.8vw;
-    width: 15%;
-}
-
-.fecha-final-principal {
-    top: 44.5%;
-    left: 47%;
-    font-size: 1.8vw;
-    width: 15%;
-}
-
-.fecha-expedicion-bottom {
-    top: 56.5%;
-    left: 56%;
-    font-size: 1.8vw;
-    width: 30%;
-}
-
-/* Firma del evento (parte inferior) */
 .event-signature-overlay {
     position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 15%;
-    max-width: 150px;
-    height: auto;
+    bottom: 15%;
+    left: 20%;
+    max-width: 200px;
+    max-height: 80px;
+    object-fit: contain;
 }
 
 /* Estilo de mensaje consistente con certificados */
 .message-box {
     background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     max-width: 600px;
     margin: 20px auto;
     text-align: center;
+    border: 1px solid #e0e0e0;
 }
 
 .success-message { 
     color: #28a745; 
-    margin: 0 0 10px 0;
+    margin: 0 0 15px 0; 
+    font-size: 1.3em;
+    font-weight: 600;
 }
 
 .error-message { 
     color: #dc3545; 
-    margin: 0 0 10px 0;
+    margin: 0 0 15px 0; 
+    font-size: 1.3em;
+    font-weight: 600;
 }
 
-/* Botón de descarga */
 .download-button {
     display: inline-block;
     margin-top: 15px;
@@ -191,34 +212,32 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
-.download-button:hover {
-    background-color: #0056b3;
-}
+.download-button:hover { background-color: #0056b3; }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .event-name-overlay { font-size: 1.8vw; }
-    .fecha-top { font-size: 2.8vw; }
-    .nombre-principal { font-size: 4vw; }
-    .dni-principal { font-size: 3.5vw; }
-    .tipo-principal { font-size: 4vw; }
-    .fecha-inicio-principal, .fecha-final-principal { font-size: 3.5vw; }
-    .fecha-expedicion-bottom { font-size: 2.8vw; }
+    .event-name-overlay { font-size: 1.2vw; }
+    .nombre-principal { font-size: 1.8vw; }
+    .dni-principal { font-size: 1.3vw; }
+    .tipo-principal { font-size: 1.4vw; }
 }
 
 @media (max-width: 480px) {
-    .carta-container {
-        width: 98%;
-        margin: 10px auto;
+    .carta-container { width: 98%; margin: 10px auto; }
+    .event-name-overlay { font-size: 2.2vw; }
+    .nombre-principal { font-size: 3.0vw; }
+    .dni-principal { font-size: 2.2vw; }
+    .tipo-principal { font-size: 2.5vw; }
+    
+    .event-logo-overlay {
+        max-width: 80px;
+        max-height: 60px;
     }
-    .event-name-overlay { font-size: 2.5vw; }
-    .fecha-top { font-size: 3.5vw; }
-    .nombre-principal { font-size: 5vw; }
-    .dni-principal { font-size: 4.5vw; }
-    .tipo-principal { font-size: 5vw; }
-    .fecha-inicio-principal, .fecha-final-principal { font-size: 4vw; }
-    .fecha-expedicion-bottom { font-size: 3.5vw; }
+    
+    .event-signature-overlay {
+        max-width: 150px;
+        max-height: 60px;
+    }
 }
 </style>
 </head>
@@ -226,58 +245,92 @@ body {
 
 <div class="message-box">
     <?php if ($letter): ?>
-        <h2 class="success-message"><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></h2>
+        <h2 class="success-message"><?php echo safeOutput($message); ?></h2>
         <p>La siguiente información coincide con nuestros registros.</p>
-        <a href="download_letter.php?id=<?php echo htmlspecialchars($letter['id'], ENT_QUOTES, 'UTF-8'); ?>" class="download-button" target="_blank">
+        <a href="download_letter.php?id=<?php echo safeOutput($letter['id']); ?>" class="download-button" target="_blank">
             Descargar Carta
         </a>
     <?php else: ?>
-        <h2 class="error-message"><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></h2>
+        <h2 class="error-message"><?php echo safeOutput($message); ?></h2>
         <?php if (!$imageExists): ?>
-            <p><?php echo htmlspecialchars($imageMessage, ENT_QUOTES, 'UTF-8'); ?></p>
+            <p><?php echo safeOutput($imageMessage); ?></p>
         <?php endif; ?>
     <?php endif; ?>
 </div>
 
 <?php if ($letter && $imageExists): ?>
 <div class="carta-container">
-    <!-- Logo del evento si existe -->
     <?php if (!empty($letter['logo_url'])): ?>
-        <img src="<?php echo htmlspecialchars($letter['logo_url']); ?>" alt="Logo del Evento" class="event-logo-overlay">
+        <img src="<?php echo safeOutput($letter['logo_url']); ?>" alt="Logo de la Carta" class="event-logo-overlay">
+    <?php endif; ?>
+
+    <!-- Encabezado con fecha en línea -->
+    <div style="position: absolute; top: 8%; right: 8%; font-size: 0.78vw; color: #000; font-weight: 500; text-align: right; white-space: nowrap; letter-spacing: 0.3px;">
+        <?php echo safeOutput($letter['lugar']); ?>, <?php echo safeOutput($letter['fecha_expedicion']); ?>
+    </div>
+
+    <!-- Línea del firmante centrada horizontalmente -->
+    <div style="position: absolute; top: 30%; left: 50%; transform: translateX(-50%); font-size: 0.78vw; color: #000; font-weight: 600; text-align: center; white-space: nowrap; letter-spacing: 0.4px; word-spacing: 1px;">
+        EL SUSCRITO, <?php echo safeOutput($letter['firmante']); ?>, <?php echo safeOutput($letter['cargo']); ?> de <?php echo safeOutput($letter['institucion']); ?>
+    </div>
+    
+    <div style="position: absolute; top: 35%; left: 50%; transform: translateX(-50%); font-size: 0.95vw; color: #000; font-weight: bold; text-align: center; letter-spacing: 1px; word-spacing: 2px;">EMITE CONSTANCIA QUE:</div>
+    
+    <!-- Datos del participante -->
+    <div style="position: absolute; top: 42%; left: 50%; transform: translateX(-50%); font-size: 1.15vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 0.8px; word-spacing: 3px; line-height: 1.3;">
+        <?php echo safeOutput($letter['participante']); ?>
+    </div>
+    
+    <div style="position: absolute; top: 45%; left: 50%; transform: translateX(-50%); font-size: 0.85vw; color: #000; text-align: center; letter-spacing: 0.5px; word-spacing: 1px;">
+        No. Cédula/DNI <?php echo safeOutput($letter['dni_cedula']); ?>
+    </div>
+    
+    <div style="position: absolute; top: 47.5%; left: 50%; transform: translateX(-50%); font-size: 0.78vw; color: #000; text-align: center; letter-spacing: 0.3px;">
+        se encuentra inscrito en el
+    </div>
+    
+    <!-- Nombre del evento -->
+    <?php if (!empty($letter['event_name'])): ?>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translateX(-50%); font-size: 0.85vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; width: 80%; line-height: 1.4; letter-spacing: 0.6px; word-spacing: 2px;">
+            <?php echo safeOutput($letter['event_name']); ?>
+        </div>
     <?php endif; ?>
     
-    <!-- Nombre del evento si existe -->
+    <!-- Tipo de constancia -->
+    <div style="position: absolute; top: 19%; left: 50%; transform: translateX(-50%); font-size: 0.95vw; color: #000; font-weight: bold; text-align: center; text-transform: uppercase; letter-spacing: 1.2px; word-spacing: 2px;">
+        <?php echo safeOutput($letter['tipo_constancia']); ?>
+    </div>
+    
+    <!-- Información de fechas en línea continua -->
+    <div style="position: absolute; top: 55%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.5; letter-spacing: 0.2px; word-spacing: 0.5px;">
+        El cual se estará desarrollando a partir del <?php echo safeOutput($letter['fecha_inicio']); ?> y culminará el <?php echo safeOutput($letter['fecha_final']); ?>  <?php echo safeOutput($letter['ano']); ?>.
+    </div>
+    
+    <!-- Información del correo -->
+    <div style="position: absolute; top: 62%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.5; letter-spacing: 0.2px; word-spacing: 0.5px;">
+        Para acreditar la veracidad de este documento, realice su solicitud al correo: <span style="font-style: italic; color: #2c5aa0;"><?php echo safeOutput($letter['correo']); ?></span>
+    </div>
+    
+    <!-- Texto de expedición completo con "(días)" -->
+    <div style="position: absolute; top: 70%; left: 8%; font-size: 0.78vw; color: #000; width: 84%; text-align: justify; line-height: 1.5; letter-spacing: 0.2px; word-spacing: 0.5px;">
+        Se expide el presente certificado a los <?php echo agregarDias($letter['fecha_expedicion']); ?>, para los fines que estime conveniente.
+    </div>
+    
+    <div style="position: absolute; top: 76%; left: 8%; font-size: 0.78vw; color: #000; font-weight: 500; letter-spacing: 0.3px;">Atentamente,</div>
+
+    <!-- Solo variables dinámicas esenciales -->
+    <div class="text-overlay tipo-principal"><?php echo safeOutput($letter['tipo_constancia']); ?></div>
+    <div class="text-overlay nombre-principal"><?php echo safeOutput($letter['participante']); ?></div>
+    <div class="text-overlay dni-principal">No. Cédula/DNI <?php echo safeOutput($letter['dni_cedula']); ?></div>
+    
     <?php if (!empty($letter['event_name'])): ?>
         <div class="text-overlay event-name-overlay">
-            <?php echo htmlspecialchars($letter['event_name'], ENT_QUOTES, 'UTF-8'); ?>
+            <?php echo safeOutput($letter['event_name']); ?>
         </div>
     <?php endif; ?>
 
-    <div class="text-overlay fecha-top">
-        <?php echo htmlspecialchars($letter['fecha_expedicion'], ENT_QUOTES, 'UTF-8'); ?>
-    </div>
-    <div class="text-overlay nombre-principal">
-        <?php echo htmlspecialchars($letter['nombre_completo'], ENT_QUOTES, 'UTF-8'); ?>
-    </div>
-    <div class="text-overlay dni-principal">
-        <?php echo htmlspecialchars($letter['dni_cedula'], ENT_QUOTES, 'UTF-8'); ?>
-    </div>
-    <div class="text-overlay tipo-principal">
-        <?php echo htmlspecialchars($letter['tipo_constancia'], ENT_QUOTES, 'UTF-8'); ?>
-    </div>
-    <div class="text-overlay fecha-inicio-principal">
-        <?php echo htmlspecialchars($letter['fecha_inicio'], ENT_QUOTES, 'UTF-8'); ?>
-    </div>
-    <div class="text-overlay fecha-final-principal">
-        <?php echo htmlspecialchars($letter['fecha_final'], ENT_QUOTES, 'UTF-8'); ?>
-    </div>
-    <div class="text-overlay fecha-expedicion-bottom">
-        <?php echo htmlspecialchars($letter['fecha_expedicion'], ENT_QUOTES, 'UTF-8'); ?>
-    </div>
-    
-    <!-- Firma del evento si existe -->
     <?php if (!empty($letter['signature_url'])): ?>
-        <img src="<?php echo htmlspecialchars($letter['signature_url']); ?>" alt="Firma del Evento" class="event-signature-overlay">
+        <img src="<?php echo safeOutput($letter['signature_url']); ?>" alt="Firma de la Carta" class="event-signature-overlay">
     <?php endif; ?>
 </div>
 <?php elseif ($letter && !$imageExists): ?>
