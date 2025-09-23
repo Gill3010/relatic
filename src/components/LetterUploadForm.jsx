@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Image, CheckCircle, AlertCircle, RefreshCw, FileUp } from 'lucide-react';
 
@@ -12,6 +12,19 @@ const LetterUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
 
     const logoInputRef = useRef(null);
     const signatureInputRef = useRef(null);
+    const messageRef = useRef(null);
+
+    // Efecto para hacer scroll al mensaje cuando aparece
+    useEffect(() => {
+        if (submitStatus && messageRef.current) {
+            setTimeout(() => {
+                messageRef.current.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+            }, 100);
+        }
+    }, [submitStatus]);
     
     const handleFileChange = useCallback((file, type) => {
         if (!file) return;
@@ -118,19 +131,6 @@ const LetterUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                     Cargue el logo y la firma que se utilizarán para la generación de cartas oficiales del evento.
                 </p>
             </div>
-
-            {submitStatus && (
-                <div className={`mb-6 p-4 rounded-lg border flex items-start gap-3 ${
-                    submitStatus.type === 'success' 
-                      ? 'bg-green-50 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-red-200 text-red-800'
-                }`}>
-                    {getStatusIcon()}
-                    <span className="text-sm font-medium leading-relaxed">
-                        {submitStatus.message}
-                    </span>
-                </div>
-            )}
 
             <div className="space-y-6">
                 <div className="space-y-2">
@@ -270,6 +270,26 @@ const LetterUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                 >
                     Limpiar Formulario
                 </button>
+
+                {/* Mensaje de estado movido aquí con animación zoom in */}
+                {submitStatus && (
+                    <div 
+                        ref={messageRef}
+                        className={`p-4 rounded-lg border flex items-start gap-3 animate-[zoom-in_0.3s_ease-out] ${
+                            submitStatus.type === 'success' 
+                              ? 'bg-green-50 border-green-200 text-green-800' 
+                              : 'bg-red-50 border-red-200 text-red-800'
+                        }`}
+                        style={{
+                            animation: 'zoom-in 0.3s ease-out',
+                        }}
+                    >
+                        {getStatusIcon()}
+                        <span className="text-sm font-medium leading-relaxed">
+                            {submitStatus.message}
+                        </span>
+                    </div>
+                )}
             </div>
 
             <div className="mt-8 pt-8 border-t border-slate-200">
@@ -284,6 +304,22 @@ const LetterUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                     <li>• Estos activos se utilizarán en la generación automática de cartas oficiales.</li>
                 </ul>
             </div>
+
+            {/* Estilos CSS para la animación zoom-in */}
+             <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes zoomIn {
+            0% {
+              opacity: 0;
+              transform: scale(0.8);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1);
+            }
+          }
+        `
+      }} />
         </div>
     );
 };
@@ -299,4 +335,4 @@ LetterUploadForm.propTypes = {
     onAssetsUploaded: PropTypes.func.isRequired,
 };
 
-export default LetterUploadForm;
+export default LetterUploadForm

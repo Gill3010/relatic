@@ -12,7 +12,17 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
 
     const logoInputRef = useRef(null);
     const signatureInputRef = useRef(null);
+    const messageRef = useRef(null);
     
+    const scrollToMessage = useCallback(() => {
+        if (messageRef.current) {
+            messageRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+    }, []);
+
     const handleFileChange = useCallback((file, type) => {
         if (!file) return;
         const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -22,6 +32,8 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                 type: 'error', 
                 message: 'Por favor, seleccione un archivo de imagen válido (.png, .jpg, .gif) y menor a 2MB.' 
             });
+            // Scroll to message after state update
+            setTimeout(scrollToMessage, 100);
             if (type === 'logo') setLogoFile(null);
             if (type === 'signature') setSignatureFile(null);
             return;
@@ -33,7 +45,7 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
             setSignatureFile(file);
         }
         setSubmitStatus(null);
-    }, []);
+    }, [scrollToMessage]);
 
     const resetForm = useCallback(() => {
         setSubmitStatus(null);
@@ -45,7 +57,7 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
         if (signatureInputRef.current) signatureInputRef.current.value = '';
     }, []);
     
-    const handleSubmit = async (e) => {
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
         
         if (!selectedEventId || !logoFile || !signatureFile) {
@@ -53,6 +65,8 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                 type: 'error',
                 message: 'Por favor, seleccione un evento, un logo y una firma.'
             });
+            // Scroll to message after state update
+            setTimeout(scrollToMessage, 100);
             return;
         }
         
@@ -77,6 +91,9 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                 message: result.message || (result.success ? 'Archivos subidos correctamente.' : 'Error al subir los archivos.')
             });
             
+            // Scroll to message after state update
+            setTimeout(scrollToMessage, 100);
+            
             // **ÚNICA MODIFICACIÓN SOLICITADA:**
             // Retrasar la limpieza del formulario para que el mensaje de éxito sea visible.
             if (result.success) {
@@ -93,11 +110,13 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                 type: 'error',
                 message: 'Error de conexión. Verifique su conexión a internet e intente nuevamente.'
             });
+            // Scroll to message after state update
+            setTimeout(scrollToMessage, 100);
             console.error('Error:', error);
         } finally {
             setIsUploading(false);
         }
-    };
+    }, [selectedEventId, logoFile, signatureFile, scrollToMessage, resetForm, onAssetsUploaded]);
 
     const getStatusIcon = () => {
         if (!submitStatus) return null;
@@ -119,19 +138,6 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                     Cargue el logo y la firma del evento para que estén disponibles en los certificados.
                 </p>
             </div>
-
-            {submitStatus && (
-                <div className={`mb-6 p-4 rounded-lg border flex items-start gap-3 ${
-                    submitStatus.type === 'success' 
-                      ? 'bg-green-50 border-green-200 text-green-800' 
-                      : 'bg-red-50 border-red-200 text-red-800'
-                }`}>
-                    {getStatusIcon()}
-                    <span className="text-sm font-medium leading-relaxed">
-                        {submitStatus.message}
-                    </span>
-                </div>
-            )}
 
             <div className="space-y-6">
                 <div className="space-y-2">
@@ -271,6 +277,25 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                 >
                     Limpiar Formulario
                 </button>
+
+                {submitStatus && (
+                    <div 
+                        ref={messageRef}
+                        className={`p-4 rounded-lg border flex items-start gap-3 ${
+                            submitStatus.type === 'success' 
+                              ? 'bg-green-50 border-green-200 text-green-800' 
+                              : 'bg-red-50 border-red-200 text-red-800'
+                        }`}
+                        style={{
+                            animation: 'zoomIn 0.3s ease-out'
+                        }}
+                    >
+                        {getStatusIcon()}
+                        <span className="text-sm font-medium leading-relaxed">
+                            {submitStatus.message}
+                        </span>
+                    </div>
+                )}
             </div>
 
             <div className="mt-8 pt-8 border-t border-slate-200">
@@ -284,6 +309,21 @@ const EventUploadForm = ({ events, isLoading, onAssetsUploaded }) => {
                     <li>• El tamaño máximo permitido para cada archivo es de 2MB.</li>
                 </ul>
             </div>
+
+            <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes zoomIn {
+            0% {
+              opacity: 0;
+              transform: scale(0.8);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1);
+            }
+          }
+        `
+      }} />
         </div>
     );
 };

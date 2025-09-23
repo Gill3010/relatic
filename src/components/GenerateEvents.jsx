@@ -2,13 +2,14 @@ import { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw, List } from 'lucide-react';
 
-const ManageEvents = ({ onEventsCreated }) => {
+const GenerateEvents = ({ onEventsCreated }) => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [excelFile, setExcelFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
   const dropAreaRef = useRef(null);
+  const messageRef = useRef(null);
 
   const validateFile = (file) => {
     const validTypes = [
@@ -77,6 +78,15 @@ const ManageEvents = ({ onEventsCreated }) => {
     }
   }, []);
 
+  const scrollToMessage = useCallback(() => {
+    if (messageRef.current) {
+      messageRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }
+  }, []);
+
   const handleFileUpload = useCallback(async (e) => {
     e.preventDefault();
     
@@ -85,6 +95,8 @@ const ManageEvents = ({ onEventsCreated }) => {
         type: 'error', 
         message: 'Por favor, seleccione un archivo de Excel.' 
       });
+      // Scroll to message after state update
+      setTimeout(scrollToMessage, 100);
       return;
     }
     
@@ -107,6 +119,9 @@ const ManageEvents = ({ onEventsCreated }) => {
         message: result.message || (result.success ? 'Eventos cargados correctamente.' : 'Error al procesar el archivo.')
       });
       
+      // Scroll to message after state update
+      setTimeout(scrollToMessage, 100);
+      
       if (result.success) {
         // **ÚNICA MODIFICACIÓN SOLICITADA:**
         // Retrasar la limpieza del formulario para que el mensaje de éxito sea visible.
@@ -123,11 +138,13 @@ const ManageEvents = ({ onEventsCreated }) => {
         type: 'error', 
         message: 'Error de conexión. Verifique su conexión a internet e intente nuevamente.' 
       });
+      // Scroll to message after state update
+      setTimeout(scrollToMessage, 100);
       console.error('Error:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [excelFile, onEventsCreated, resetForm]);
+  }, [excelFile, onEventsCreated, resetForm, scrollToMessage]);
 
   const getStatusIcon = () => {
     if (!submitStatus) return null;
@@ -149,19 +166,6 @@ const ManageEvents = ({ onEventsCreated }) => {
           Cargue un archivo Excel para registrar nuevos eventos de forma masiva en la base de datos.
         </p>
       </div>
-
-      {submitStatus && (
-        <div className={`mb-6 p-4 rounded-lg border flex items-start gap-3 ${
-          submitStatus.type === 'success' 
-            ? 'bg-green-50 border-green-200 text-green-800' 
-            : 'bg-red-50 border-red-200 text-red-800'
-        }`}>
-          {getStatusIcon()}
-          <span className="text-sm font-medium leading-relaxed">
-            {submitStatus.message}
-          </span>
-        </div>
-      )}
 
       <div className="space-y-6">
         <div className="space-y-2">
@@ -235,6 +239,25 @@ const ManageEvents = ({ onEventsCreated }) => {
         >
           Limpiar Formulario
         </button>
+
+        {submitStatus && (
+          <div 
+            ref={messageRef}
+            className={`p-4 rounded-lg border flex items-start gap-3 ${
+              submitStatus.type === 'success' 
+                ? 'bg-green-50 border-green-200 text-green-800' 
+                : 'bg-red-50 border-red-200 text-red-800'
+            }`}
+            style={{
+              animation: 'zoomIn 0.3s ease-out'
+            }}
+          >
+            {getStatusIcon()}
+            <span className="text-sm font-medium leading-relaxed">
+              {submitStatus.message}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="mt-8 pt-8 border-t border-slate-200">
@@ -248,12 +271,27 @@ const ManageEvents = ({ onEventsCreated }) => {
           <li>• Los formatos soportados son .xlsx y .xls.</li>
         </ul>
       </div>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes zoomIn {
+            0% {
+              opacity: 0;
+              transform: scale(0.8);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1);
+            }
+          }
+        `
+      }} />
     </div>
   );
 };
 
-ManageEvents.propTypes = {
+GenerateEvents.propTypes = {
   onEventsCreated: PropTypes.func.isRequired,
 };
 
-export default ManageEvents;
+export default GenerateEvents;

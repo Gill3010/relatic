@@ -2,6 +2,37 @@
 // Incluye el archivo de configuración de la base de datos
 require_once "api/config.php";
 
+// Función para formatear fecha
+
+function formatearFechaEmision($fecha) {
+    $timestamp = strtotime($fecha);
+    if (!$timestamp) return htmlspecialchars($fecha);
+
+    $dia = (int)date("j", $timestamp);
+    $anio = date("Y", $timestamp);
+
+    $meses = [
+        1 => "enero", 2 => "febrero", 3 => "marzo",
+        4 => "abril", 5 => "mayo", 6 => "junio",
+        7 => "julio", 8 => "agosto", 9 => "septiembre",
+        10 => "octubre", 11 => "noviembre", 12 => "diciembre"
+    ];
+    $mes = $meses[(int)date("n", $timestamp)];
+
+    $diasEnPalabras = [
+        1 => "un", 2 => "dos", 3 => "tres", 4 => "cuatro", 5 => "cinco",
+        6 => "seis", 7 => "siete", 8 => "ocho", 9 => "nueve", 10 => "diez",
+        11 => "once", 12 => "doce", 13 => "trece", 14 => "catorce", 15 => "quince",
+        16 => "dieciséis", 17 => "diecisiete", 18 => "dieciocho", 19 => "diecinueve", 20 => "veinte",
+        21 => "veintiún", 22 => "veintidós", 23 => "veintitrés", 24 => "veinticuatro", 25 => "veinticinco",
+        26 => "veintiséis", 27 => "veintisiete", 28 => "veintiocho", 29 => "veintinueve", 30 => "treinta",
+        31 => "treinta y un"
+    ];
+    $diaTexto = $diasEnPalabras[$dia] ?? $dia;
+
+    return "Dado en Panamá a los {$diaTexto} días del mes de {$mes} del {$anio}";
+}
+
 // Función para determinar el artículo definido según el género del nombre del evento
 function obtenerArticuloDefinido($nombreEvento) {
     $nombreEvento = strtolower(trim($nombreEvento));
@@ -88,12 +119,15 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         // Determinar el artículo correcto para el nombre del evento
         $articuloEvento = obtenerArticuloDefinido($certificate['event_name']);
         // Determinar el artículo correcto para el tipo de documento
-        $articuloTipoDocumento = obtenerArticuloDefinido($certificate['tipo_documento']);
+       // $articuloTipoDocumento = obtenerArticuloDefinido($certificate['tipo_documento']);
+        // Determinar el artículo correcto para el concepto
+        $articuloConcepto = obtenerArticuloDefinido($certificate['concepto']);
     } else {
         $message = "El certificado con ID " . htmlspecialchars($id) . " no existe.";
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -135,17 +169,15 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         
         /* Posiciones y estilos específicos para cada elemento */
 
-        /* Logo del evento (a la izquierda, alineado con los otros logos) */
         .event-logo-overlay {
             position: absolute;
-            top: 10.5%; /* Ajuste final para bajar el logo un poco más */
+            top: 10.5%;
             left: 17%;
             width: 12%;
             height: auto;
             max-width: 150px;
         }
 
-        /* Título del evento */
         .event-name-overlay {
             position: absolute;
             top: 21%;
@@ -159,40 +191,35 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             text-transform: uppercase;
         }
 
-        /* Texto "Otorga el presente" */
         .texto-otorgado {
-            top: 33%;
+            top: 35%;
             font-size: 1.2vw;
             font-weight: 500;
             color: #4a5568;
         }
         
-        /* Tipo de documento "Certificado" */
         .tipo-documento {
-            top: 36%;
+            top: 39%;
             font-size: 1.4vw;
             font-weight: bold;
             color: #00285a;
             text-transform: uppercase;
         }
         
-        /* Nombre del estudiante (flotando encima de la línea dorada) */
         .nombre-estudiante {
-            top: 40%;
+            top: 44%;
             font-size: 2.2vw;
             font-weight: bold;
             color: #00285a;
             text-transform: uppercase;
         }
 
-        /* ID del estudiante (flotando encima de la línea dorada) */
         .id-estudiante {
-            top: 45%;
+            top: 49%;
             font-size: 1.2vw;
             color: #4a5568;
         }
 
-        /* Texto "por haber culminado..." */
         .texto-culminado {
             top: 55%;
             font-size: 1.2vw;
@@ -200,16 +227,26 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             color: #4a5568;
         }
 
-        /* Concepto (nombre del curso/evento) */
         .concepto-value {
             top: 61%;
-            font-size: 1.8vw;
+            font-size: 1.4vw;
             font-weight: bold;
             color: #2d3748;
             text-transform: uppercase;
+            /* CAMBIOS PARA AJUSTE MULTILÍNEA */
+            white-space: normal;
+            word-wrap: break-word;
+            hyphens: auto;
+            max-height: 4.5vw; /* Aproximadamente 3 líneas */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            line-height: 1.3;
+            padding: 0 2%;
+            width: 76%; /* Ajustado para compensar el padding */
         }
 
-        /* Detalles (horas, créditos, fechas) */
         .detalles-curso {
             top: 67%;
             font-size: 1vw;
@@ -217,21 +254,18 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             line-height: 1.5;
         }
 
-        /* Fechas de periodo */
         .fechas-periodo {
             top: 72%;
             font-size: 1vw;
             color: #4a5568;
         }
 
-        /* Fecha de emisión */
         .fecha-emision {
-            top: 81%;
+            top: 75%;
             font-size: 0.9vw;
             color: #718096;
         }
 
-        /* Firma del evento (en el centro, más abajo) */
         .event-signature-overlay {
             position: absolute;
             bottom: 8%;
@@ -242,7 +276,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             height: auto;
         }
 
-        /* QR Code (esquina inferior derecha) */
         .qr-code-overlay {
             position: absolute;
             bottom: 2%;
@@ -253,7 +286,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
-        /* Mensajes de verificación */
         .message-box {
             background-color: #fff;
             padding: 15px;
@@ -303,8 +335,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <?php echo htmlspecialchars($articuloEvento . ' ' . $certificate['event_name']); ?>
             </div>
 
-            
-            <div class="text-overlay texto-otorgado">Otorga <?php echo $articuloTipoDocumento; ?> presente</div>
+            <div class="text-overlay texto-otorgado">Otorga el<?php //echo $articuloTipoDocumento; ?> presente</div>
 
             <div class="text-overlay tipo-documento">
                 <?php echo htmlspecialchars($certificate['tipo_documento']) . ' A'; ?>
@@ -315,16 +346,34 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             </div>
             <div class="text-overlay id-estudiante">ID: <?php echo htmlspecialchars($certificate['id_estudiante']); ?></div>
             
-            <div class="text-overlay texto-culminado">por haber culminado satisfactoriamente los requisitos de <?php echo $articuloEvento; ?></div>
-            
-            <div class="text-overlay concepto-value"><?php echo htmlspecialchars($certificate['concepto']); ?></div>
-            
-            <div class="text-overlay detalles-curso">
-                Con una duración total de <?php echo htmlspecialchars($certificate['horas_academicas']); ?> horas académicas, equivalente a <?php echo htmlspecialchars($certificate['creditos']); ?> créditos.
+            <div class="text-overlay texto-culminado">
+                <?php 
+                // Usar la variable motivo si existe, sino mantener el texto original
+                if (!empty($certificate['motivo'])) {
+                    echo htmlspecialchars($certificate['motivo']);
+                } else {
+                    echo "por haber culminado satisfactoriamente los requisitos de " . $articuloConcepto;
+                }
+                ?>
             </div>
             
-            <div class="text-overlay fechas-periodo">De <?php echo htmlspecialchars($certificate['fecha_inicio']); ?> hasta <?php echo htmlspecialchars($certificate['fecha_fin']); ?></div>
-            <div class="text-overlay fecha-emision">Emitido el: <?php echo htmlspecialchars($certificate['fecha_emision']); ?></div>
+            <div class="text-overlay concepto-value">
+                <?php echo htmlspecialchars($certificate['concepto']); ?>
+            </div>
+            
+           <?php if (!empty($certificate['horas_academicas']) && !empty($certificate['creditos'])): ?>
+    <div class="text-overlay detalles-curso">
+        Con una duración total de <?php echo htmlspecialchars($certificate['horas_academicas']); ?> horas académicas, 
+        equivalente a <?php echo htmlspecialchars($certificate['creditos']); ?> créditos.
+    </div>
+<?php endif; ?>
+
+            
+            <div class="text-overlay fechas-periodo">Desarrollado del  <?php echo htmlspecialchars($certificate['fecha_inicio']); ?> al <?php echo htmlspecialchars($certificate['fecha_fin']); ?></div>
+            <div class="text-overlay fecha-emision">
+    <?php echo formatearFechaEmision($certificate['fecha_emision']); ?>
+</div>
+
             
             <?php if (!empty($certificate['signature_url'])): ?>
                 <img src="<?php echo htmlspecialchars($certificate['signature_url']); ?>" alt="Firma del Evento" class="event-signature-overlay">
