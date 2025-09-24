@@ -69,6 +69,7 @@ try {
         'fecha_inicio' => array_search('fecha_inicio', $headers),
         'fecha_fin' => array_search('fecha_fin', $headers),
         'fecha_emision' => array_search('fecha_emision', $headers),
+         'motivo' => array_search('motivo', $headers), // Nueva columna agregada
     ];
 
     foreach ($columnMapping as $field => $index) {
@@ -89,7 +90,7 @@ try {
     $failedRows = [];
 
     // Nuevo: La sentencia SQL ahora incluye la columna event_id
-    $sql = "INSERT INTO certificates (nombre_estudiante, id_estudiante, concepto, tipo_documento, horas_academicas, creditos, fecha_inicio, fecha_fin, fecha_emision, created_at, event_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)";
+    $sql = "INSERT INTO certificates (nombre_estudiante, id_estudiante, concepto, tipo_documento, horas_academicas, creditos, fecha_inicio, fecha_fin, fecha_emision, created_at, event_id, motivo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)";
     $stmt = $pdo->prepare($sql);
 
     for ($i = 2; $i <= count($data); $i++) {
@@ -105,7 +106,8 @@ try {
             'fecha_inicio' => $row[$columnMapping['fecha_inicio']] ?? null,
             'fecha_fin' => $row[$columnMapping['fecha_fin']] ?? null,
             'fecha_emision' => $row[$columnMapping['fecha_emision']] ?? null,
-            'event_id' => $eventId, // Nuevo: Agregamos el ID del evento al array de datos
+            'event_id' => $eventId,
+             'motivo' => $row[$columnMapping['motivo']] ?? null, // Nueva variable agregada de último
         ];
 
         if (empty($rowData['nombre_estudiante']) || empty($rowData['id_estudiante'])) {

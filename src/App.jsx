@@ -36,7 +36,7 @@ const Unauthorized = lazy(() => import('./components/Unauthorized'));
 const TermsAndConditions = lazy(() => import('./components/TermsAndConditions'));
 const MainDashboard = lazy(() => import('./components/MainDashboard'));
 const GestorDashboard = lazy(() => import('./components/GestorDashboard'));
-
+const StepByStepGuide = lazy(() => import('./components/StepByStepGuide'));
 
 // Componente de envoltura para páginas que no son el Home, incluye el botón
 const PageLayout = ({ children }) => (
@@ -100,6 +100,7 @@ const App = () => (
         <Route path="/detalles-aprendizaje" element={<PageLayout><div className='space-y-8'><CoursesMetrics /><LearningDetails /></div></PageLayout>} />
         <Route path="/detalles-propiedad-intelectual" element={<PageLayout><IntellectualPropertyDetails /></PageLayout>} />
         <Route path="/panel-administracion" element={<PageLayout><AdminPanel /></PageLayout>} />
+        <Route path="/guia-paso-a-paso" element={<PageLayout><StepByStepGuide /></PageLayout>} />
         
         {/* ✅ Rutas Protegidas de Gestor/Admin - SIN PageLayout DUPLICADO */}
         <Route element={<ProtectedPageLayout allowedRoles={['gestor', 'admin']} />}>

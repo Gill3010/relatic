@@ -79,8 +79,9 @@ try {
     $pdf->SetFont('times', '', 9);
     $pdf->SetTextColor(0,0,0);
     $fechaTexto = safeOutputPDF($letter['lugar']) . ', ' . safeOutputPDF($letter['fecha_expedicion']);
-    $pdf->SetXY(110, 23.76);
-    $pdf->Cell(84, 6, $fechaTexto, 0, 1, 'R');
+   $pdf->SetXY(120, 45); // 🔹 Más a la izquierda (120 en vez de 110) y más abajo (35 en vez de 23.76)
+$pdf->Cell(70, 6, $fechaTexto, 0, 1, 'R'); // 🔹 Ajustamos ancho a 70 para evitar que choque
+
 
     // Línea de firmantes
     $lista_firmantes = array_map('trim', explode(",", $letter['firmante']));

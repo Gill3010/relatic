@@ -218,11 +218,11 @@ const AboutUs = () => {
     },
     {
       name: "Dra. Isabel Menacho",
-      email: "mercadeoyventas@relaticpanama.org",
+      email: "isabel.menacho@relaticpanama.org",
       phone: "+51 999 193 952",
       orcid: "https://orcid.org/0000-0001-6246-4618",
       image: "/assets/Isabel.jpeg",
-      occupation: "Mercadeo y ventas",
+      occupation: "Área Académica",
       area: "Alianzas",
       level: 3,
     },

@@ -276,7 +276,7 @@ body {
     <?php endif; ?>
 
     <!-- Encabezado con fecha mejorado - movido más abajo -->
-    <div style="position: absolute; top: 10%; right: 8%; font-size: 0.78vw; color: #000; font-weight: 500; text-align: right; white-space: nowrap; letter-spacing: 0.3px; font-family: 'Georgia', 'Times New Roman', serif;">
+    <div style="position: absolute; top: 16%; right: 8%; font-size: 0.78vw; color: #000; font-weight: 500; text-align: right; white-space: nowrap; letter-spacing: 0.3px; font-family: 'Georgia', 'Times New Roman', serif;">
         <?php echo safeOutput($letter['lugar']); ?>, <?php echo safeOutput($letter['fecha_expedicion']); ?>
     </div>
 

@@ -32,7 +32,7 @@ if (!isset($_FILES['excel_file']) || $_FILES['excel_file']['error'] !== UPLOAD_E
     exit;
 }
 
-// Nuevo: Validar que se ha recibido el ID del evento
+// Validar que se ha recibido el ID del evento
 if (!isset($_POST['event_id']) || empty($_POST['event_id'])) {
     $response["message"] = "ID de evento no proporcionado.";
     http_response_code(400);
@@ -41,7 +41,7 @@ if (!isset($_POST['event_id']) || empty($_POST['event_id'])) {
 }
 
 $tempFilePath = $_FILES['excel_file']['tmp_name'];
-$eventId = $_POST['event_id']; // Nuevo: Capturar el ID del evento
+$eventId = $_POST['event_id'];
 
 try {
     $spreadsheet = IOFactory::load($tempFilePath);
@@ -54,14 +54,21 @@ try {
     }
 
     $pdo->beginTransaction();
-    // Nuevo: Agregar event_id a la consulta SQL
-    $stmt = $pdo->prepare("INSERT INTO letters (nombre_completo, dni_cedula, tipo_constancia, fecha_inicio, fecha_final, fecha_generacion, fecha_expedicion, event_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+    // Actualizar la consulta SQL con la nueva variable al final
+    $stmt = $pdo->prepare("
+        INSERT INTO letters (
+            participante, dni_cedula, tipo_constancia, fecha_inicio, fecha_final, 
+            fecha_generacion, fecha_expedicion, event_id, lugar, firmante, cargo, 
+            institucion, ano, correo, inscripcion_texto
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ");
 
     $count = 0;
     $errors = [];
 
     // Fechas automáticas
-    $fechaGeneracion = date('Y-m-d H:i:s'); 
+    $fechaGeneracion = date('Y-m-d H:i:s');
     $meses = [
         1 => 'enero', 2 => 'febrero', 3 => 'marzo', 4 => 'abril',
         5 => 'mayo', 6 => 'junio', 7 => 'julio', 8 => 'agosto',
@@ -78,8 +85,15 @@ try {
         $tipoConstancia = trim($row[2] ?? '');
         $fechaInicio = trim($row[3] ?? '');
         $fechaFinal = trim($row[4] ?? '');
+        $lugar = trim($row[5] ?? '');
+        $firmante = trim($row[6] ?? '');
+        $cargo = trim($row[7] ?? '');
+        $institucion = trim($row[8] ?? '');
+        $ano = trim($row[9] ?? '');
+        $correo = trim($row[10] ?? '');
+        $inscripcionTexto = trim($row[11] ?? ''); // Nueva columna al final del Excel
 
-        if (empty($nombreCompleto) || empty($dniCedula) || empty($tipoConstancia) || empty($fechaInicio) || empty($fechaFinal)) {
+        if (empty($nombreCompleto) || empty($dniCedula) || empty($tipoConstancia) || empty($fechaInicio) || empty($fechaFinal) || empty($lugar) || empty($firmante) || empty($cargo) || empty($institucion) || empty($ano) || empty($correo)) {
             $errors[] = "Fila " . ($index + 2) . ": Datos incompletos.";
             continue;
         }
@@ -87,6 +101,13 @@ try {
         $nombreCompleto = htmlspecialchars($nombreCompleto, ENT_QUOTES, 'UTF-8');
         $dniCedula = htmlspecialchars($dniCedula, ENT_QUOTES, 'UTF-8');
         $tipoConstancia = htmlspecialchars($tipoConstancia, ENT_QUOTES, 'UTF-8');
+        $lugar = htmlspecialchars($lugar, ENT_QUOTES, 'UTF-8');
+        $firmante = htmlspecialchars($firmante, ENT_QUOTES, 'UTF-8');
+        $cargo = htmlspecialchars($cargo, ENT_QUOTES, 'UTF-8');
+        $institucion = htmlspecialchars($institucion, ENT_QUOTES, 'UTF-8');
+        $ano = htmlspecialchars($ano, ENT_QUOTES, 'UTF-8');
+        $correo = htmlspecialchars($correo, ENT_QUOTES, 'UTF-8');
+        $inscripcionTexto = htmlspecialchars($inscripcionTexto, ENT_QUOTES, 'UTF-8');
 
         try {
             $fechaInicioFormatted = date('Y-m-d', strtotime($fechaInicio));
@@ -100,7 +121,6 @@ try {
         }
 
         try {
-            // Nuevo: Agregar $eventId al array de parámetros
             if ($stmt->execute([
                 $nombreCompleto,
                 $dniCedula,
@@ -109,7 +129,14 @@ try {
                 $fechaFinalFormatted,
                 $fechaGeneracion,
                 $fechaExpedicionFormateada,
-                $eventId // Nuevo: Incluir el ID del evento
+                $eventId,
+                $lugar,
+                $firmante,
+                $cargo,
+                $institucion,
+                $ano,
+                $correo,
+                $inscripcionTexto
             ])) {
                 $count++;
                 $lastId = $pdo->lastInsertId();
@@ -117,7 +144,7 @@ try {
 
                 $response['letters'][] = [
                     'id' => $lastId,
-                    'nombre_completo' => $nombreCompleto,
+                    'participante' => $nombreCompleto,
                     'verification_url' => $verificationUrl
                 ];
             } else {
@@ -145,7 +172,9 @@ try {
     }
 
 } catch (Exception $e) {
-    if ($pdo->inTransaction()) { $pdo->rollBack(); }
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     error_log("Error general al procesar cartas: " . $e->getMessage());
     $response["message"] = "Error interno del servidor. Verifique el formato del archivo.";
     http_response_code(500);
