@@ -25,3 +25,4 @@ dist-ssr
 node_modules/
 
 api/config.php
+api/sendmailPHP.php

@@ -443,7 +443,7 @@ const Footer = () => {
           <p className="text-xs text-slate-500 mt-1 footer-bottom-small">
             Powered by{' '}
             <a
-              href="https://www.innovaproyectos.org"
+              href="https://innovaproyectos.org"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-500 transition-colors duration-300"

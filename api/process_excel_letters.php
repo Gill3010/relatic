@@ -60,8 +60,8 @@ try {
         INSERT INTO letters (
             participante, dni_cedula, tipo_constancia, fecha_inicio, fecha_final, 
             fecha_generacion, fecha_expedicion, event_id, lugar, firmante, cargo, 
-            institucion, ano, correo, inscripcion_texto
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            institucion, correo, inscripcion_texto
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
     $count = 0;
@@ -89,11 +89,10 @@ try {
         $firmante = trim($row[6] ?? '');
         $cargo = trim($row[7] ?? '');
         $institucion = trim($row[8] ?? '');
-        $ano = trim($row[9] ?? '');
-        $correo = trim($row[10] ?? '');
-        $inscripcionTexto = trim($row[11] ?? ''); // Nueva columna al final del Excel
+        $correo = trim($row[9] ?? '');
+        $inscripcionTexto = trim($row[10] ?? '');
 
-        if (empty($nombreCompleto) || empty($dniCedula) || empty($tipoConstancia) || empty($fechaInicio) || empty($fechaFinal) || empty($lugar) || empty($firmante) || empty($cargo) || empty($institucion) || empty($ano) || empty($correo)) {
+        if (empty($nombreCompleto) || empty($dniCedula) || empty($tipoConstancia) || empty($fechaInicio) || empty($fechaFinal) || empty($lugar) || empty($firmante) || empty($cargo) || empty($institucion) || empty($correo)) {
             $errors[] = "Fila " . ($index + 2) . ": Datos incompletos.";
             continue;
         }
@@ -105,7 +104,6 @@ try {
         $firmante = htmlspecialchars($firmante, ENT_QUOTES, 'UTF-8');
         $cargo = htmlspecialchars($cargo, ENT_QUOTES, 'UTF-8');
         $institucion = htmlspecialchars($institucion, ENT_QUOTES, 'UTF-8');
-        $ano = htmlspecialchars($ano, ENT_QUOTES, 'UTF-8');
         $correo = htmlspecialchars($correo, ENT_QUOTES, 'UTF-8');
         $inscripcionTexto = htmlspecialchars($inscripcionTexto, ENT_QUOTES, 'UTF-8');
 
@@ -134,7 +132,6 @@ try {
                 $firmante,
                 $cargo,
                 $institucion,
-                $ano,
                 $correo,
                 $inscripcionTexto
             ])) {

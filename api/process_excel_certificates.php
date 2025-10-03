@@ -31,7 +31,7 @@ if (!isset($_FILES['excel_file']) || $_FILES['excel_file']['error'] !== UPLOAD_E
     exit;
 }
 
-// Nuevo: Validar que se ha recibido el ID del evento
+// Validar que se ha recibido el ID del evento
 if (!isset($_POST['event_id']) || empty($_POST['event_id'])) {
     $response["message"] = "ID de evento no proporcionado.";
     http_response_code(400);
@@ -41,9 +41,6 @@ if (!isset($_POST['event_id']) || empty($_POST['event_id'])) {
 
 $uploadedFile = $_FILES['excel_file']['tmp_name'];
 $eventId = $_POST['event_id'];
-
-// Define la URL base de tu sitio para el QR
-$baseUrl = "https://relaticpanama.org/verify_certificate.php";
 
 try {
     $spreadsheet = IOFactory::load($uploadedFile);
@@ -69,7 +66,7 @@ try {
         'fecha_inicio' => array_search('fecha_inicio', $headers),
         'fecha_fin' => array_search('fecha_fin', $headers),
         'fecha_emision' => array_search('fecha_emision', $headers),
-         'motivo' => array_search('motivo', $headers), // Nueva columna agregada
+        'motivo' => array_search('motivo', $headers),
     ];
 
     foreach ($columnMapping as $field => $index) {
@@ -81,15 +78,10 @@ try {
         }
     }
     
-    $qrDir = __DIR__ . '/qrcodes/';
-    if (!is_dir($qrDir)) {
-        mkdir($qrDir, 0755, true);
-    }
-    
     $certificatesGenerated = 0;
     $failedRows = [];
 
-    // Nuevo: La sentencia SQL ahora incluye la columna event_id
+    // Sentencia SQL sin referencias a códigos QR
     $sql = "INSERT INTO certificates (nombre_estudiante, id_estudiante, concepto, tipo_documento, horas_academicas, creditos, fecha_inicio, fecha_fin, fecha_emision, created_at, event_id, motivo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)";
     $stmt = $pdo->prepare($sql);
 
@@ -107,7 +99,7 @@ try {
             'fecha_fin' => $row[$columnMapping['fecha_fin']] ?? null,
             'fecha_emision' => $row[$columnMapping['fecha_emision']] ?? null,
             'event_id' => $eventId,
-             'motivo' => $row[$columnMapping['motivo']] ?? null, // Nueva variable agregada de último
+            'motivo' => $row[$columnMapping['motivo']] ?? null,
         ];
 
         if (empty($rowData['nombre_estudiante']) || empty($rowData['id_estudiante'])) {
@@ -116,32 +108,13 @@ try {
         }
 
         try {
-            // Ejecutamos la sentencia con el array de valores actualizado
+            // Ejecutamos la sentencia con el array de valores
             $stmt->execute(array_values($rowData));
-            $lastId = $pdo->lastInsertId();
-
-            $qrUrl = urlencode($baseUrl . "?id=" . $lastId);
-            $qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=" . $qrUrl;
-            $imageData = file_get_contents($qrApiUrl);
-
-            if ($imageData === false) {
-                throw new Exception("No se pudo obtener la imagen del QR desde la API.");
-            }
-
-            $qrPath = $qrDir . $lastId . '.png';
-            file_put_contents($qrPath, $imageData);
-
             $certificatesGenerated++;
 
         } catch (PDOException $e) {
             error_log("Error al procesar fila " . $i . ": " . $e->getMessage());
             $failedRows[] = $i;
-        } catch (Exception $e) {
-            error_log("Error de generación de QR: " . $e->getMessage());
-            $response["message"] = "Error al generar el certificado para la fila " . $i . ": " . $e->getMessage();
-            http_response_code(500);
-            echo json_encode($response);
-            exit;
         }
     }
     

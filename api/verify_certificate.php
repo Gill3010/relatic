@@ -3,7 +3,6 @@
 require_once "api/config.php";
 
 // Función para formatear fecha
-
 function formatearFechaEmision($fecha) {
     $timestamp = strtotime($fecha);
     if (!$timestamp) return htmlspecialchars($fecha);
@@ -118,14 +117,18 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $message = "Certificado verificado exitosamente.";
         // Determinar el artículo correcto para el nombre del evento
         $articuloEvento = obtenerArticuloDefinido($certificate['event_name']);
-        // Determinar el artículo correcto para el tipo de documento
-       // $articuloTipoDocumento = obtenerArticuloDefinido($certificate['tipo_documento']);
         // Determinar el artículo correcto para el concepto
         $articuloConcepto = obtenerArticuloDefinido($certificate['concepto']);
     } else {
         $message = "El certificado con ID " . htmlspecialchars($id) . " no existe.";
     }
 }
+
+// Generar URL de verificación para el QR
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+$host = $_SERVER['HTTP_HOST'];
+$requestUri = $_SERVER['REQUEST_URI'];
+$currentUrl = $protocol . "://" . $host . $requestUri;
 ?>
 
 <!DOCTYPE html>
@@ -233,18 +236,17 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             font-weight: bold;
             color: #2d3748;
             text-transform: uppercase;
-            /* CAMBIOS PARA AJUSTE MULTILÍNEA */
             white-space: normal;
             word-wrap: break-word;
-            hyphens: auto;
-            max-height: 4.5vw; /* Aproximadamente 3 líneas */
+            hyphens: none;
+            max-height: 4.5vw;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             line-height: 1.3;
             padding: 0 2%;
-            width: 76%; /* Ajustado para compensar el padding */
+            width: 76%;
         }
 
         .detalles-curso {
@@ -276,14 +278,32 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             height: auto;
         }
 
-        .qr-code-overlay {
+        .qr-code-container {
             position: absolute;
             bottom: 2%;
             right: 2%;
-            width: 8%;
-            max-width: 80px;
-            height: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: white;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .qr-code-overlay {
+            width: 80px;
+            height: 80px;
+        }
+
+        .qr-label {
+            font-size: 9px;
+            color: #333;
+            text-align: center;
+            font-weight: 500;
+            margin: 0;
+            font-family: Arial, sans-serif;
         }
 
         .message-box {
@@ -335,7 +355,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <?php echo htmlspecialchars($articuloEvento . ' ' . $certificate['event_name']); ?>
             </div>
 
-            <div class="text-overlay texto-otorgado">Otorga el<?php //echo $articuloTipoDocumento; ?> presente</div>
+            <div class="text-overlay texto-otorgado">Otorga el presente</div>
 
             <div class="text-overlay tipo-documento">
                 <?php echo htmlspecialchars($certificate['tipo_documento']) . ' A'; ?>
@@ -361,31 +381,51 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <?php echo htmlspecialchars($certificate['concepto']); ?>
             </div>
             
-           <?php if (!empty($certificate['horas_academicas']) && !empty($certificate['creditos'])): ?>
-    <div class="text-overlay detalles-curso">
-        Con una duración total de <?php echo htmlspecialchars($certificate['horas_academicas']); ?> horas académicas, 
-        equivalente a <?php echo htmlspecialchars($certificate['creditos']); ?> créditos.
-    </div>
-<?php endif; ?>
+            <?php if (!empty($certificate['horas_academicas']) && !empty($certificate['creditos'])): ?>
+                <div class="text-overlay detalles-curso">
+                    Con una duración total de <?php echo htmlspecialchars($certificate['horas_academicas']); ?> horas académicas, 
+                    equivalente a <?php echo htmlspecialchars($certificate['creditos']); ?> créditos.
+                </div>
+            <?php endif; ?>
 
-            
             <div class="text-overlay fechas-periodo">Desarrollado del  <?php echo htmlspecialchars($certificate['fecha_inicio']); ?> al <?php echo htmlspecialchars($certificate['fecha_fin']); ?></div>
             <div class="text-overlay fecha-emision">
-    <?php echo formatearFechaEmision($certificate['fecha_emision']); ?>
-</div>
+                <?php echo formatearFechaEmision($certificate['fecha_emision']); ?>
+            </div>
 
-            
             <?php if (!empty($certificate['signature_url'])): ?>
                 <img src="<?php echo htmlspecialchars($certificate['signature_url']); ?>" alt="Firma del Evento" class="event-signature-overlay">
             <?php endif; ?>
 
-            <img src="api/qrcodes/<?php echo htmlspecialchars($certificate['id']); ?>.png" alt="Código QR del certificado" class="qr-code-overlay">
+            <!-- Contenedor para el código QR dinámico -->
+            <div class="qr-code-container">
+                <div id="qrcode" class="qr-code-overlay"></div>
+                <p class="qr-label">Escanea para verificar</p>
+            </div>
         </div>
     <?php else: ?>
         <div class="message-box">
             <h2 class="error-message">Error en la Verificación</h2>
             <p><?php echo htmlspecialchars($message); ?></p>
         </div>
+    <?php endif; ?>
+
+    <?php if ($certificate): ?>
+    <!-- Biblioteca QRCode.js desde CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Generar el código QR con la URL actual de verificación
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: "<?php echo $currentUrl; ?>",
+            width: 80,
+            height: 80,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    });
+    </script>
     <?php endif; ?>
 
 </body>

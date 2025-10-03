@@ -106,6 +106,12 @@ try {
     $articuloEvento = obtenerArticuloDefinido($certificate['event_name']);
     $articuloConcepto = obtenerArticuloDefinido($certificate['concepto']);
 
+    // Generar URL de verificación para el QR
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+    $host = $_SERVER['HTTP_HOST'];
+    $path = dirname($_SERVER['PHP_SELF']);
+    $verificationUrl = $protocol . "://" . $host . $path . "/verify_certificate.php?id=" . $certificate['id'];
+
     // Crear PDF (11 x 8.5 pulgadas)
     $pdf = new TCPDF('L', 'mm', [279.4, 215.9], true, 'UTF-8', false);
     $pdf->setPrintHeader(false);
@@ -248,17 +254,11 @@ try {
     $pdf->Cell(239.4, 8, 'Desarrollado del ' . $certificate['fecha_inicio'] . ' al ' . $certificate['fecha_fin'], 0, 1, 'C');
     $currentY = $pdf->GetY();
 
-    // Fecha de emisión - posición más arriba para evitar superposición con firmas
+    // Fecha de emisión - posición fija para evitar superposición con firmas
     $pdf->SetFont('times', '', 12);
     $pdf->SetTextColor(113, 128, 150);
-
-    // Posición fija en Y (por ejemplo, 140)
-    $emisionY = 160; // Ajusta este valor hasta que quede perfecto
-
-    // Fijar X e Y
+    $emisionY = 160; // Posición fija ajustada
     $pdf->SetXY(20, $emisionY);
-
-    // Usar Cell normalmente
     $pdf->Cell(239.4, 8, formatearFechaEmision($certificate['fecha_emision']), 0, 1, 'C');
 
     // Firma - posición ajustada (bottom: 8%, centrada)
@@ -269,14 +269,41 @@ try {
         $pdf->Image($certificate['signature_url'], $firmaX, $firmaY, $firmaWidth, 0);
     }
 
-    // QR Code - posición ajustada (bottom: 2%, right: 2%)
-    $qr_code_path = 'api/qrcodes/' . $certificate['id'] . '.png';
-    if (file_exists($qr_code_path)) {
-        $qrSize = 279.4 * 0.08; // 8% del ancho total
-        $qrX = 279.4 * 0.98 - $qrSize; // right: 2%
-        $qrY = 215.9 * 0.98 - $qrSize; // bottom: 2%
-        $pdf->Image($qr_code_path, $qrX, $qrY, $qrSize, $qrSize);
-    }
+    // ========== CÓDIGO QR DINÁMICO CON TCPDF ==========
+    // Posición del QR: esquina inferior derecha (bottom: 2%, right: 2%)
+    $qrSize = 279.4 * 0.08; // 8% del ancho total
+    $qrX = 279.4 * 0.98 - $qrSize; // right: 2%
+    $qrY = 215.9 * 0.98 - $qrSize - 8; // Ajustado para dejar espacio al texto
+    
+    // Dibujar rectángulo blanco de fondo con bordes redondeados
+    $pdf->SetFillColor(255, 255, 255); // Blanco
+    $pdf->SetLineStyle(array('width' => 0.3, 'color' => array(220, 220, 220))); // Borde gris claro
+    $fondoX = $qrX - 2;
+    $fondoY = $qrY - 2;
+    $fondoWidth = $qrSize + 4;
+    $fondoHeight = $qrSize + 8; // Incluye espacio para el texto
+    $pdf->RoundedRect($fondoX, $fondoY, $fondoWidth, $fondoHeight, 2, '1111', 'DF');
+    
+    // Configuración del estilo del QR
+    $qrStyle = array(
+        'border' => 0,
+        'vpadding' => 'auto',
+        'hpadding' => 'auto',
+        'fgcolor' => array(0, 0, 0),
+        'bgcolor' => array(255, 255, 255),
+        'module_width' => 1,
+        'module_height' => 1
+    );
+    
+    // Generar el código QR con la URL de verificación
+    $pdf->write2DBarcode($verificationUrl, 'QRCODE,M', $qrX, $qrY, $qrSize, $qrSize, $qrStyle, 'N');
+    
+    // Agregar texto "Escanea para verificar" debajo del QR
+    $pdf->SetFont('helvetica', '', 7);
+    $pdf->SetTextColor(51, 51, 51); // Color #333
+    $textoQrY = $qrY + $qrSize + 1; // Posición justo debajo del QR
+    $pdf->SetXY($fondoX, $textoQrY);
+    $pdf->Cell($fondoWidth, 4, 'Escanea para verificar', 0, 0, 'C');
 
     // Descargar PDF
     $pdf->Output('Certificado_' . $certificate['id'] . '.pdf', 'D');
