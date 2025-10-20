@@ -209,12 +209,22 @@ $currentUrl = $protocol . "://" . $host . $requestUri;
             text-transform: uppercase;
         }
         
+        /* ========== AJUSTE DEL NOMBRE ESTUDIANTE (MODIFICADO) ========== */
         .nombre-estudiante {
             top: 44%;
             font-size: 2.2vw;
             font-weight: bold;
             color: #00285a;
             text-transform: uppercase;
+            width: 70%; /* Área segura del 70% */
+            white-space: normal; /* Permitir saltos de línea */
+            word-wrap: break-word; /* Romper palabras largas si es necesario */
+            hyphens: none; /* Sin guiones automáticos */
+            -webkit-hyphens: none;
+            -moz-hyphens: none;
+            -ms-hyphens: none;
+            line-height: 1.2;
+            overflow-wrap: break-word; /* Alternativa moderna a word-wrap */
         }
 
         .id-estudiante {
@@ -222,6 +232,7 @@ $currentUrl = $protocol . "://" . $host . $requestUri;
             font-size: 1.2vw;
             color: #4a5568;
         }
+        /* ========== FIN DEL AJUSTE DEL NOMBRE ========== */
 
         .texto-culminado {
             top: 55%;
@@ -239,11 +250,10 @@ $currentUrl = $protocol . "://" . $host . $requestUri;
             white-space: normal;
             word-wrap: break-word;
             hyphens: none;
-            max-height: 4.5vw;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
+            -webkit-hyphens: none;
+            -moz-hyphens: none;
+            -ms-hyphens: none;
+            text-align: center;
             line-height: 1.3;
             padding: 0 2%;
             width: 76%;
@@ -280,8 +290,8 @@ $currentUrl = $protocol . "://" . $host . $requestUri;
 
         .qr-code-container {
             position: absolute;
-            bottom: 2%;
-            right: 2%;
+            bottom: 7%;
+            right: 5.5%;
             background: white;
             padding: 8px;
             border-radius: 8px;
@@ -304,6 +314,25 @@ $currentUrl = $protocol . "://" . $host . $requestUri;
             font-weight: 500;
             margin: 0;
             font-family: Arial, sans-serif;
+        }
+
+        /* Media query para ajustar el QR en vista móvil */
+        @media screen and (max-width: 768px) {
+            .qr-code-container {
+                bottom: 6%;
+                right: 4%;
+                padding: 4px;
+                border-radius: 4px;
+            }
+
+            .qr-code-overlay {
+                width: 45px;
+                height: 45px;
+            }
+
+            .qr-label {
+                font-size: 6px;
+            }
         }
 
         .message-box {
@@ -361,10 +390,10 @@ $currentUrl = $protocol . "://" . $host . $requestUri;
                 <?php echo htmlspecialchars($certificate['tipo_documento']) . ' A'; ?>
             </div>
 
-            <div class="text-overlay nombre-estudiante">
+            <div class="text-overlay nombre-estudiante" id="nombre-estudiante">
                 <?php echo htmlspecialchars($certificate['nombre_estudiante']); ?>
             </div>
-            <div class="text-overlay id-estudiante">ID: <?php echo htmlspecialchars($certificate['id_estudiante']); ?></div>
+            <div class="text-overlay id-estudiante" id="id-estudiante">ID: <?php echo htmlspecialchars($certificate['id_estudiante']); ?></div>
             
             <div class="text-overlay texto-culminado">
                 <?php 
@@ -377,7 +406,7 @@ $currentUrl = $protocol . "://" . $host . $requestUri;
                 ?>
             </div>
             
-            <div class="text-overlay concepto-value">
+            <div class="text-overlay concepto-value" id="concepto-text">
                 <?php echo htmlspecialchars($certificate['concepto']); ?>
             </div>
             
@@ -415,15 +444,69 @@ $currentUrl = $protocol . "://" . $host . $requestUri;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Determinar el tamaño del QR según el ancho de la pantalla
+        var isMobile = window.innerWidth <= 768;
+        var qrSize = isMobile ? 45 : 80;
+        
         // Generar el código QR con la URL actual de verificación
         var qrcode = new QRCode(document.getElementById("qrcode"), {
             text: "<?php echo $currentUrl; ?>",
-            width: 80,
-            height: 80,
+            width: qrSize,
+            height: qrSize,
             colorDark: "#000000",
             colorLight: "#ffffff",
             correctLevel: QRCode.CorrectLevel.M
         });
+        
+        // ========== AJUSTE DINÁMICO DEL NOMBRE ESTUDIANTE (MODIFICADO) ==========
+        var nombreElement = document.getElementById('nombre-estudiante');
+        var idElement = document.getElementById('id-estudiante');
+        
+        if (nombreElement) {
+            var textoNombre = nombreElement.innerText;
+            var longitudNombre = textoNombre.length;
+            
+            // Ajustar el tamaño de fuente según la longitud del nombre
+            if (longitudNombre > 40) {
+                nombreElement.style.fontSize = '1.5vw'; // Nombres muy largos
+            } else if (longitudNombre > 30) {
+                nombreElement.style.fontSize = '1.8vw'; // Nombres largos
+            } else if (longitudNombre > 25) {
+                nombreElement.style.fontSize = '2.0vw'; // Nombres medios-largos
+            }
+            // Si es menor a 25 caracteres, mantiene el tamaño original de 2.2vw
+            
+            // Ajustar posición del ID si el nombre ocupa más de una línea
+            setTimeout(function() {
+                var nombreHeight = nombreElement.offsetHeight;
+                var containerHeight = nombreElement.parentElement.offsetHeight;
+                
+                // Si el nombre tiene altura mayor a lo esperado (más de una línea)
+                if (nombreHeight > (containerHeight * 0.05)) {
+                    var currentTop = parseFloat(idElement.style.top || '49%');
+                    // Ajustar el ID hacia abajo proporcionalmente
+                    idElement.style.top = (currentTop + 2) + '%';
+                }
+            }, 100);
+        }
+        // ========== FIN DEL AJUSTE DEL NOMBRE ==========
+        
+        // Ajuste dinámico del tamaño de fuente del concepto
+        var conceptoElement = document.getElementById('concepto-text');
+        if (conceptoElement) {
+            var textoConcepto = conceptoElement.innerText;
+            var longitudTexto = textoConcepto.length;
+            
+            // Ajustar el tamaño de fuente según la longitud del texto
+            if (longitudTexto > 150) {
+                conceptoElement.style.fontSize = '0.9vw';
+            } else if (longitudTexto > 100) {
+                conceptoElement.style.fontSize = '1.1vw';
+            } else if (longitudTexto > 60) {
+                conceptoElement.style.fontSize = '1.2vw';
+            }
+            // Si es menor a 60 caracteres, mantiene el tamaño original de 1.4vw
+        }
     });
     </script>
     <?php endif; ?>

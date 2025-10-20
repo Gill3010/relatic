@@ -173,19 +173,61 @@ try {
     $pdf->SetXY(20, $tipoY);
     $pdf->Cell(239.4, 10, mb_strtoupper($certificate['tipo_documento'] . ' A', 'UTF-8'), 0, 1, 'C');
 
-    // Nombre estudiante - posición ajustada (top: 44%)
-    $pdf->SetFont('times', 'B', 30); // Times Bold, tamaño equivalente a 2.2vw
-    $pdf->SetTextColor(0, 40, 90); // Color #00285a
-    $nombreY = 215.9 * 0.44;
-    $pdf->SetXY(20, $nombreY);
-    $pdf->Cell(239.4, 12, mb_strtoupper($certificate['nombre_estudiante'], 'UTF-8'), 0, 1, 'C');
+    // ========== AJUSTE DEL NOMBRE ESTUDIANTE (MODIFICADO) ==========
+    // Nombre estudiante - posición ajustada (top: 44%) con manejo dinámico
+    $nombreTexto = mb_strtoupper($certificate['nombre_estudiante'], 'UTF-8');
+    $longitudNombre = mb_strlen($nombreTexto, 'UTF-8');
 
-    // ID estudiante - posición ajustada (top: 49%)
-    $pdf->SetFont('times', '', 16); // Times Normal, tamaño equivalente a 1.2vw
-    $pdf->SetTextColor(74, 85, 104); // Color #4a5568
-    $idY = 215.9 * 0.49;
+    // Calcular ancho del área segura (70% del ancho total)
+    $anchoNombre = 279.4 * 0.70;
+    $xNombre = (279.4 - $anchoNombre) / 2;
+
+    // Ajustar tamaño de fuente según longitud
+    if ($longitudNombre > 40) {
+        $nombreFontSize = 20; // Nombres muy largos
+    } elseif ($longitudNombre > 30) {
+        $nombreFontSize = 24; // Nombres largos
+    } elseif ($longitudNombre > 25) {
+        $nombreFontSize = 27; // Nombres medios-largos
+    } else {
+        $nombreFontSize = 30; // Nombres cortos (tamaño original)
+    }
+
+    $pdf->SetFont('times', 'B', $nombreFontSize);
+    $pdf->SetTextColor(0, 40, 90); // Color #00285a
+
+    // Posición inicial
+    $nombreY = 215.9 * 0.44;
+
+    // Usar MultiCell para permitir salto de línea sin guiones
+    $pdf->MultiCell(
+        $anchoNombre,
+        10, // Altura de línea
+        $nombreTexto,
+        0,
+        'C', // Centrado
+        false,
+        1,
+        $xNombre,
+        $nombreY,
+        true,
+        0,
+        false,
+        true,
+        0,
+        'M'
+    );
+
+    // Capturar la posición Y actual después del nombre (para ajustar ID si es necesario)
+    $nombreEndY = $pdf->GetY();
+
+    // ID estudiante - ajustar posición según altura del nombre
+    $idY = max($nombreEndY + 2, 215.9 * 0.49); // Mínimo 2mm de separación
+    $pdf->SetFont('times', '', 16);
+    $pdf->SetTextColor(74, 85, 104);
     $pdf->SetXY(20, $idY);
     $pdf->Cell(239.4, 8, 'ID: ' . $certificate['id_estudiante'], 0, 1, 'C');
+    // ========== FIN DEL AJUSTE DEL NOMBRE ==========
 
     // Texto "por haber culminado..." con motivo personalizado - posición ajustada (top: 55%)
     $pdf->SetFont('times', '', 16); // Times Normal, tamaño equivalente a 1.2vw
@@ -202,12 +244,25 @@ try {
     
     $pdf->Cell(239.4, 8, $textoculminado, 0, 1, 'C');
 
-    // Concepto - posición ajustada (top: 61%) con manejo multilínea
-    $pdf->SetFont('times', 'B', 19); // Times Bold, tamaño equivalente a 1.4vw
+    // Concepto - posición ajustada (top: 61%) con manejo multilínea y ajuste dinámico de tamaño
+    $conceptoTexto = mb_strtoupper($certificate['concepto'], 'UTF-8');
+    $longitudTexto = mb_strlen($conceptoTexto, 'UTF-8');
+    
+    // Ajustar tamaño de fuente según longitud del texto (igual lógica que JavaScript)
+    if ($longitudTexto > 150) {
+        $fontSize = 12; // Equivalente a 0.9vw
+    } elseif ($longitudTexto > 100) {
+        $fontSize = 15; // Equivalente a 1.1vw
+    } elseif ($longitudTexto > 60) {
+        $fontSize = 16; // Equivalente a 1.2vw
+    } else {
+        $fontSize = 19; // Tamaño original equivalente a 1.4vw
+    }
+    
+    $pdf->SetFont('times', 'B', $fontSize);
     $pdf->SetTextColor(45, 55, 72); // Color #2d3748
     $conceptoY = 215.9 * 0.61;
     
-    $conceptoTexto = mb_strtoupper($certificate['concepto'], 'UTF-8');
     $anchoConcepto = 279.4 * 0.76; // 76% del ancho (equivale al width: 76% del HTML)
     $xConcepto = (279.4 - $anchoConcepto) / 2; // Centrar horizontalmente
     
@@ -257,7 +312,7 @@ try {
     // Fecha de emisión - posición fija para evitar superposición con firmas
     $pdf->SetFont('times', '', 12);
     $pdf->SetTextColor(113, 128, 150);
-    $emisionY = 160; // Posición fija ajustada
+    $emisionY = 164; // Posición fija ajustada
     $pdf->SetXY(20, $emisionY);
     $pdf->Cell(239.4, 8, formatearFechaEmision($certificate['fecha_emision']), 0, 1, 'C');
 
@@ -269,11 +324,11 @@ try {
         $pdf->Image($certificate['signature_url'], $firmaX, $firmaY, $firmaWidth, 0);
     }
 
-    // ========== CÓDIGO QR DINÁMICO CON TCPDF ==========
-    // Posición del QR: esquina inferior derecha (bottom: 2%, right: 2%)
+    // ========== CÓDIGO QR DINÁMICO CON TCPDF (AJUSTADO +10mm arriba, +12mm izquierda) ==========
+    // Posición del QR: esquina inferior derecha - ajustado para mejor balance visual
     $qrSize = 279.4 * 0.08; // 8% del ancho total
-    $qrX = 279.4 * 0.98 - $qrSize; // right: 2%
-    $qrY = 215.9 * 0.98 - $qrSize - 8; // Ajustado para dejar espacio al texto
+    $qrX = 279.4 * 0.98 - $qrSize - 12; // right: 2% + 12mm hacia la izquierda (ajustado desde 18mm)
+    $qrY = 215.9 * 0.98 - $qrSize - 18; // Ajustado +10mm (de -8 a -18)
     
     // Dibujar rectángulo blanco de fondo con bordes redondeados
     $pdf->SetFillColor(255, 255, 255); // Blanco

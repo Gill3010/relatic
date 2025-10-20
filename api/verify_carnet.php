@@ -68,125 +68,172 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     }
     .text-overlay {
         position: absolute;
-        color: #000;
+        color: #1a365d;
         font-weight: normal;
         text-align: left;
-        line-height: 1.2;
+        line-height: 1.3;
         font-family: Arial, sans-serif;
     }
     
-    /* Foto de perfil - círculo en la parte superior derecha */
+    /* === FOTO DE PERFIL === */
     .foto-carnet-overlay {
         position: absolute;
-        top: 15px;
-        right: 75px;
-        width: 240px;
-        height: 240px;
+        top: 20px;
+        right: 70px;
+        width: 220px;
+        height: 220px;
         border-radius: 50%;
         object-fit: cover;
         border: 5px solid #fff;
         box-shadow: 0 0 20px rgba(0,0,0,0.3);
     }
     
-    /* Nombre completo - parte inferior derecha, grande */
+    /* === NIVEL 1: INFORMACIÓN PRINCIPAL (Mayor jerarquía) === */
+    
+    /* Nombre completo - máxima jerarquía */
     .nombre-completo-overlay {
-        bottom: 150px;
-        right: 125px;
+        top: 255px;
+        right: 70px;
         font-size: 28px;
         font-weight: bold;
         color: #1a365d;
         text-align: right;
-        max-width: 300px;
-        line-height: 1.1;
+        max-width: 280px;
+        line-height: 1.15;
     }
     
-    /* Título académico - debajo del nombre */
+    /* Título académico - segundo nivel de jerarquía */
     .titulo-academico-overlay {
-        bottom: 115px;
-        right: 105px;
+        top: 310px;
+        right: 70px;
         font-size: 18px;
         font-weight: 600;
         color: #1a365d;
         text-align: right;
-        max-width: 300px;
+        max-width: 280px;
     }
     
-    /* Cargo/Rol - parte superior izquierda, debajo del título del carnet */
+    /* Cargo/Rol - tercer nivel de jerarquía */
     .cargo-rol-overlay {
-        top: 200px;
-        left: 135px;
-        font-size: 22px;
-        font-weight: bold;
-        color: #1a365d;
-        text-align: left;
-        max-width: 300px;
-    }
-    
-    /* Fecha de vencimiento - debajo del cargo */
-    .fecha-vencimiento-overlay {
-        top: 225px;
-        left: 145px;
+        top: 338px;
+        right: 70px;
         font-size: 16px;
+        font-weight: 600;
         color: #1a365d;
-        text-align: left;
+        text-align: right;
+        max-width: 280px;
     }
     
-    /* Afiliación - lado izquierdo, posición media */
+    /* === NIVEL 2: INFORMACIÓN INSTITUCIONAL (Media jerarquía) === */
+    
+    /* Afiliación - zona izquierda superior */
     .afiliacion-overlay {
-        top: 250px;
-        left: 50px;
-        font-size: 14px;
+        top: 185px;
+        left: 40px;
+        font-size: 15px;
+        font-weight: 500;
         color: #1a365d;
         text-align: left;
-        max-width: 200px;
+        max-width: 280px;
+        line-height: 1.3;
     }
     
-    /* ORCID - debajo de afiliación */
-    .orcid-overlay {
-        top: 280px;
-        left: 50px;
-        font-size: 14px;
-        color: #1a365d;
-        text-align: left;
-        max-width: 200px;
-    }
-    
-    /* Variables que no están visibles en la captura pero se mantienen para funcionalidad */
-    .cedula-dni-overlay {
-        display: none;
-    }
+    /* Departamento */
     .departamento-overlay {
-        display: none;
-    }
-    .fecha-ingreso-overlay {
-        display: none;
-    }
-    .numero-expediente-overlay {
-        display: none;
-    }
-    .fecha-admision-overlay {
-        display: none;
-    }
-    .tipo-membresia-overlay {
-        display: none;
+        top: 215px;
+        left: 40px;
+        font-size: 14px;
+        color: #1a365d;
+        text-align: left;
+        max-width: 280px;
     }
     
-    /* ID del carnet - esquina inferior derecha, pequeño */
+    /* ORCID */
+    .orcid-overlay {
+        top: 240px;
+        left: 40px;
+        font-size: 14px;
+        color: #1a365d;
+        text-align: left;
+        max-width: 280px;
+    }
+    
+    /* === NIVEL 3: DATOS ADMINISTRATIVOS (Menor jerarquía - zona inferior) === */
+    
+    /* Columna izquierda inferior */
+    .cedula-dni-overlay {
+        bottom: 100px;
+        left: 40px;
+        font-size: 13px;
+        color: #1a365d;
+        text-align: left;
+        max-width: 210px;
+    }
+    
+    .tipo-membresia-overlay {
+        bottom: 80px;
+        left: 40px;
+        font-size: 13px;
+        color: #1a365d;
+        text-align: left;
+        max-width: 210px;
+    }
+    
+    .fecha-ingreso-overlay {
+        bottom: 60px;
+        left: 40px;
+        font-size: 13px;
+        color: #1a365d;
+        text-align: left;
+        max-width: 210px;
+    }
+    
+    /* Columna central inferior */
+    .numero-expediente-overlay {
+        bottom: 100px;
+        left: 270px;
+        font-size: 13px;
+        color: #1a365d;
+        text-align: left;
+        max-width: 210px;
+    }
+    
+    .fecha-admision-overlay {
+        bottom: 80px;
+        left: 270px;
+        font-size: 13px;
+        color: #1a365d;
+        text-align: left;
+        max-width: 210px;
+    }
+    
+    .fecha-vencimiento-overlay {
+        bottom: 60px;
+        left: 270px;
+        font-size: 13px;
+        color: #1a365d;
+        text-align: left;
+        max-width: 210px;
+    }
+    
+    /* === ELEMENTOS AUXILIARES === */
+    
+    /* ID del carnet - esquina inferior derecha */
     .id-carnet-overlay {
-        bottom: 20px;
-        right: 20px;
-        font-size: 10px;
-        color: #666;
-        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        font-size: 11px;
+        color: #888;
+        font-weight: 500;
     }
     
     /* QR Code - esquina inferior izquierda */
     .qr-code-overlay {
         position: absolute;
-        bottom: 20px;
-        left: 20px;
-        width: 60px;
-        height: 60px;
+        bottom: 15px;
+        left: 15px;
+        width: 65px;
+        height: 65px;
     }
     
     .message-box {
@@ -218,7 +265,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         background-color: #0056b3;
     }
     
-    /* MEDIA QUERIES PARA RESPONSIVIDAD MÓVIL */
+    /* === MEDIA QUERIES PARA RESPONSIVIDAD === */
     @media screen and (max-width: 768px) {
         body {
             padding: 10px;
@@ -236,66 +283,113 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             max-width: 100%;
         }
         
-        /* Ajustar posiciones usando porcentajes para tablets */
+        /* Foto de perfil */
         .foto-carnet-overlay {
-            top: 3.33%; /* 15/450 */
-            right: 10.71%; /* 75/700 */
-            width: 34.29%; /* 240/700 */
-            height: 53.33%; /* 240/450 */
+            top: 4.44%;
+            right: 10%;
+            width: 31.43%;
+            height: 48.89%;
         }
         
+        /* Nivel 1: Información principal */
         .nombre-completo-overlay {
-            bottom: 33.33%; /* 150/450 */
-            right: 17.86%; /* 125/700 */
-            font-size: 4vw;
-            max-width: 42.86%; /* 300/700 */
+            top: 56.67%;
+            right: 10%;
+            font-size: 3.8vw;
+            max-width: 40%;
         }
         
         .titulo-academico-overlay {
-            bottom: 25.56%; /* 115/450 */
-            right: 15%; /* 105/700 */
-            font-size: 2.5vw;
-            max-width: 42.86%;
+            top: 68.89%;
+            right: 10%;
+            font-size: 2.4vw;
+            max-width: 40%;
         }
         
         .cargo-rol-overlay {
-            top: 44.44%; /* 200/450 */
-            left: 19.29%; /* 135/700 */
-            font-size: 3vw;
-            max-width: 42.86%;
-        }
-        
-        .fecha-vencimiento-overlay {
-            top: 50%; /* 225/450 */
-            left: 20.71%; /* 145/700 */
+            top: 75.11%;
+            right: 10%;
             font-size: 2.2vw;
+            max-width: 40%;
         }
         
+        /* Nivel 2: Información institucional */
         .afiliacion-overlay {
-            top: 55.56%; /* 250/450 */
-            left: 7.14%; /* 50/700 */
-            font-size: 1.8vw;
-            max-width: 28.57%; /* 200/700 */
+            top: 41.11%;
+            left: 5.71%;
+            font-size: 2.1vw;
+            max-width: 40%;
+        }
+        
+        .departamento-overlay {
+            top: 47.78%;
+            left: 5.71%;
+            font-size: 2vw;
+            max-width: 40%;
         }
         
         .orcid-overlay {
-            top: 62.22%; /* 280/450 */
-            left: 7.14%; /* 50/700 */
-            font-size: 1.8vw;
-            max-width: 28.57%;
+            top: 53.33%;
+            left: 5.71%;
+            font-size: 2vw;
+            max-width: 40%;
         }
         
+        /* Nivel 3: Datos administrativos */
+        .cedula-dni-overlay {
+            bottom: 22.22%;
+            left: 5.71%;
+            font-size: 1.85vw;
+            max-width: 30%;
+        }
+        
+        .tipo-membresia-overlay {
+            bottom: 17.78%;
+            left: 5.71%;
+            font-size: 1.85vw;
+            max-width: 30%;
+        }
+        
+        .fecha-ingreso-overlay {
+            bottom: 13.33%;
+            left: 5.71%;
+            font-size: 1.85vw;
+            max-width: 30%;
+        }
+        
+        .numero-expediente-overlay {
+            bottom: 22.22%;
+            left: 38.57%;
+            font-size: 1.85vw;
+            max-width: 30%;
+        }
+        
+        .fecha-admision-overlay {
+            bottom: 17.78%;
+            left: 38.57%;
+            font-size: 1.85vw;
+            max-width: 30%;
+        }
+        
+        .fecha-vencimiento-overlay {
+            bottom: 13.33%;
+            left: 38.57%;
+            font-size: 1.85vw;
+            max-width: 30%;
+        }
+        
+        /* Elementos auxiliares */
         .id-carnet-overlay {
-            bottom: 4.44%; /* 20/450 */
-            right: 2.86%; /* 20/700 */
+            bottom: 3.33%;
+            right: 2.14%;
             font-size: 1.4vw;
         }
         
         .qr-code-overlay {
-            bottom: 4.44%; /* 20/450 */
-            left: 2.86%; /* 20/700 */
-            width: 8.57%; /* 60/700 */
-            height: 13.33%; /* 60/450 */
+            bottom: 3.33%;
+            left: 2.14%;
+            width: 9.29%;
+            height: 14.44%;
         }
     }
     
@@ -314,10 +408,10 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             font-size: 14px;
         }
         
-        /* Aumentar fuentes para mejor legibilidad en móviles */
+        /* Ajustar fuentes para móviles */
         .nombre-completo-overlay {
-            font-size: 5.5vw;
-            line-height: 1.0;
+            font-size: 5vw;
+            line-height: 1.1;
         }
         
         .titulo-academico-overlay {
@@ -325,52 +419,69 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         }
         
         .cargo-rol-overlay {
-            font-size: 3.8vw;
-        }
-        
-        .fecha-vencimiento-overlay {
             font-size: 2.8vw;
         }
         
-        .afiliacion-overlay,
+        .afiliacion-overlay {
+            font-size: 2.5vw;
+        }
+        
+        .departamento-overlay,
         .orcid-overlay {
-            font-size: 2.4vw;
+            font-size: 2.3vw;
+        }
+        
+        .cedula-dni-overlay,
+        .tipo-membresia-overlay,
+        .fecha-ingreso-overlay,
+        .numero-expediente-overlay,
+        .fecha-admision-overlay,
+        .fecha-vencimiento-overlay {
+            font-size: 2.2vw;
         }
         
         .id-carnet-overlay {
-            font-size: 1.8vw;
+            font-size: 1.7vw;
         }
         
         .foto-carnet-overlay {
-            border: 2px solid #fff;
+            border: 3px solid #fff;
         }
     }
     
     @media screen and (max-width: 320px) {
-        /* Ajustes para pantallas muy pequeñas */
         .nombre-completo-overlay {
-            font-size: 6.5vw;
+            font-size: 5.5vw;
         }
         
         .titulo-academico-overlay {
-            font-size: 3.8vw;
+            font-size: 3.5vw;
         }
         
         .cargo-rol-overlay {
-            font-size: 4.5vw;
-        }
-        
-        .fecha-vencimiento-overlay {
             font-size: 3.2vw;
         }
         
-        .afiliacion-overlay,
+        .afiliacion-overlay {
+            font-size: 2.9vw;
+        }
+        
+        .departamento-overlay,
         .orcid-overlay {
-            font-size: 2.8vw;
+            font-size: 2.6vw;
+        }
+        
+        .cedula-dni-overlay,
+        .tipo-membresia-overlay,
+        .fecha-ingreso-overlay,
+        .numero-expediente-overlay,
+        .fecha-admision-overlay,
+        .fecha-vencimiento-overlay {
+            font-size: 2.5vw;
         }
         
         .id-carnet-overlay {
-            font-size: 2.2vw;
+            font-size: 2vw;
         }
     }
     
@@ -388,7 +499,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             page-break-inside: avoid;
         }
     }
-</style>
+    </style>
 </head>
 <body>
 
@@ -405,21 +516,26 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <img src="<?php echo htmlspecialchars($carnet['foto_ruta']); ?>" alt="Foto de Perfil" class="foto-carnet-overlay">
             <?php endif; ?>
             
+            <!-- NIVEL 1: Información Principal -->
             <div class="text-overlay nombre-completo-overlay"><?php echo htmlspecialchars($carnet['nombre_completo']); ?></div>
             <div class="text-overlay titulo-academico-overlay"><?php echo htmlspecialchars($carnet['titulo_academico']); ?></div>
             <div class="text-overlay cargo-rol-overlay"><?php echo htmlspecialchars($carnet['cargo_rol']); ?></div>
-            <div class="text-overlay fecha-vencimiento-overlay"><?php echo htmlspecialchars($carnet['fecha_vencimiento']); ?></div>
+            
+            <!-- NIVEL 2: Información Institucional -->
             <div class="text-overlay afiliacion-overlay"><?php echo htmlspecialchars($carnet['afiliacion']); ?></div>
-            <div class="text-overlay orcid-overlay"><?php echo htmlspecialchars($carnet['orcid']); ?></div>
-            
-            <!-- Variables ocultas pero mantenidas para funcionalidad -->
-            <div class="text-overlay cedula-dni-overlay">Cédula: <?php echo htmlspecialchars($carnet['cedula_dni']); ?></div>
             <div class="text-overlay departamento-overlay">Departamento: <?php echo htmlspecialchars($carnet['departamento']); ?></div>
-            <div class="text-overlay fecha-ingreso-overlay">Fecha de Ingreso: <?php echo htmlspecialchars($carnet['fecha_ingreso']); ?></div>
-            <div class="text-overlay numero-expediente-overlay">Expediente: <?php echo htmlspecialchars($carnet['numero_expediente']); ?></div>
-            <div class="text-overlay fecha-admision-overlay">Fecha de Admisión: <?php echo htmlspecialchars($carnet['fecha_admision']); ?></div>
-            <div class="text-overlay tipo-membresia-overlay">Membresía: <?php echo htmlspecialchars($carnet['tipo_membresia']); ?></div>
+            <div class="text-overlay orcid-overlay">ORCID: <?php echo htmlspecialchars($carnet['orcid']); ?></div>
             
+            <!-- NIVEL 3: Datos Administrativos -->
+            <div class="text-overlay cedula-dni-overlay">Cédula: <?php echo htmlspecialchars($carnet['cedula_dni']); ?></div>
+            <div class="text-overlay tipo-membresia-overlay">Membresía: <?php echo htmlspecialchars($carnet['tipo_membresia']); ?></div>
+            <div class="text-overlay fecha-ingreso-overlay">Ingreso: <?php echo htmlspecialchars($carnet['fecha_ingreso']); ?></div>
+            
+            <div class="text-overlay numero-expediente-overlay">Exp: <?php echo htmlspecialchars($carnet['numero_expediente']); ?></div>
+            <div class="text-overlay fecha-admision-overlay">Admisión: <?php echo htmlspecialchars($carnet['fecha_admision']); ?></div>
+            <div class="text-overlay fecha-vencimiento-overlay">Vence: <?php echo htmlspecialchars($carnet['fecha_vencimiento']); ?></div>
+            
+            <!-- Elementos Auxiliares -->
             <div class="id-carnet-overlay">ID: <?php echo htmlspecialchars($carnet['id']); ?></div>
         </div>
     <?php else: ?>

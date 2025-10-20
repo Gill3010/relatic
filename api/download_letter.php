@@ -240,7 +240,7 @@ try {
     // Y: 297mm (alto A4) - 15mm (margen inferior) - 25mm (alto QR) - 8mm (espacio texto) = 249mm
     $qrSize = 25;
     $qrX = 179;
-    $qrY = 249;
+    $qrY = 235;
     
     // Dibujar rectángulo blanco de fondo con bordes redondeados
     $pdf->SetFillColor(255, 255, 255); // Blanco

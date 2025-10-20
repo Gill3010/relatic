@@ -218,7 +218,7 @@ body {
 /* Contenedor del código QR */
 .qr-code-container {
     position: absolute;
-    bottom: 5%;
+    bottom: 12%;
     right: 3%;
     background: white;
     padding: 8px;
@@ -290,54 +290,262 @@ body {
 }
 .download-button:hover { background-color: #0056b3; }
 
-/* Responsive adjustments mejorados */
+/* ========== RESPONSIVE MÓVIL - OPTIMIZADO ========== */
 @media (max-width: 768px) {
-    .carta-container { width: 98%; margin: 10px auto; }
+    .carta-container { 
+        width: 98%; 
+        margin: 10px auto; 
+    }
     
+    /* LOGOS - Ajuste de posición */
+    .event-logo-overlay {
+        max-width: 80px;
+        max-height: 50px;
+        top: 2.8%;
+        left: 3%;
+    }
+    
+    /* FECHA Y LUGAR - Reposicionado debajo de los logos */
+    .carta-container > div[style*="top: 16%"] {
+        font-size: 8px !important;
+        top: 11% !important;
+        right: 3% !important;
+        left: auto !important;
+        line-height: 1.5 !important;
+        max-width: 55%;
+        white-space: normal !important;
+        text-align: right !important;
+    }
+    
+    /* CONSTANCIA - Número de constancia */
+    .carta-container > div[style*="top: 22%"] {
+        font-size: 13px !important;
+        top: 18% !important;
+        letter-spacing: 0.6px !important;
+        word-spacing: 0.8px !important;
+        padding: 0 8px;
+    }
+    
+    /* FIRMANTES - Línea completa con mejor espaciado */
+    .carta-container > div[style*="top: 35%"] {
+        font-size: 8px !important;
+        top: 29% !important;
+        left: 1.1cm !important;
+        right: 1.1cm !important;
+        line-height: 2.1 !important;
+        padding: 0 8px;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    }
+    
+    /* CERTIFICA QUE - Separado del texto anterior */
+    .carta-container > div[style*="top: 40%"] {
+        font-size: 8.5px !important;
+        top: 36% !important;
+        line-height: 1.8 !important;
+    }
+    
+    /* PÁRRAFO PRINCIPAL - Más espacio vertical y legibilidad */
+    .carta-container > div[style*="top: 45%"] {
+        font-size: 8px !important;
+        top: 40% !important;
+        left: 1.1cm !important;
+        right: 1.1cm !important;
+        line-height: 2.2 !important;
+        padding: 0 8px;
+        text-align: justify !important;
+        margin-bottom: 0.8em !important;
+    }
+    
+    /* CORREO - Separado del párrafo anterior */
+    .carta-container > div[style*="top: 50%"] {
+        font-size: 8px !important;
+        top: 49% !important;
+        left: 1.1cm !important;
+        right: 1.1cm !important;
+        line-height: 2.2 !important;
+        padding: 0 8px;
+        text-align: justify !important;
+        margin-bottom: 0.8em !important;
+    }
+    
+    /* TEXTO DE EXPEDICIÓN - Separado */
+    .carta-container > div[style*="top: 53%"] {
+        font-size: 8px !important;
+        top: 55% !important;
+        left: 1.1cm !important;
+        right: 1.1cm !important;
+        line-height: 2.2 !important;
+        padding: 0 8px;
+        text-align: justify !important;
+        margin-bottom: 1.5em !important;
+    }
+    
+    /* ATENTAMENTE - Reposicionado */
+    .carta-container > div[style*="top: 57%"] {
+        font-size: 8px !important;
+        top: 62% !important;
+        left: 1.1cm !important;
+        line-height: 1.8 !important;
+    }
+    
+    /* FIRMA - Ajustada para no interferir con QR */
+    .event-signature-overlay {
+        bottom: 28%;
+        left: 58%;
+        max-width: 115px;
+        max-height: 52px;
+    }
+    
+    /* QR CODE - Reposicionado más arriba para evitar franja azul */
     .qr-code-container {
-        bottom: 3%;
-        right: 2%;
-        padding: 6px;
+        bottom: 18% !important;
+        right: 3%;
+        padding: 5px;
+        border-radius: 5px;
+        gap: 3px;
     }
     
     #qrcode {
-        width: 80px;
-        height: 80px;
+        width: 58px !important;
+        height: 58px !important;
+    }
+    
+    #qrcode canvas,
+    #qrcode img {
+        width: 58px !important;
+        height: 58px !important;
     }
     
     .qr-label {
-        font-size: 8px;
+        font-size: 6.5px;
+        line-height: 1.2;
+        white-space: nowrap;
     }
 }
 
+/* ========== PANTALLAS MUY PEQUEÑAS (<480px) ========== */
 @media (max-width: 480px) {
-    .carta-container { width: 98%; margin: 10px auto; }
+    .carta-container { 
+        width: 98%; 
+        margin: 8px auto; 
+    }
     
+    /* LOGOS */
     .event-logo-overlay {
-        max-width: 80px;
-        max-height: 60px;
-        top: 2%;
+        max-width: 68px;
+        max-height: 45px;
+        top: 2.6%;
+        left: 2.5%;
     }
     
+    /* FECHA Y LUGAR */
+    .carta-container > div[style*="top: 16%"] {
+        font-size: 7px !important;
+        top: 10% !important;
+        right: 2.5% !important;
+        left: auto !important;
+        line-height: 1.4 !important;
+        max-width: 58%;
+        white-space: normal !important;
+        text-align: right !important;
+    }
+    
+    /* CONSTANCIA */
+    .carta-container > div[style*="top: 22%"] {
+        font-size: 11px !important;
+        top: 17% !important;
+        letter-spacing: 0.5px !important;
+        padding: 0 6px;
+    }
+    
+    /* FIRMANTES */
+    .carta-container > div[style*="top: 35%"] {
+        font-size: 7px !important;
+        top: 28% !important;
+        left: 0.9cm !important;
+        right: 0.9cm !important;
+        line-height: 2.2 !important;
+        padding: 0 6px;
+    }
+    
+    /* CERTIFICA */
+    .carta-container > div[style*="top: 40%"] {
+        font-size: 7.5px !important;
+        top: 35% !important;
+        line-height: 1.9 !important;
+    }
+    
+    /* PÁRRAFOS */
+    .carta-container > div[style*="top: 45%"] {
+        font-size: 7px !important;
+        top: 39% !important;
+        left: 0.9cm !important;
+        right: 0.9cm !important;
+        line-height: 2.3 !important;
+        padding: 0 6px;
+        margin-bottom: 0.9em !important;
+    }
+    
+    .carta-container > div[style*="top: 50%"] {
+        font-size: 7px !important;
+        top: 48% !important;
+        left: 0.9cm !important;
+        right: 0.9cm !important;
+        line-height: 2.3 !important;
+        padding: 0 6px;
+        margin-bottom: 0.9em !important;
+    }
+    
+    .carta-container > div[style*="top: 53%"] {
+        font-size: 7px !important;
+        top: 54% !important;
+        left: 0.9cm !important;
+        right: 0.9cm !important;
+        line-height: 2.3 !important;
+        padding: 0 6px;
+        margin-bottom: 1.5em !important;
+    }
+    
+    /* ATENTAMENTE */
+    .carta-container > div[style*="top: 57%"] {
+        font-size: 7px !important;
+        top: 61% !important;
+        left: 0.9cm !important;
+        line-height: 1.9 !important;
+    }
+    
+    /* FIRMA */
     .event-signature-overlay {
-        max-width: 150px;
-        max-height: 60px;
-        bottom: 10%;
+        bottom: 27%;
+        left: 56%;
+        max-width: 100px;
+        max-height: 48px;
     }
     
+    /* QR CODE - Más arriba para evitar franja azul */
     .qr-code-container {
-        bottom: 2%;
-        right: 2%;
-        padding: 5px;
+        bottom: 19% !important;
+        right: 2.5%;
+        padding: 4px;
+        border-radius: 4px;
+        gap: 2px;
     }
     
     #qrcode {
-        width: 70px;
-        height: 70px;
+        width: 50px !important;
+        height: 50px !important;
+    }
+    
+    #qrcode canvas,
+    #qrcode img {
+        width: 50px !important;
+        height: 50px !important;
     }
     
     .qr-label {
-        font-size: 7px;
+        font-size: 6px;
+        line-height: 1.1;
     }
 }
 </style>
@@ -406,18 +614,6 @@ body {
         // Evento en curso
         $texto_evento = "el cual se está desarrollando del " . $fechaInicioFormateada . " hasta el " . $fechaFinalFormateada;
     }
-    
-    // Construir el párrafo completo optimizado
-    $parrafoCompleto = safeOutput($letter['participante']) . ", con documento de identidad No. " . 
-                       safeOutput($letter['dni_cedula']) . " " . 
-                       safeOutput($letter['inscripcion_texto']) . " ";
-    
-    if (!empty($letter['event_name'])) {
-        $parrafoCompleto .= '<span style="font-weight: bold; text-transform: uppercase;">' . 
-                            safeOutput($letter['event_name']) . '</span>, ';
-    }
-    
-    $parrafoCompleto .= $texto_evento . ".";
     ?>
     
     <div style="position: absolute; top: 45%; left: 1.5cm; right: 1.5cm; font-size: 12px; color: #000; text-align: justify; line-height: 1.6; letter-spacing: 0.2px; word-spacing: 0.5px; font-family: Arial, sans-serif; hyphens: none;">
