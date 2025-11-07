@@ -26,3 +26,5 @@ node_modules/
 
 api/config.php
 api/sendmailPHP.php
+api/login.php
+api/reset-password.php

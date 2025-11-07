@@ -14,6 +14,34 @@ export default function BooksDetails() {
       data-aos="zoom-in"
     >
       <div className="max-w-6xl mx-auto">
+        {/* Call to Action Buttons (moved to top) */}
+        <div className="mb-16 flex flex-col md:flex-row items-center justify-center gap-8" data-aos="fade-up" data-aos-delay="200">
+          <a
+            href="https://relaticpanama.org/_books/index.php/edrp/catalog"
+            rel="noopener noreferrer"
+            className="group px-10 py-4 rounded-lg font-semibold text-white text-xl transform hover:scale-105 transition-all duration-300
+             bg-blue-600 hover:bg-blue-700 border border-slate-200"
+          >
+            <span className="flex items-center space-x-3">
+              <BookOpen size={24} />
+              <span>Ir al portal de libros</span>
+              <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
+            </span>
+          </a>
+          
+          {/* <a
+            href="/suscription"
+            rel="noopener noreferrer"
+            className="group px-10 py-4 rounded-lg font-semibold text-white text-xl transform hover:scale-105 transition-all duration-300
+             bg-blue-600 hover:bg-blue-700 border border-slate-200"
+          >
+            <span className="flex items-center space-x-3">
+              <span className="text-2xl">🎓</span>
+              <span>¡AFÍLIATE YA!</span>
+            </span>
+          </a> */}
+        </div>
+
         {/* Header Section */}
         <div className="text-center mb-16">
           <div className="flex justify-center mb-8">
@@ -158,33 +186,7 @@ export default function BooksDetails() {
           </div>
         </div>
 
-        {/* Call to Action Buttons */}
-        <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-8" data-aos="fade-up" data-aos-delay="600">
-          <a
-            href="https://relaticpanama.org/_books/index.php/edrp/catalog"
-            rel="noopener noreferrer"
-            className="group px-10 py-4 rounded-lg font-semibold text-white text-xl transform hover:scale-105 transition-all duration-300
-             bg-blue-600 hover:bg-blue-700 border border-slate-200"
-          >
-            <span className="flex items-center space-x-3">
-              <BookOpen size={24} />
-              <span>Ir al portal de libros</span>
-              <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </span>
-          </a>
-          
-          <a
-            href="/suscription"
-            rel="noopener noreferrer"
-            className="group px-10 py-4 rounded-lg font-semibold text-white text-xl transform hover:scale-105 transition-all duration-300
-             bg-blue-600 hover:bg-blue-700 border border-slate-200"
-          >
-            <span className="flex items-center space-x-3">
-              <span className="text-2xl">🎓</span>
-              <span>¡AFÍLIATE YA!</span>
-            </span>
-          </a>
-        </div>
+        
       </div>
     </div>
   );

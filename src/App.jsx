@@ -37,16 +37,21 @@ const TermsAndConditions = lazy(() => import('./components/TermsAndConditions'))
 const MainDashboard = lazy(() => import('./components/MainDashboard'));
 const GestorDashboard = lazy(() => import('./components/GestorDashboard'));
 const StepByStepGuide = lazy(() => import('./components/StepByStepGuide'));
+const ManuscriptFormatter = lazy(() => import('./components/ManuscriptFormatter'));
+const FormatCallToAction = lazy(() => import('./components/FormatCallToAction'));
+const InfoBanner = lazy(() => import('./components/InfoBanner'));
 
-// Componente de envoltura para páginas que no son el Home, incluye el botón
+// Componente de envoltura reutilizable: Navbar arriba, Footer abajo en todas las páginas no-Home
 const PageLayout = ({ children }) => (
   <Suspense fallback={<div className="text-center py-10">Cargando...</div>}>
-    <main className="flex flex-col min-h-screen container mx-auto px-4 py-10">
+    <Navbar />
+    <main className="flex flex-col min-h-screen container mx-auto px-4 py-10 pt-24">
       <div className="flex justify-start mb-6">
         <RedirectToHomeButton />
       </div>
       {children}
     </main>
+    <Footer />
   </Suspense>
 );
 
@@ -57,10 +62,12 @@ PageLayout.propTypes = {
 const HomeLayout = () => (
   <Suspense fallback={<div className="text-center py-10">Cargando...</div>}>
     <Navbar />
+    <InfoBanner />
     <Carousel />
     <div className="container mx-auto px-4 py-10">
       <SearchPage />
     </div>
+    <FormatCallToAction />
     <Agreements />
     <Footer />
   </Suspense>
@@ -94,14 +101,14 @@ const App = () => (
         <Route path="/crear-orcid" element={<PageLayout><CreateOrcidGguide /></PageLayout>} />
         <Route path="/registro-usuario" element={<PageLayout><UserRegistration /></PageLayout>} />
         <Route path="/login-usuario" element={<PageLayout><UserLogin /></PageLayout>} />
-        <Route path="/detalles-revistas" element={<PageLayout><div className='space-y-8'><JournalMetrics /><JournalsDetails /></div></PageLayout>} />
-        <Route path="/detalles-carteles" element={<PageLayout><div className='space-y-8'><PostersMetrics /><PostersDetails /></div></PageLayout>} />
-        <Route path="/detalles-libros" element={<PageLayout><div className='space-y-8'><BooksMetrics /><BooksDetails /></div></PageLayout>} />
-        <Route path="/detalles-aprendizaje" element={<PageLayout><div className='space-y-8'><CoursesMetrics /><LearningDetails /></div></PageLayout>} />
+        <Route path="/detalles-revistas" element={<PageLayout><div className='space-y-8'><JournalsDetails /><JournalMetrics /></div></PageLayout>} />
+        <Route path="/detalles-carteles" element={<PageLayout><div className='space-y-8'><PostersDetails /><PostersMetrics /></div></PageLayout>} />
+        <Route path="/detalles-libros" element={<PageLayout><div className='space-y-8'><BooksDetails /><BooksMetrics /></div></PageLayout>} />
+        <Route path="/detalles-aprendizaje" element={<PageLayout><div className='space-y-8'><LearningDetails /><CoursesMetrics /></div></PageLayout>} />
         <Route path="/detalles-propiedad-intelectual" element={<PageLayout><IntellectualPropertyDetails /></PageLayout>} />
         <Route path="/panel-administracion" element={<PageLayout><AdminPanel /></PageLayout>} />
         <Route path="/guia-paso-a-paso" element={<PageLayout><StepByStepGuide /></PageLayout>} />
-        
+        <Route path="/formato-manuscrito" element={<PageLayout><ManuscriptFormatter /></PageLayout>} />
         {/* ✅ Rutas Protegidas de Gestor/Admin - SIN PageLayout DUPLICADO */}
         <Route element={<ProtectedPageLayout allowedRoles={['gestor', 'admin']} />}>
           <Route path="/panel-gestor/:id" element={<GestorDashboard />} />

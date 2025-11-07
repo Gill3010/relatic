@@ -65,18 +65,18 @@ const Navbar = () => {
     { name: 'Actividades Anteriores', href: '/actividades/anteriores', icon: History }
   ];
 
-  const textColor = isScrolled ? 'text-slate-700' : 'text-white';
-  const hoverTextColor = isScrolled ? 'hover:text-blue-600' : 'hover:text-blue-200';
-  const dropdownBg = isScrolled ? 'bg-white' : 'bg-slate-800';
-  const dropdownHoverBg = isScrolled ? 'hover:bg-slate-50' : 'hover:bg-slate-700';
-  const dropdownItemTextColor = isScrolled ? 'text-slate-700' : 'text-white';
-  const dropdownItemHoverTextColor = isScrolled ? 'group-hover:text-blue-600' : 'group-hover:text-blue-200';
+  const textColor = 'text-slate-700';
+  const hoverTextColor = 'hover:text-blue-600';
+  const dropdownBg = 'bg-white';
+  const dropdownHoverBg = 'hover:bg-slate-50';
+  const dropdownItemTextColor = 'text-slate-700';
+  const dropdownItemHoverTextColor = 'group-hover:text-blue-600';
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled 
         ? 'bg-white/95 backdrop-blur-sm border-b border-slate-200'
-        : 'bg-transparent'
+        : 'bg-white/90 backdrop-blur-sm border-b border-slate-200'
     }`}>
       {/* Elementos decorativos geométricos simplificados */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -89,26 +89,18 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Logo con diseño institucional limpio */}
           <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-shrink">
-            <a href="/" className="min-w-0 block flex items-center space-x-2 sm:space-x-3">
+            <a href="/" className="min-w-0 flex items-center space-x-2 sm:space-x-3">
               <div className="relative flex-shrink-0">
-                <div className={`w-8 h-8 sm:w-10 sm:h-10 ${
-                  isScrolled 
-                    ? 'bg-blue-600' 
-                    : 'bg-slate-700'
-                } rounded-lg flex items-center justify-center transition-colors duration-500`}>
+                <div className={`w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center transition-colors duration-500`}>
                   <Globe className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
                 </div>
-                <div className={`absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 ${
-                  isScrolled ? 'bg-orange-400' : 'bg-blue-300'
-                } rounded-full transition-colors duration-500`} />
+                <div className={`absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-orange-400 rounded-full transition-colors duration-500`} />
               </div>
               <div>
                 <h1 className={`text-base sm:text-lg lg:text-xl font-bold transition-colors duration-500 ${textColor}`}>
                   RELATIC PANAMÁ
                 </h1>
-                <span className={`text-xs sm:text-xs lg:text-xs tracking-wider leading-tight block transition-colors duration-500 ${
-                  isScrolled ? 'text-slate-500' : 'text-slate-300'
-                }`}>
+                <span className={`text-xs sm:text-xs lg:text-xs tracking-wider leading-tight block transition-colors duration-500 text-slate-600`}>
                   Red Latinoamericana de Investigaciones Cualitativas
                 </span>
               </div>
@@ -154,12 +146,8 @@ const Navbar = () => {
                           className={`flex items-center space-x-3 p-2 xl:p-3 rounded-md ${dropdownHoverBg} transition-all duration-300 group`}
                           onClick={() => setActiveDropdown(null)}
                         >
-                          <div className={`w-7 h-7 xl:w-8 xl:h-8 ${
-                            isScrolled ? 'bg-blue-50' : 'bg-slate-700'
-                          } rounded-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300 flex-shrink-0`}>
-                            <IconComponent className={`w-3 h-3 xl:w-4 xl:h-4 ${
-                              isScrolled ? 'text-blue-600' : 'text-blue-200'
-                            }`} />
+                          <div className={`w-7 h-7 xl:w-8 xl:h-8 bg-blue-50 rounded-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300 flex-shrink-0`}>
+                            <IconComponent className={`w-3 h-3 xl:w-4 xl:h-4 text-blue-600`} />
                           </div>
                           <span className={`${dropdownItemTextColor} ${dropdownItemHoverTextColor} transition-colors duration-300 font-medium text-sm xl:text-base`}>
                             {service.name}
@@ -209,12 +197,8 @@ const Navbar = () => {
                           className={`flex items-center space-x-3 p-2 xl:p-3 rounded-md ${dropdownHoverBg} transition-all duration-300 group`}
                           onClick={() => setActiveDropdown(null)}
                         >
-                          <div className={`w-7 h-7 xl:w-8 xl:h-8 ${
-                            isScrolled ? 'bg-blue-50' : 'bg-slate-700'
-                          } rounded-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300 flex-shrink-0`}>
-                            <IconComponent className={`w-3 h-3 xl:w-4 xl:h-4 ${
-                              isScrolled ? 'text-blue-600' : 'text-blue-200'
-                            }`} />
+                          <div className={`w-7 h-7 xl:w-8 xl:h-8 bg-blue-50 rounded-md flex items-center justify-center group-hover:scale-105 transition-transform duration-300 flex-shrink-0`}>
+                            <IconComponent className={`w-3 h-3 xl:w-4 xl:h-4 text-blue-600`} />
                           </div>
                           <span className={`${dropdownItemTextColor} ${dropdownItemHoverTextColor} transition-colors duration-300 font-medium text-sm xl:text-base`}>
                             {activity.name}
@@ -246,28 +230,20 @@ const Navbar = () => {
             </a>
 
             {/* Botón de Afiliación con efecto de borde y color azul claro */}
-            <a
+            {/* <a
               href="/suscription"
-              className={`relative px-3 py-1.5 xl:px-4 xl:py-2 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${
-                isScrolled 
-                  ? 'border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white' 
-                  : 'border-sky-400 text-sky-300 hover:bg-sky-400 hover:text-slate-800'
-              }`}
+              className={`relative px-3 py-1.5 xl:px-4 xl:py-2 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white`}
             >
               <span className="relative z-10 flex items-center space-x-1.5">
                 <Rocket className="w-3 h-3 xl:w-4 xl:h-4" />
                 <span className="text-sm xl:text-base">¡AFÍLIATE YA!</span>
               </span>
-            </a>
+            </a> */}
 
             {/* Botón de Registro */}
             <a
               href="/registro-usuario"
-              className={`relative px-3 py-1.5 xl:px-4 xl:py-2 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${
-                isScrolled 
-                  ? 'border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white' 
-                  : 'border-emerald-400 text-emerald-300 hover:bg-emerald-400 hover:text-slate-800'
-              }`}
+              className={`relative px-3 py-1.5 xl:px-4 xl:py-2 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white`}
             >
               <span className="relative z-10 flex items-center space-x-1.5">
                 <UserPlus className="w-3 h-3 xl:w-4 xl:h-4" />
@@ -311,9 +287,7 @@ const Navbar = () => {
                           className={`flex items-center space-x-2 p-2 rounded-md ${dropdownHoverBg} transition-all duration-300 group`}
                           onClick={() => setActiveDropdown(null)}
                         >
-                          <IconComponent className={`w-3 h-3 ${
-                            isScrolled ? 'text-blue-600' : 'text-blue-200'
-                          } flex-shrink-0`} />
+                          <IconComponent className={`w-3 h-3 text-blue-600 flex-shrink-0`} />
                           <span className={`${dropdownItemTextColor} ${dropdownItemHoverTextColor} transition-colors duration-300 font-medium text-sm`}>
                             {service.name}
                           </span>
@@ -355,9 +329,7 @@ const Navbar = () => {
                           className={`flex items-center space-x-2 p-2 rounded-md ${dropdownHoverBg} transition-all duration-300 group`}
                           onClick={() => setActiveDropdown(null)}
                         >
-                          <IconComponent className={`w-3 h-3 ${
-                            isScrolled ? 'text-blue-600' : 'text-blue-200'
-                          } flex-shrink-0`} />
+                          <IconComponent className={`w-3 h-3 text-blue-600 flex-shrink-0`} />
                           <span className={`${dropdownItemTextColor} ${dropdownItemHoverTextColor} transition-colors duration-300 font-medium text-sm`}>
                             {activity.name}
                           </span>
@@ -383,28 +355,20 @@ const Navbar = () => {
             </a>
 
             {/* Botón de Afiliación para Tablet */}
-            <a
+            {/* <a
               href="/suscription"
-              className={`relative px-3 py-1.5 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${
-                isScrolled 
-                  ? 'border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white' 
-                  : 'border-sky-400 text-sky-300 hover:bg-sky-400 hover:text-slate-800'
-              }`}
+              className={`relative px-3 py-1.5 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white`}
             >
               <span className="relative z-10 flex items-center space-x-1.5">
                 <Rocket className="w-3 h-3" />
                 <span className="text-sm">¡AFÍLIATE YA!</span>
               </span>
-            </a>
+            </a> */}
 
             {/* Botón de Registro para Tablet */}
             <a
               href="/registro-usuario"
-              className={`relative px-3 py-1.5 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 ${
-                isScrolled 
-                  ? 'border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white' 
-                  : 'border-emerald-400 text-emerald-300 hover:bg-emerald-400 hover:text-slate-800'
-              }`}
+              className={`relative px-3 py-1.5 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-shrink-0 border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white`}
             >
               <span className="relative z-10 flex items-center space-x-1.5">
                 <UserPlus className="w-3 h-3" />
@@ -445,9 +409,7 @@ const Navbar = () => {
 
               {/* Mobile Services */}
               <div className="space-y-1 sm:space-y-2">
-                <div className={`px-3 py-1 sm:px-4 sm:py-2 font-semibold text-xs sm:text-sm tracking-wider uppercase ${
-                  isScrolled ? 'text-blue-600' : 'text-blue-200'
-                }`}>
+                <div className={`px-3 py-1 sm:px-4 sm:py-2 font-semibold text-xs sm:text-sm tracking-wider uppercase text-blue-600`}>
                   Servicios
                 </div>
                 {services.map((service) => {
@@ -459,9 +421,7 @@ const Navbar = () => {
                       className={`flex items-center space-x-3 px-3 py-2 sm:px-4 sm:py-3 ${dropdownItemTextColor} ${dropdownHoverBg} rounded-md transition-all duration-300 text-sm sm:text-base`}
                       onClick={() => setIsOpen(false)}
                     >
-                      <IconComponent className={`w-4 h-4 ${
-                        isScrolled ? 'text-blue-600' : 'text-blue-200'
-                      } flex-shrink-0`} />
+                      <IconComponent className={`w-4 h-4 text-blue-600 flex-shrink-0`} />
                       <span>{service.name}</span>
                     </a>
                   );
@@ -478,9 +438,7 @@ const Navbar = () => {
 
               {/* Mobile Activities */}
               <div className="space-y-1 sm:space-y-2">
-                <div className={`px-3 py-1 sm:px-4 sm:py-2 font-semibold text-xs sm:text-sm tracking-wider uppercase ${
-                  isScrolled ? 'text-blue-600' : 'text-blue-200'
-                }`}>
+                <div className={`px-3 py-1 sm:px-4 sm:py-2 font-semibold text-xs sm:text-sm tracking-wider uppercase text-blue-600`}>
                   Actividades
                 </div>
                 {activities.map((activity) => {
@@ -492,9 +450,7 @@ const Navbar = () => {
                       className={`flex items-center space-x-3 px-3 py-2 sm:px-4 sm:py-3 ${dropdownItemTextColor} ${dropdownHoverBg} rounded-md transition-all duration-300 text-sm sm:text-base`}
                       onClick={() => setIsOpen(false)}
                     >
-                      <IconComponent className={`w-4 h-4 ${
-                        isScrolled ? 'text-blue-600' : 'text-blue-200'
-                      } flex-shrink-0`} />
+                      <IconComponent className={`w-4 h-4 text-blue-600 flex-shrink-0`} />
                       <span>{activity.name}</span>
                     </a>
                   );
@@ -515,34 +471,24 @@ const Navbar = () => {
                 className={`flex items-center space-x-3 px-3 py-2 sm:px-4 sm:py-3 ${dropdownItemTextColor} ${dropdownHoverBg} rounded-md transition-all duration-300 font-medium text-sm sm:text-base`}
                 onClick={() => setIsOpen(false)}
               >
-                <Settings className={`w-4 h-4 ${
-                  isScrolled ? 'text-blue-600' : 'text-blue-200'
-                } flex-shrink-0`} />
+                <Settings className={`w-4 h-4 text-blue-600 flex-shrink-0`} />
                 <span>Administración</span>
               </a>
 
               {/* Botón de Afiliación Móvil */}
-              <a
+              {/* <a
                 href="/suscription"
-                className={`flex items-center justify-center space-x-2 w-full px-4 py-2 sm:px-6 sm:py-3 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-sm sm:text-base ${
-                  isScrolled 
-                    ? 'border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white' 
-                    : 'border-sky-400 text-sky-300 hover:bg-sky-400 hover:text-slate-800'
-                }`}
+                className={`flex items-center justify-center space-x-2 w-full px-4 py-2 sm:px-6 sm:py-3 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-sm sm:text-base border-sky-500 text-sky-600 hover:bg-sky-500 hover:text-white`}
                 onClick={() => setIsOpen(false)}
               >
                 <Rocket className="w-4 h-4" />
                 <span>¡AFÍLIATE YA!</span>
-              </a>
+              </a> */}
 
               {/* Botón de Registro Móvil */}
               <a
                 href="/registro-usuario"
-                className={`flex items-center justify-center space-x-2 w-full px-4 py-2 sm:px-6 sm:py-3 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-sm sm:text-base ${
-                  isScrolled 
-                    ? 'border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white' 
-                    : 'border-emerald-400 text-emerald-300 hover:bg-emerald-400 hover:text-slate-800'
-                }`}
+                className={`flex items-center justify-center space-x-2 w-full px-4 py-2 sm:px-6 sm:py-3 border-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 text-sm sm:text-base border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white`}
                 onClick={() => setIsOpen(false)}
               >
                 <UserPlus className="w-4 h-4" />

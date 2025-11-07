@@ -37,6 +37,22 @@ export default defineConfig({
           if (id.includes('node_modules/chart.js')) {
             return 'vendor_charts';
           }
+          // Librerías pesadas comunes en formateadores/visores de documentos
+          if (id.includes('node_modules/pdfjs-dist')) {
+            return 'vendor_pdf';
+          }
+          if (id.includes('node_modules/docx')) {
+            return 'vendor_docx';
+          }
+          if (id.includes('node_modules/mammoth')) {
+            return 'vendor_mammoth';
+          }
+          if (id.includes('node_modules/xlsx')) {
+            return 'vendor_xlsx';
+          }
+          if (id.includes('node_modules/quill')) {
+            return 'vendor_quill';
+          }
 
           // Componentes grandes separados
           if (id.includes('components/CertificateGenerator')) return 'CertificateGenerator';
@@ -56,6 +72,6 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 800, // aumenta límite para advertencias, opcional
+    chunkSizeWarningLimit: 1200, // aumenta límite para advertencias, opcional
   },
 });
